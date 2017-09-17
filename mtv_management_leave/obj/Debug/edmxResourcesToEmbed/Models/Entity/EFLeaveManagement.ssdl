@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="LeaveManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="AddLeave">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" />
+    <Property Name="LeaveTypeId" Type="int" Nullable="false" />
+    <Property Name="LeaveAdd" Type="tinyint" />
+    <Property Name="DateAdd" Type="date" />
+    <Property Name="Reason" Type="nvarchar" MaxLength="200" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DataBeginYear">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" />
+    <Property Name="AnnualLeave" Type="tinyint" Nullable="false" />
+    <Property Name="DateBegin" Type="date" Nullable="false" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'LeaveManagement.dbo.DataInOutRaw' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="InOut">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" />
+    <Property Name="Intime" Type="datetime" Nullable="false" />
+    <Property Name="OutTime" Type="datetime" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="LeaveMonthly">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" />
+    <Property Name="Month" Type="date" Nullable="false" />
+    <Property Name="LeaveAvailable" Type="tinyint" />
+    <Property Name="LeaveUsed" Type="tinyint" />
+    <Property Name="LeaveRemain" Type="tinyint" />
+    <Property Name="LeaveNonPaid" Type="tinyint" />
+    <Property Name="IsMaterityLeave" Type="bit" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MasterLeaveDayCompany">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Date" Type="date" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MasterLeaveType">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="100" />
+    <Property Name="IsPaidLeave" Type="bit" />
+    <Property Name="IsBussinessLeave" Type="bit" />
+    <Property Name="LeaveCode" Type="nvarchar" MaxLength="20" />
+    <Property Name="Description" Type="nvarchar" MaxLength="200" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="RegisterLeave">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" />
+    <Property Name="LeaveTypeId" Type="int" Nullable="false" />
+    <Property Name="DateStart" Type="datetime" Nullable="false" />
+    <Property Name="DateEnd" Type="datetime" Nullable="false" />
+    <Property Name="Reason" Type="nvarchar" MaxLength="200" />
+    <Property Name="DateRegister" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="tinyint" />
+    <Property Name="UserApprove" Type="int" />
+    <Property Name="DateApprove" Type="datetime" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Uid" />
+    </Key>
+    <Property Name="Uid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+    <Property Name="DateOfBirth" Type="date" />
+    <Property Name="UserPermission" Type="tinyint" Nullable="false" />
+    <Property Name="DateBeginWork" Type="date" />
+    <Property Name="DateBeginProbation" Type="date" />
+    <Property Name="DateResign" Type="date" />
+    <Property Name="Username" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <EntityType Name="UserSeniority">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" />
+    <Property Name="AvailableLeave" Type="tinyint" />
+    <Property Name="MonthYear" Type="date" />
+    <Property Name="UserCreated" Type="int" Nullable="false" />
+    <Property Name="UserUpdated" Type="int" Nullable="false" />
+    <Property Name="DateCreated" Type="datetime" Nullable="false" />
+    <Property Name="DateUpdated" Type="datetime" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_AddLeave_MasterLeaveType">
+    <End Role="MasterLeaveType" Type="Self.MasterLeaveType" Multiplicity="1" />
+    <End Role="AddLeave" Type="Self.AddLeave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterLeaveType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AddLeave">
+        <PropertyRef Name="LeaveTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_AddLeave_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="AddLeave" Type="Self.AddLeave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Uid" />
+      </Principal>
+      <Dependent Role="AddLeave">
+        <PropertyRef Name="Uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DataBeginYear_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="DataBeginYear" Type="Self.DataBeginYear" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Uid" />
+      </Principal>
+      <Dependent Role="DataBeginYear">
+        <PropertyRef Name="Uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_InOut_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="InOut" Type="Self.InOut" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Uid" />
+      </Principal>
+      <Dependent Role="InOut">
+        <PropertyRef Name="Uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LeaveMonthly_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="LeaveMonthly" Type="Self.LeaveMonthly" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Uid" />
+      </Principal>
+      <Dependent Role="LeaveMonthly">
+        <PropertyRef Name="Uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RegisterLeave_MasterLeaveType">
+    <End Role="MasterLeaveType" Type="Self.MasterLeaveType" Multiplicity="1" />
+    <End Role="RegisterLeave" Type="Self.RegisterLeave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MasterLeaveType">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="RegisterLeave">
+        <PropertyRef Name="LeaveTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RegisterLeave_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="RegisterLeave" Type="Self.RegisterLeave" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Uid" />
+      </Principal>
+      <Dependent Role="RegisterLeave">
+        <PropertyRef Name="Uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserSeniority_User">
+    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserSeniority" Type="Self.UserSeniority" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="Uid" />
+      </Principal>
+      <Dependent Role="UserSeniority">
+        <PropertyRef Name="Uid" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="LeaveManagementModelStoreContainer">
+    <EntitySet Name="AddLeave" EntityType="Self.AddLeave" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DataBeginYear" EntityType="Self.DataBeginYear" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="InOut" EntityType="Self.InOut" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LeaveMonthly" EntityType="Self.LeaveMonthly" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MasterLeaveDayCompany" EntityType="Self.MasterLeaveDayCompany" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MasterLeaveType" EntityType="Self.MasterLeaveType" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="RegisterLeave" EntityType="Self.RegisterLeave" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserSeniority" EntityType="Self.UserSeniority" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_AddLeave_MasterLeaveType" Association="Self.FK_AddLeave_MasterLeaveType">
+      <End Role="MasterLeaveType" EntitySet="MasterLeaveType" />
+      <End Role="AddLeave" EntitySet="AddLeave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AddLeave_User" Association="Self.FK_AddLeave_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="AddLeave" EntitySet="AddLeave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DataBeginYear_User" Association="Self.FK_DataBeginYear_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="DataBeginYear" EntitySet="DataBeginYear" />
+    </AssociationSet>
+    <AssociationSet Name="FK_InOut_User" Association="Self.FK_InOut_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="InOut" EntitySet="InOut" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LeaveMonthly_User" Association="Self.FK_LeaveMonthly_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="LeaveMonthly" EntitySet="LeaveMonthly" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RegisterLeave_MasterLeaveType" Association="Self.FK_RegisterLeave_MasterLeaveType">
+      <End Role="MasterLeaveType" EntitySet="MasterLeaveType" />
+      <End Role="RegisterLeave" EntitySet="RegisterLeave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RegisterLeave_User" Association="Self.FK_RegisterLeave_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="RegisterLeave" EntitySet="RegisterLeave" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserSeniority_User" Association="Self.FK_UserSeniority_User">
+      <End Role="User" EntitySet="User" />
+      <End Role="UserSeniority" EntitySet="UserSeniority" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
