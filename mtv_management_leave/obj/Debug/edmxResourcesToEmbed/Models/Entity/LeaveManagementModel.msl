@@ -96,6 +96,7 @@
     <EntitySetMapping Name="RegisterLeaves">
       <EntityTypeMapping TypeName="LeaveManagementModel.RegisterLeave">
         <MappingFragment StoreEntitySet="RegisterLeave">
+          <ScalarProperty Name="RegisterHour" ColumnName="RegisterHour" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Uid" ColumnName="Uid" />
           <ScalarProperty Name="LeaveTypeId" ColumnName="LeaveTypeId" />

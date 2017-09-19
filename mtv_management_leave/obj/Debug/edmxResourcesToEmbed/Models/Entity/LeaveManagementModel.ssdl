@@ -103,6 +103,7 @@
     <Property Name="LeaveTypeId" Type="int" Nullable="false" />
     <Property Name="DateStart" Type="datetime" Nullable="false" />
     <Property Name="DateEnd" Type="datetime" Nullable="false" />
+    <Property Name="RegisterHour" Type="float" />
     <Property Name="Reason" Type="nvarchar" MaxLength="200" />
     <Property Name="DateRegister" Type="datetime" Nullable="false" />
     <Property Name="Status" Type="tinyint" />
@@ -117,7 +118,7 @@
     <Key>
       <PropertyRef Name="Uid" />
     </Key>
-    <Property Name="Uid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Uid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
     <Property Name="FullName" Type="nvarchar" MaxLength="100" />
     <Property Name="DateOfBirth" Type="date" />
     <Property Name="UserPermission" Type="tinyint" Nullable="false" />

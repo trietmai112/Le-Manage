@@ -214,8 +214,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Lib\Interface\ILeaveBase.cs" />
     <Compile Include="Lib\Interface\IInOut.cs" />
     <Compile Include="Lib\Interface\IDataRaw.cs" />
+    <Compile Include="Lib\Repository\Base.cs" />
+    <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entity\AddLeave.cs">

@@ -113,6 +113,7 @@
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="MasterLeaveType" Relationship="Self.FK_RegisterLeave_MasterLeaveType" FromRole="RegisterLeave" ToRole="MasterLeaveType" />
     <NavigationProperty Name="User" Relationship="Self.FK_RegisterLeave_User" FromRole="RegisterLeave" ToRole="User" />
+    <Property Name="RegisterHour" Type="Double" />
   </EntityType>
   <EntityType Name="User">
     <Key>

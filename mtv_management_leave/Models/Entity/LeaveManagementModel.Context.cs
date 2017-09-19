@@ -27,6 +27,7 @@ namespace mtv_management_leave.Models.Entity
     
         public virtual DbSet<AddLeave> AddLeaves { get; set; }
         public virtual DbSet<DataBeginYear> DataBeginYears { get; set; }
+        public virtual DbSet<DataInOutRaw> DataInOutRaws { get; set; }
         public virtual DbSet<InOut> InOuts { get; set; }
         public virtual DbSet<LeaveMonthly> LeaveMonthlies { get; set; }
         public virtual DbSet<MasterLeaveDayCompany> MasterLeaveDayCompanies { get; set; }
@@ -34,6 +35,5 @@ namespace mtv_management_leave.Models.Entity
         public virtual DbSet<RegisterLeave> RegisterLeaves { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserSeniority> UserSeniorities { get; set; }
-        public virtual DbSet<DataInOutRaw> DataInOutRaws { get; set; }
     }
 }

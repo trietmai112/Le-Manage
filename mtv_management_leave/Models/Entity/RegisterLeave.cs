@@ -19,6 +19,7 @@ namespace mtv_management_leave.Models.Entity
         public int LeaveTypeId { get; set; }
         public System.DateTime DateStart { get; set; }
         public System.DateTime DateEnd { get; set; }
+        public Nullable<double> RegisterHour { get; set; }
         public string Reason { get; set; }
         public System.DateTime DateRegister { get; set; }
         public Nullable<byte> Status { get; set; }

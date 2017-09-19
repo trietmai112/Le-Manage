@@ -5,24 +5,24 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="1f8eae5d896e44b8a5592a484101a085" Name="Diagram1">
-        <EntityTypeShape EntityType="LeaveManagementModel.AddLeave" Width="1.5" PointX="6" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.DataBeginYear" Width="1.5" PointX="3" PointY="10.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.InOut" Width="1.5" PointX="3" PointY="14" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.LeaveMonthly" Width="1.5" PointX="3" PointY="17.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveDayCompany" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveType" Width="1.5" PointX="3.75" PointY="5.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.RegisterLeave" Width="1.5" PointX="6" PointY="6.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.User" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="LeaveManagementModel.UserSeniority" Width="1.5" PointX="3" PointY="26.875" IsExpanded="true" />
-        <AssociationConnector Association="LeaveManagementModel.FK_AddLeave_MasterLeaveType" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_AddLeave_User" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_DataBeginYear_User" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_InOut_User" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_LeaveMonthly_User" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_RegisterLeave_MasterLeaveType" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_RegisterLeave_User" ManuallyRouted="false" />
-        <AssociationConnector Association="LeaveManagementModel.FK_UserSeniority_User" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="LeaveManagementModel.DataInOutRaw" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.AddLeave" Width="1.5" PointX="3" PointY="13.125" />
+        <EntityTypeShape EntityType="LeaveManagementModel.DataBeginYear" Width="1.5" PointX="3" PointY="17.25" />
+        <EntityTypeShape EntityType="LeaveManagementModel.DataInOutRaw" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.InOut" Width="1.5" PointX="3" PointY="24.875" />
+        <EntityTypeShape EntityType="LeaveManagementModel.LeaveMonthly" Width="1.5" PointX="3" PointY="28.625" />
+        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveDayCompany" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveType" Width="1.5" PointX="0.75" PointY="8.125" />
+        <EntityTypeShape EntityType="LeaveManagementModel.RegisterLeave" Width="1.5" PointX="6" PointY="12.625" />
+        <EntityTypeShape EntityType="LeaveManagementModel.User" Width="1.5" PointX="0.75" PointY="12.5" />
+        <EntityTypeShape EntityType="LeaveManagementModel.UserSeniority" Width="1.5" PointX="3" PointY="6.625" />
+        <AssociationConnector Association="LeaveManagementModel.FK_AddLeave_MasterLeaveType" />
+        <AssociationConnector Association="LeaveManagementModel.FK_AddLeave_User" />
+        <AssociationConnector Association="LeaveManagementModel.FK_DataBeginYear_User" />
+        <AssociationConnector Association="LeaveManagementModel.FK_InOut_User" />
+        <AssociationConnector Association="LeaveManagementModel.FK_LeaveMonthly_User" />
+        <AssociationConnector Association="LeaveManagementModel.FK_RegisterLeave_MasterLeaveType" />
+        <AssociationConnector Association="LeaveManagementModel.FK_RegisterLeave_User" />
+        <AssociationConnector Association="LeaveManagementModel.FK_UserSeniority_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

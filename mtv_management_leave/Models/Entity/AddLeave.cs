@@ -17,7 +17,7 @@ namespace mtv_management_leave.Models.Entity
         public int Id { get; set; }
         public int Uid { get; set; }
         public int LeaveTypeId { get; set; }
-        public Nullable<byte> LeaveAdd { get; set; }
+        public Nullable<double> AddLeaveHour { get; set; }
         public Nullable<System.DateTime> DateAdd { get; set; }
         public string Reason { get; set; }
         public int UserCreated { get; set; }

@@ -16,7 +16,7 @@ namespace mtv_management_leave.Models.Entity
     {
         public int Id { get; set; }
         public int Uid { get; set; }
-        public byte AnnualLeave { get; set; }
+        public double AnnualLeave { get; set; }
         public System.DateTime DateBegin { get; set; }
         public int UserCreated { get; set; }
         public int UserUpdated { get; set; }
