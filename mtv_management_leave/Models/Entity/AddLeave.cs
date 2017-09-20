@@ -26,6 +26,6 @@ namespace mtv_management_leave.Models.Entity
         public System.DateTime DateUpdated { get; set; }
     
         public virtual MasterLeaveType MasterLeaveType { get; set; }
-        public virtual User User { get; set; }
+        public virtual UserInfo UserInfo { get; set; }
     }
 }

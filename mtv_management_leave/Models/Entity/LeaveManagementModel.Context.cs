@@ -33,7 +33,7 @@ namespace mtv_management_leave.Models.Entity
         public virtual DbSet<MasterLeaveDayCompany> MasterLeaveDayCompanies { get; set; }
         public virtual DbSet<MasterLeaveType> MasterLeaveTypes { get; set; }
         public virtual DbSet<RegisterLeave> RegisterLeaves { get; set; }
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserInfo> UserInfoes { get; set; }
         public virtual DbSet<UserSeniority> UserSeniorities { get; set; }
     }
 }

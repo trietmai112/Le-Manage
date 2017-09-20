@@ -1,4 +1,5 @@
 ﻿using mtv_management_leave.Models;
+using mtv_management_leave.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace mtv_management_leave.Lib.Interface
 {
     interface ILeaveBase
     {
-        void RegisterLeave();
+        void RegisterLeave(RegisterLeave leave);
 
-        void ApproveLeave();
+        void ApproveLeave(int leaveId);
 
-        void RejectLeave();
+        void RejectLeave(int leaveId);
         /// <summary>
         /// 1. lấy cho từng người
         /// 2. tính trong năm nay

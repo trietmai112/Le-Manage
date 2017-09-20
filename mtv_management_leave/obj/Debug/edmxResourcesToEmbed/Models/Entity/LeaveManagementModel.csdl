@@ -1,5 +1,49 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="LeaveManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="LeaveManagementEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AddLeaves" EntityType="LeaveManagementModel.AddLeave" />
+    <EntitySet Name="DataBeginYears" EntityType="LeaveManagementModel.DataBeginYear" />
+    <EntitySet Name="DataInOutRaws" EntityType="LeaveManagementModel.DataInOutRaw" />
+    <EntitySet Name="InOuts" EntityType="LeaveManagementModel.InOut" />
+    <EntitySet Name="LeaveMonthlies" EntityType="LeaveManagementModel.LeaveMonthly" />
+    <EntitySet Name="MasterLeaveDayCompanies" EntityType="LeaveManagementModel.MasterLeaveDayCompany" />
+    <EntitySet Name="MasterLeaveTypes" EntityType="LeaveManagementModel.MasterLeaveType" />
+    <EntitySet Name="RegisterLeaves" EntityType="LeaveManagementModel.RegisterLeave" />
+    <EntitySet Name="UserInfoes" EntityType="LeaveManagementModel.UserInfo" />
+    <EntitySet Name="UserSeniorities" EntityType="LeaveManagementModel.UserSeniority" />
+    <AssociationSet Name="FK_AddLeave_MasterLeaveType" Association="LeaveManagementModel.FK_AddLeave_MasterLeaveType">
+      <End Role="MasterLeaveType" EntitySet="MasterLeaveTypes" />
+      <End Role="AddLeave" EntitySet="AddLeaves" />
+    </AssociationSet>
+    <AssociationSet Name="FK_AddLeave_User" Association="LeaveManagementModel.FK_AddLeave_User">
+      <End Role="UserInfo" EntitySet="UserInfoes" />
+      <End Role="AddLeave" EntitySet="AddLeaves" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DataBeginYear_User" Association="LeaveManagementModel.FK_DataBeginYear_User">
+      <End Role="UserInfo" EntitySet="UserInfoes" />
+      <End Role="DataBeginYear" EntitySet="DataBeginYears" />
+    </AssociationSet>
+    <AssociationSet Name="FK_InOut_User" Association="LeaveManagementModel.FK_InOut_User">
+      <End Role="UserInfo" EntitySet="UserInfoes" />
+      <End Role="InOut" EntitySet="InOuts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LeaveMonthly_User" Association="LeaveManagementModel.FK_LeaveMonthly_User">
+      <End Role="UserInfo" EntitySet="UserInfoes" />
+      <End Role="LeaveMonthly" EntitySet="LeaveMonthlies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RegisterLeave_MasterLeaveType" Association="LeaveManagementModel.FK_RegisterLeave_MasterLeaveType">
+      <End Role="MasterLeaveType" EntitySet="MasterLeaveTypes" />
+      <End Role="RegisterLeave" EntitySet="RegisterLeaves" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RegisterLeave_User" Association="LeaveManagementModel.FK_RegisterLeave_User">
+      <End Role="UserInfo" EntitySet="UserInfoes" />
+      <End Role="RegisterLeave" EntitySet="RegisterLeaves" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserSeniority_User" Association="LeaveManagementModel.FK_UserSeniority_User">
+      <End Role="UserInfo" EntitySet="UserInfoes" />
+      <End Role="UserSeniority" EntitySet="UserSeniorities" />
+    </AssociationSet>
+  </EntityContainer>
   <EntityType Name="AddLeave">
     <Key>
       <PropertyRef Name="Id" />
@@ -7,15 +51,15 @@
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Uid" Type="Int32" Nullable="false" />
     <Property Name="LeaveTypeId" Type="Int32" Nullable="false" />
-    <Property Name="LeaveAdd" Type="Byte" />
+    <Property Name="AddLeaveHour" Type="Double" />
     <Property Name="DateAdd" Type="DateTime" Precision="0" />
     <Property Name="Reason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="UserCreated" Type="Int32" Nullable="false" />
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="MasterLeaveType" Relationship="Self.FK_AddLeave_MasterLeaveType" FromRole="AddLeave" ToRole="MasterLeaveType" />
-    <NavigationProperty Name="User" Relationship="Self.FK_AddLeave_User" FromRole="AddLeave" ToRole="User" />
+    <NavigationProperty Name="MasterLeaveType" Relationship="LeaveManagementModel.FK_AddLeave_MasterLeaveType" FromRole="AddLeave" ToRole="MasterLeaveType" />
+    <NavigationProperty Name="UserInfo" Relationship="LeaveManagementModel.FK_AddLeave_User" FromRole="AddLeave" ToRole="UserInfo" />
   </EntityType>
   <EntityType Name="DataBeginYear">
     <Key>
@@ -23,13 +67,21 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Uid" Type="Int32" Nullable="false" />
-    <Property Name="AnnualLeave" Type="Byte" Nullable="false" />
+    <Property Name="AnnualLeave" Type="Double" Nullable="false" />
     <Property Name="DateBegin" Type="DateTime" Nullable="false" Precision="0" />
     <Property Name="UserCreated" Type="Int32" Nullable="false" />
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="User" Relationship="Self.FK_DataBeginYear_User" FromRole="DataBeginYear" ToRole="User" />
+    <NavigationProperty Name="UserInfo" Relationship="LeaveManagementModel.FK_DataBeginYear_User" FromRole="DataBeginYear" ToRole="UserInfo" />
+  </EntityType>
+  <EntityType Name="DataInOutRaw">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Uid" Type="Int32" Nullable="false" />
+    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
   </EntityType>
   <EntityType Name="InOut">
     <Key>
@@ -44,7 +96,7 @@
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="User" Relationship="Self.FK_InOut_User" FromRole="InOut" ToRole="User" />
+    <NavigationProperty Name="UserInfo" Relationship="LeaveManagementModel.FK_InOut_User" FromRole="InOut" ToRole="UserInfo" />
   </EntityType>
   <EntityType Name="LeaveMonthly">
     <Key>
@@ -62,7 +114,7 @@
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="User" Relationship="Self.FK_LeaveMonthly_User" FromRole="LeaveMonthly" ToRole="User" />
+    <NavigationProperty Name="UserInfo" Relationship="LeaveManagementModel.FK_LeaveMonthly_User" FromRole="LeaveMonthly" ToRole="UserInfo" />
   </EntityType>
   <EntityType Name="MasterLeaveDayCompany">
     <Key>
@@ -90,8 +142,8 @@
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="AddLeaves" Relationship="Self.FK_AddLeave_MasterLeaveType" FromRole="MasterLeaveType" ToRole="AddLeave" />
-    <NavigationProperty Name="RegisterLeaves" Relationship="Self.FK_RegisterLeave_MasterLeaveType" FromRole="MasterLeaveType" ToRole="RegisterLeave" />
+    <NavigationProperty Name="AddLeaves" Relationship="LeaveManagementModel.FK_AddLeave_MasterLeaveType" FromRole="MasterLeaveType" ToRole="AddLeave" />
+    <NavigationProperty Name="RegisterLeaves" Relationship="LeaveManagementModel.FK_RegisterLeave_MasterLeaveType" FromRole="MasterLeaveType" ToRole="RegisterLeave" />
   </EntityType>
   <EntityType Name="RegisterLeave">
     <Key>
@@ -102,6 +154,7 @@
     <Property Name="LeaveTypeId" Type="Int32" Nullable="false" />
     <Property Name="DateStart" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateEnd" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="RegisterHour" Type="Double" />
     <Property Name="Reason" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
     <Property Name="DateRegister" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="Status" Type="Byte" />
@@ -111,33 +164,32 @@
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="MasterLeaveType" Relationship="Self.FK_RegisterLeave_MasterLeaveType" FromRole="RegisterLeave" ToRole="MasterLeaveType" />
-    <NavigationProperty Name="User" Relationship="Self.FK_RegisterLeave_User" FromRole="RegisterLeave" ToRole="User" />
-    <Property Name="RegisterHour" Type="Double" />
+    <NavigationProperty Name="MasterLeaveType" Relationship="LeaveManagementModel.FK_RegisterLeave_MasterLeaveType" FromRole="RegisterLeave" ToRole="MasterLeaveType" />
+    <NavigationProperty Name="UserInfo" Relationship="LeaveManagementModel.FK_RegisterLeave_User" FromRole="RegisterLeave" ToRole="UserInfo" />
   </EntityType>
-  <EntityType Name="User">
+  <EntityType Name="UserInfo">
     <Key>
       <PropertyRef Name="Uid" />
     </Key>
-    <Property Name="Uid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Uid" Type="Int32" Nullable="false" />
     <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
     <Property Name="UserPermission" Type="Byte" Nullable="false" />
     <Property Name="DateBeginWork" Type="DateTime" Precision="0" />
     <Property Name="DateBeginProbation" Type="DateTime" Precision="0" />
     <Property Name="DateResign" Type="DateTime" Precision="0" />
-    <Property Name="Username" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-    <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Username" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
     <Property Name="UserCreated" Type="Int32" Nullable="false" />
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="AddLeaves" Relationship="Self.FK_AddLeave_User" FromRole="User" ToRole="AddLeave" />
-    <NavigationProperty Name="DataBeginYears" Relationship="Self.FK_DataBeginYear_User" FromRole="User" ToRole="DataBeginYear" />
-    <NavigationProperty Name="InOuts" Relationship="Self.FK_InOut_User" FromRole="User" ToRole="InOut" />
-    <NavigationProperty Name="LeaveMonthlies" Relationship="Self.FK_LeaveMonthly_User" FromRole="User" ToRole="LeaveMonthly" />
-    <NavigationProperty Name="RegisterLeaves" Relationship="Self.FK_RegisterLeave_User" FromRole="User" ToRole="RegisterLeave" />
-    <NavigationProperty Name="UserSeniorities" Relationship="Self.FK_UserSeniority_User" FromRole="User" ToRole="UserSeniority" />
+    <NavigationProperty Name="AddLeaves" Relationship="LeaveManagementModel.FK_AddLeave_User" FromRole="UserInfo" ToRole="AddLeave" />
+    <NavigationProperty Name="DataBeginYears" Relationship="LeaveManagementModel.FK_DataBeginYear_User" FromRole="UserInfo" ToRole="DataBeginYear" />
+    <NavigationProperty Name="InOuts" Relationship="LeaveManagementModel.FK_InOut_User" FromRole="UserInfo" ToRole="InOut" />
+    <NavigationProperty Name="LeaveMonthlies" Relationship="LeaveManagementModel.FK_LeaveMonthly_User" FromRole="UserInfo" ToRole="LeaveMonthly" />
+    <NavigationProperty Name="RegisterLeaves" Relationship="LeaveManagementModel.FK_RegisterLeave_User" FromRole="UserInfo" ToRole="RegisterLeave" />
+    <NavigationProperty Name="UserSeniorities" Relationship="LeaveManagementModel.FK_UserSeniority_User" FromRole="UserInfo" ToRole="UserSeniority" />
   </EntityType>
   <EntityType Name="UserSeniority">
     <Key>
@@ -145,17 +197,28 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="Uid" Type="Int32" Nullable="false" />
-    <Property Name="AvailableLeave" Type="Byte" />
-    <Property Name="MonthYear" Type="DateTime" Precision="0" />
+    <Property Name="Year" Type="Int32" />
+    <Property Name="Month1" Type="Byte" />
+    <Property Name="Month2" Type="Byte" />
+    <Property Name="Month3" Type="Byte" />
+    <Property Name="Month4" Type="Byte" />
+    <Property Name="Month5" Type="Byte" />
+    <Property Name="Month6" Type="Byte" />
+    <Property Name="Month7" Type="Byte" />
+    <Property Name="Month8" Type="Byte" />
+    <Property Name="Month9" Type="Byte" />
+    <Property Name="Month10" Type="Byte" />
+    <Property Name="Month11" Type="Byte" />
+    <Property Name="Month12" Type="Byte" />
     <Property Name="UserCreated" Type="Int32" Nullable="false" />
     <Property Name="UserUpdated" Type="Int32" Nullable="false" />
     <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="DateUpdated" Type="DateTime" Nullable="false" Precision="3" />
-    <NavigationProperty Name="User" Relationship="Self.FK_UserSeniority_User" FromRole="UserSeniority" ToRole="User" />
+    <NavigationProperty Name="UserInfo" Relationship="LeaveManagementModel.FK_UserSeniority_User" FromRole="UserSeniority" ToRole="UserInfo" />
   </EntityType>
   <Association Name="FK_AddLeave_MasterLeaveType">
-    <End Role="MasterLeaveType" Type="Self.MasterLeaveType" Multiplicity="1" />
-    <End Role="AddLeave" Type="Self.AddLeave" Multiplicity="*" />
+    <End Type="LeaveManagementModel.MasterLeaveType" Role="MasterLeaveType" Multiplicity="1" />
+    <End Type="LeaveManagementModel.AddLeave" Role="AddLeave" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="MasterLeaveType">
         <PropertyRef Name="Id" />
@@ -166,10 +229,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_AddLeave_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="AddLeave" Type="Self.AddLeave" Multiplicity="*" />
+    <End Type="LeaveManagementModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="LeaveManagementModel.AddLeave" Role="AddLeave" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="AddLeave">
@@ -178,10 +241,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_DataBeginYear_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="DataBeginYear" Type="Self.DataBeginYear" Multiplicity="*" />
+    <End Type="LeaveManagementModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="LeaveManagementModel.DataBeginYear" Role="DataBeginYear" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="DataBeginYear">
@@ -190,10 +253,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_InOut_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="InOut" Type="Self.InOut" Multiplicity="*" />
+    <End Type="LeaveManagementModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="LeaveManagementModel.InOut" Role="InOut" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="InOut">
@@ -202,10 +265,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LeaveMonthly_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="LeaveMonthly" Type="Self.LeaveMonthly" Multiplicity="*" />
+    <End Type="LeaveManagementModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="LeaveManagementModel.LeaveMonthly" Role="LeaveMonthly" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="LeaveMonthly">
@@ -214,8 +277,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RegisterLeave_MasterLeaveType">
-    <End Role="MasterLeaveType" Type="Self.MasterLeaveType" Multiplicity="1" />
-    <End Role="RegisterLeave" Type="Self.RegisterLeave" Multiplicity="*" />
+    <End Type="LeaveManagementModel.MasterLeaveType" Role="MasterLeaveType" Multiplicity="1" />
+    <End Type="LeaveManagementModel.RegisterLeave" Role="RegisterLeave" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="MasterLeaveType">
         <PropertyRef Name="Id" />
@@ -226,10 +289,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RegisterLeave_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="RegisterLeave" Type="Self.RegisterLeave" Multiplicity="*" />
+    <End Type="LeaveManagementModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="LeaveManagementModel.RegisterLeave" Role="RegisterLeave" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="RegisterLeave">
@@ -238,10 +301,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_UserSeniority_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
-    <End Role="UserSeniority" Type="Self.UserSeniority" Multiplicity="*" />
+    <End Type="LeaveManagementModel.UserInfo" Role="UserInfo" Multiplicity="1" />
+    <End Type="LeaveManagementModel.UserSeniority" Role="UserSeniority" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="UserSeniority">
@@ -249,56 +312,4 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="LeaveManagementEntities" annotation:LazyLoadingEnabled="true">
-    <EntitySet Name="AddLeaves" EntityType="Self.AddLeave" />
-    <EntitySet Name="DataBeginYears" EntityType="Self.DataBeginYear" />
-    <EntitySet Name="InOuts" EntityType="Self.InOut" />
-    <EntitySet Name="LeaveMonthlies" EntityType="Self.LeaveMonthly" />
-    <EntitySet Name="MasterLeaveDayCompanies" EntityType="Self.MasterLeaveDayCompany" />
-    <EntitySet Name="MasterLeaveTypes" EntityType="Self.MasterLeaveType" />
-    <EntitySet Name="RegisterLeaves" EntityType="Self.RegisterLeave" />
-    <EntitySet Name="Users" EntityType="Self.User" />
-    <EntitySet Name="UserSeniorities" EntityType="Self.UserSeniority" />
-    <AssociationSet Name="FK_AddLeave_MasterLeaveType" Association="Self.FK_AddLeave_MasterLeaveType">
-      <End Role="MasterLeaveType" EntitySet="MasterLeaveTypes" />
-      <End Role="AddLeave" EntitySet="AddLeaves" />
-    </AssociationSet>
-    <AssociationSet Name="FK_AddLeave_User" Association="Self.FK_AddLeave_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="AddLeave" EntitySet="AddLeaves" />
-    </AssociationSet>
-    <AssociationSet Name="FK_DataBeginYear_User" Association="Self.FK_DataBeginYear_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="DataBeginYear" EntitySet="DataBeginYears" />
-    </AssociationSet>
-    <AssociationSet Name="FK_InOut_User" Association="Self.FK_InOut_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="InOut" EntitySet="InOuts" />
-    </AssociationSet>
-    <AssociationSet Name="FK_LeaveMonthly_User" Association="Self.FK_LeaveMonthly_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="LeaveMonthly" EntitySet="LeaveMonthlies" />
-    </AssociationSet>
-    <AssociationSet Name="FK_RegisterLeave_MasterLeaveType" Association="Self.FK_RegisterLeave_MasterLeaveType">
-      <End Role="MasterLeaveType" EntitySet="MasterLeaveTypes" />
-      <End Role="RegisterLeave" EntitySet="RegisterLeaves" />
-    </AssociationSet>
-    <AssociationSet Name="FK_RegisterLeave_User" Association="Self.FK_RegisterLeave_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="RegisterLeave" EntitySet="RegisterLeaves" />
-    </AssociationSet>
-    <AssociationSet Name="FK_UserSeniority_User" Association="Self.FK_UserSeniority_User">
-      <End Role="User" EntitySet="Users" />
-      <End Role="UserSeniority" EntitySet="UserSeniorities" />
-    </AssociationSet>
-    <EntitySet Name="DataInOutRaws" EntityType="LeaveManagementModel.DataInOutRaw" />
-  </EntityContainer>
-  <EntityType Name="DataInOutRaw">
-    <Key>
-      <PropertyRef Name="id" />
-    </Key>
-    <Property Name="id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Uid" Type="Int32" Nullable="false" />
-    <Property Name="Time" Type="DateTime" Nullable="false" Precision="3" />
-  </EntityType>
 </Schema>

@@ -11,13 +11,9 @@ namespace mtv_management_leave.Lib.Repository
     public class LeaveBase : Base, ILeaveBase
     {
         LeaveManagementEntities context;
-        public void ApproveLeave()
-        {
-            throw new NotImplementedException();
-        }
+
         public double GetLeaveRemain(int uid, DateTime dateStart)
         {
-
             //lây số phép đầu năm
             //lấy số phép thâm niên
             //lấy số phép bảng cộng
@@ -34,13 +30,29 @@ namespace mtv_management_leave.Lib.Repository
             return result;
 
         }
-        public void RegisterLeave()
+        public void RegisterLeave(RegisterLeave leave)
         {
-            throw new NotImplementedException();
+            InitContext(context);
+            context.RegisterLeaves.Add(leave);
+            context.SaveChanges();
+            DisposeContext(context);
         }
-        public void RejectLeave()
+        public void ApproveLeave(int leaveId)
         {
-            throw new NotImplementedException();
+            InitContext(context);
+            var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
+            leave.Status = (int)Common.StatusLeave.E_Approve;
+            context.SaveChanges();
+            DisposeContext(context);
+
+        }
+        public void RejectLeave(int leaveId)
+        {
+            InitContext(context);
+            var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
+            leave.Status = (int)Common.StatusLeave.E_Reject;
+            context.SaveChanges();
+            DisposeContext(context);
         }
 
         #region private method

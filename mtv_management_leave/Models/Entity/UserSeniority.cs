@@ -34,6 +34,6 @@ namespace mtv_management_leave.Models.Entity
         public System.DateTime DateCreated { get; set; }
         public System.DateTime DateUpdated { get; set; }
     
-        public virtual User User { get; set; }
+        public virtual UserInfo UserInfo { get; set; }
     }
 }

@@ -7,7 +7,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Uid" Type="int" Nullable="false" />
     <Property Name="LeaveTypeId" Type="int" Nullable="false" />
-    <Property Name="LeaveAdd" Type="tinyint" />
+    <Property Name="AddLeaveHour" Type="float" />
     <Property Name="DateAdd" Type="date" />
     <Property Name="Reason" Type="nvarchar" MaxLength="200" />
     <Property Name="UserCreated" Type="int" Nullable="false" />
@@ -21,7 +21,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Uid" Type="int" Nullable="false" />
-    <Property Name="AnnualLeave" Type="tinyint" Nullable="false" />
+    <Property Name="AnnualLeave" Type="float" Nullable="false" />
     <Property Name="DateBegin" Type="date" Nullable="false" />
     <Property Name="UserCreated" Type="int" Nullable="false" />
     <Property Name="UserUpdated" Type="int" Nullable="false" />
@@ -114,11 +114,11 @@
     <Property Name="DateCreated" Type="datetime" Nullable="false" />
     <Property Name="DateUpdated" Type="datetime" Nullable="false" />
   </EntityType>
-  <EntityType Name="User">
+  <EntityType Name="UserInfo">
     <Key>
       <PropertyRef Name="Uid" />
     </Key>
-    <Property Name="Uid" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Uid" Type="int" Nullable="false" />
     <Property Name="FullName" Type="nvarchar" MaxLength="100" />
     <Property Name="DateOfBirth" Type="date" />
     <Property Name="UserPermission" Type="tinyint" Nullable="false" />
@@ -138,8 +138,19 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Uid" Type="int" Nullable="false" />
-    <Property Name="AvailableLeave" Type="tinyint" />
-    <Property Name="MonthYear" Type="date" />
+    <Property Name="Year" Type="int" />
+    <Property Name="Month1" Type="tinyint" />
+    <Property Name="Month2" Type="tinyint" />
+    <Property Name="Month3" Type="tinyint" />
+    <Property Name="Month4" Type="tinyint" />
+    <Property Name="Month5" Type="tinyint" />
+    <Property Name="Month6" Type="tinyint" />
+    <Property Name="Month7" Type="tinyint" />
+    <Property Name="Month8" Type="tinyint" />
+    <Property Name="Month9" Type="tinyint" />
+    <Property Name="Month10" Type="tinyint" />
+    <Property Name="Month11" Type="tinyint" />
+    <Property Name="Month12" Type="tinyint" />
     <Property Name="UserCreated" Type="int" Nullable="false" />
     <Property Name="UserUpdated" Type="int" Nullable="false" />
     <Property Name="DateCreated" Type="datetime" Nullable="false" />
@@ -158,10 +169,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_AddLeave_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
     <End Role="AddLeave" Type="Self.AddLeave" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="AddLeave">
@@ -170,10 +181,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_DataBeginYear_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
     <End Role="DataBeginYear" Type="Self.DataBeginYear" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="DataBeginYear">
@@ -182,10 +193,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_InOut_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
     <End Role="InOut" Type="Self.InOut" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="InOut">
@@ -194,10 +205,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_LeaveMonthly_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
     <End Role="LeaveMonthly" Type="Self.LeaveMonthly" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="LeaveMonthly">
@@ -218,10 +229,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_RegisterLeave_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
     <End Role="RegisterLeave" Type="Self.RegisterLeave" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="RegisterLeave">
@@ -230,10 +241,10 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_UserSeniority_User">
-    <End Role="User" Type="Self.User" Multiplicity="1" />
+    <End Role="UserInfo" Type="Self.UserInfo" Multiplicity="1" />
     <End Role="UserSeniority" Type="Self.UserSeniority" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="User">
+      <Principal Role="UserInfo">
         <PropertyRef Name="Uid" />
       </Principal>
       <Dependent Role="UserSeniority">
@@ -250,26 +261,26 @@
     <EntitySet Name="MasterLeaveDayCompany" EntityType="Self.MasterLeaveDayCompany" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MasterLeaveType" EntityType="Self.MasterLeaveType" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="RegisterLeave" EntityType="Self.RegisterLeave" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserInfo" EntityType="Self.UserInfo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="UserSeniority" EntityType="Self.UserSeniority" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_AddLeave_MasterLeaveType" Association="Self.FK_AddLeave_MasterLeaveType">
       <End Role="MasterLeaveType" EntitySet="MasterLeaveType" />
       <End Role="AddLeave" EntitySet="AddLeave" />
     </AssociationSet>
     <AssociationSet Name="FK_AddLeave_User" Association="Self.FK_AddLeave_User">
-      <End Role="User" EntitySet="User" />
+      <End Role="UserInfo" EntitySet="UserInfo" />
       <End Role="AddLeave" EntitySet="AddLeave" />
     </AssociationSet>
     <AssociationSet Name="FK_DataBeginYear_User" Association="Self.FK_DataBeginYear_User">
-      <End Role="User" EntitySet="User" />
+      <End Role="UserInfo" EntitySet="UserInfo" />
       <End Role="DataBeginYear" EntitySet="DataBeginYear" />
     </AssociationSet>
     <AssociationSet Name="FK_InOut_User" Association="Self.FK_InOut_User">
-      <End Role="User" EntitySet="User" />
+      <End Role="UserInfo" EntitySet="UserInfo" />
       <End Role="InOut" EntitySet="InOut" />
     </AssociationSet>
     <AssociationSet Name="FK_LeaveMonthly_User" Association="Self.FK_LeaveMonthly_User">
-      <End Role="User" EntitySet="User" />
+      <End Role="UserInfo" EntitySet="UserInfo" />
       <End Role="LeaveMonthly" EntitySet="LeaveMonthly" />
     </AssociationSet>
     <AssociationSet Name="FK_RegisterLeave_MasterLeaveType" Association="Self.FK_RegisterLeave_MasterLeaveType">
@@ -277,11 +288,11 @@
       <End Role="RegisterLeave" EntitySet="RegisterLeave" />
     </AssociationSet>
     <AssociationSet Name="FK_RegisterLeave_User" Association="Self.FK_RegisterLeave_User">
-      <End Role="User" EntitySet="User" />
+      <End Role="UserInfo" EntitySet="UserInfo" />
       <End Role="RegisterLeave" EntitySet="RegisterLeave" />
     </AssociationSet>
     <AssociationSet Name="FK_UserSeniority_User" Association="Self.FK_UserSeniority_User">
-      <End Role="User" EntitySet="User" />
+      <End Role="UserInfo" EntitySet="UserInfo" />
       <End Role="UserSeniority" EntitySet="UserSeniority" />
     </AssociationSet>
   </EntityContainer>
