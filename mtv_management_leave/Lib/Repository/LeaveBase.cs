@@ -18,7 +18,7 @@ namespace mtv_management_leave.Lib.Repository
             //lấy số phép thâm niên
             //lấy số phép bảng cộng
             //trừ đi số phép đa đăng ký trong năm
-            InitContext(context);
+            InitContext(out context);
 
             double AvailableBeginYear = getAvailableBeginYear(uid, dateStart.Year);
             int Seniority = GetSeniority(uid, dateStart);
@@ -32,14 +32,15 @@ namespace mtv_management_leave.Lib.Repository
         }
         public void RegisterLeave(RegisterLeave leave)
         {
-            InitContext(context);
+            InitContext(out context);
             context.RegisterLeaves.Add(leave);
             context.SaveChanges();
             DisposeContext(context);
         }
+        
         public void ApproveLeave(int leaveId)
         {
-            InitContext(context);
+            InitContext(out context);
             var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
             leave.Status = (int)Common.StatusLeave.E_Approve;
             context.SaveChanges();
@@ -48,7 +49,7 @@ namespace mtv_management_leave.Lib.Repository
         }
         public void RejectLeave(int leaveId)
         {
-            InitContext(context);
+            InitContext(out context);
             var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
             leave.Status = (int)Common.StatusLeave.E_Reject;
             context.SaveChanges();
@@ -144,14 +145,34 @@ namespace mtv_management_leave.Lib.Repository
             //3. bỏ đi loại company trip
             //4. bỏ đi loại non-paid
             //5. bỏ đi loại other
+            var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode != Common.TypeLeave.E_CompanyStrip.ToString()
+            && m.LeaveCode != Common.TypeLeave.E_Materity.ToString()
+            && m.LeaveCode != Common.TypeLeave.E_NonPaid.ToString()
+            && m.LeaveCode != Common.TypeLeave.E_Other.ToString()).Select(m => m.Id).ToList();
             int rejectType = (int)Common.StatusLeave.E_Reject;
             double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateRegister.Year == year && m.Status != rejectType
-            && m.MasterLeaveType.LeaveCode != Common.TypeLeave.E_CompanyStrip.ToString()
-            && m.MasterLeaveType.LeaveCode != Common.TypeLeave.E_Materity.ToString()
-            && m.MasterLeaveType.LeaveCode != Common.TypeLeave.E_NonPaid.ToString()
-            && m.MasterLeaveType.LeaveCode != Common.TypeLeave.E_Other.ToString()
+            && lstLeaveTypeIds.Contains(m.LeaveTypeId)
             ).Sum(m => m.RegisterHour ?? 0);
             return leaveInYear;
+        }
+        #endregion
+
+        #region test
+        public void testleaveAdd()
+        {
+            RegisterLeave rleave = new RegisterLeave();
+            rleave.Id = 1;
+            rleave.DateStart = DateTime.Today;
+            rleave.DateEnd = DateTime.Today;
+            rleave.DateRegister = DateTime.Today;
+            rleave.LeaveTypeId = 1;
+            rleave.RegisterHour = 1;
+            rleave.Uid = 1;
+            rleave.UserCreated = 2;
+            rleave.UserUpdated = 2;
+            rleave.DateCreated = DateTime.Today.AddDays(-2);
+            rleave.DateUpdated = DateTime.Today.AddDays(-2);
+            RegisterLeave(rleave);
         }
         #endregion
     }

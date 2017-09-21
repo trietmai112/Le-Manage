@@ -1,4 +1,6 @@
-﻿using mtv_management_leave.Models.Entity;
+﻿using Microsoft.AspNet.Identity;
+using mtv_management_leave.Models;
+using mtv_management_leave.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -16,7 +18,8 @@ namespace mtv_management_leave.Lib.OverrideLib
 
         public override int SaveChanges()
         {
-           
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            int userId = int.Parse(user);
             List<Object> modifiedEntities = this.ChangeTracker.Entries()
                                             .Where(x => x.State == EntityState.Modified)
                                             .Select(x => x.Entity).ToList();
@@ -29,7 +32,7 @@ namespace mtv_management_leave.Lib.OverrideLib
                 if (null != propUserUpdate && propUserUpdate.CanWrite)
                 {
                     //Todo Get UserID 
-                    propUserUpdate.SetValue(item, 1, null);
+                    propUserUpdate.SetValue(item, userId, null);
                 }
                 PropertyInfo propDateUpdate = item.GetType().GetProperty("DateUpdated", BindingFlags.Public | BindingFlags.Instance);
                 if (null != propDateUpdate && propDateUpdate.CanWrite)
@@ -44,12 +47,23 @@ namespace mtv_management_leave.Lib.OverrideLib
                 if (null != propUserCreated && propUserCreated.CanWrite)
                 {
                     //Todo Get UserID 
-                    propUserCreated.SetValue(item, 1, null);
+                    propUserCreated.SetValue(item, userId, null);
+                }
+                PropertyInfo propUserUpdate = item.GetType().GetProperty("UserUpdated", BindingFlags.Public | BindingFlags.Instance);
+                if (null != propUserUpdate && propUserUpdate.CanWrite)
+                {
+                    //Todo Get UserID 
+                    propUserUpdate.SetValue(item, userId, null);
                 }
                 PropertyInfo propDateCreated = item.GetType().GetProperty("DateCreated", BindingFlags.Public | BindingFlags.Instance);
                 if (null != propDateCreated && propDateCreated.CanWrite)
                 {
                     propDateCreated.SetValue(item, DateTime.Now, null);
+                }
+                PropertyInfo propDateUpdate = item.GetType().GetProperty("DateUpdated", BindingFlags.Public | BindingFlags.Instance);
+                if (null != propDateUpdate && propDateUpdate.CanWrite)
+                {
+                    propDateUpdate.SetValue(item, DateTime.Now, null);
                 }
             }
 

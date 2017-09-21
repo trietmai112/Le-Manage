@@ -9,11 +9,12 @@
 
 namespace mtv_management_leave.Models.Entity
 {
+    using Lib.OverrideLib;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-    
-    public partial class LeaveManagementEntities : DbContext
+
+    public partial class LeaveManagementEntities : BaseContext
     {
         public LeaveManagementEntities()
             : base("name=LeaveManagementEntities")

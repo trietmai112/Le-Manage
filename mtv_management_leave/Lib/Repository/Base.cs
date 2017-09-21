@@ -10,7 +10,7 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class Base 
     {
-        public void InitContext(LeaveManagementEntities context)
+        public void InitContext(out LeaveManagementEntities context)
         {
             context = new LeaveManagementEntities();
         }

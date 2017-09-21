@@ -538,13 +538,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EntityDeploy Include="Models\Entity\LeaveManagementModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>LeaveManagementModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Entity\LeaveManagementModel.edmx.diagram">
-      <DependentUpon>LeaveManagementModel.edmx</DependentUpon>
-    </Content>
     <Content Include="Content\site.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -582,6 +575,13 @@
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.ttf" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff2" />
+    <EntityDeploy Include="Models\Entity\LeaveManagementModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>LeaveManagementModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Entity\LeaveManagementModel.edmx.diagram">
+      <DependentUpon>LeaveManagementModel.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

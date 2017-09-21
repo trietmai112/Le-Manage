@@ -60,3 +60,5 @@ F:\WorkProject\mtv_management_leave\mtv_management_leave.Tests\bin\Debug\System.
 F:\WorkProject\mtv_management_leave\mtv_management_leave.Tests\obj\Debug\mtv_management_leave.Tests.csprojResolveAssemblyReference.cache
 F:\WorkProject\mtv_management_leave\mtv_management_leave.Tests\obj\Debug\mtv_management_leave.Tests.dll
 F:\WorkProject\mtv_management_leave\mtv_management_leave.Tests\obj\Debug\mtv_management_leave.Tests.pdb
+F:\WorkProject\mtv_management_leave\mtv_management_leave.Tests\bin\Debug\EntityFramework.SqlServer.dll
+F:\WorkProject\mtv_management_leave\mtv_management_leave.Tests\bin\Debug\EntityFramework.SqlServer.xml
