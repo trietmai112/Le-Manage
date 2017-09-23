@@ -24,6 +24,9 @@ namespace mtv_management_leave.Lib.Interface
         /// <param name="Uid"></param>
         /// <param name="dateFrom"></param>
         /// <param name="DateTo"></param>
-        void SaveGenerateInout(int Uid, DateTime dateFrom, DateTime? DateTo);
+        void SaveGenerateInout(int uid, DateTime dateFrom, DateTime? DateTo);
+
+        MappingInOutByMonth MappingInoutLeave(DateTime MonthYear);
+        MappingInOutByUser MappingInoutLeave(DateTime MonthYear, int uid);
     }
 }

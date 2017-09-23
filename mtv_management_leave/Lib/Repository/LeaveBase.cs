@@ -11,6 +11,12 @@ namespace mtv_management_leave.Lib.Repository
     public class LeaveBase : Base, ILeaveBase
     {
         LeaveManagementEntities context;
+        ICommonLeaveBase commonLeaveBase;
+
+        public LeaveBase()
+        {
+            commonLeaveBase = new CommonLeaveBase();
+        }
 
         public double GetLeaveRemain(int uid, DateTime dateStart)
         {
@@ -20,10 +26,10 @@ namespace mtv_management_leave.Lib.Repository
             //trừ đi số phép đa đăng ký trong năm
             InitContext(out context);
 
-            double AvailableBeginYear = getAvailableBeginYear(uid, dateStart.Year);
-            int Seniority = GetSeniority(uid, dateStart);
-            double annualBonus = getAnnualBonus(uid, dateStart.Year);
-            double leaveInYear = getHourLeaveInYear(uid, dateStart.Year);
+            double AvailableBeginYear = commonLeaveBase.getAvailableBeginYear(context, uid, dateStart.Year);
+            int Seniority = commonLeaveBase.GetSeniority(context, uid, dateStart);
+            double annualBonus = commonLeaveBase.getAnnualBonus(context, uid, dateStart.Year);
+            double leaveInYear = commonLeaveBase.getHourLeaveInYear(context, uid, dateStart.Year);
             var result = AvailableBeginYear + Seniority + annualBonus - leaveInYear;
 
             DisposeContext(context);
@@ -37,7 +43,6 @@ namespace mtv_management_leave.Lib.Repository
             context.SaveChanges();
             DisposeContext(context);
         }
-        
         public void ApproveLeave(int leaveId)
         {
             InitContext(out context);
@@ -55,108 +60,5 @@ namespace mtv_management_leave.Lib.Repository
             context.SaveChanges();
             DisposeContext(context);
         }
-
-        #region private method
-        private double getAvailableBeginYear(int uid, int year)
-        {
-            return context.DataBeginYears.Where(m => m.Uid == uid && m.DateBegin.Year == year).Select(m => m.AnnualLeave).FirstOrDefault();
-        }
-        private int GetSeniority(int uid, DateTime dateStart)
-        {
-            int Seniority = 0;
-            var SeniorityItem = context.UserSeniorities.Where(m => m.Uid == uid && m.Year == dateStart.Year).FirstOrDefault();
-            if (SeniorityItem != null)
-            {
-                switch (dateStart.Month)
-                {
-                    case 1:
-                        {
-                            Seniority = SeniorityItem.Month1 ?? 0;
-                            break;
-                        }
-                    case 2:
-                        {
-                            Seniority = SeniorityItem.Month2 ?? 0;
-                            break;
-                        }
-                    case 3:
-                        {
-                            Seniority = SeniorityItem.Month3 ?? 0;
-                            break;
-                        }
-                    case 4:
-                        {
-                            Seniority = SeniorityItem.Month4 ?? 0;
-                            break;
-                        }
-                    case 5:
-                        {
-                            Seniority = SeniorityItem.Month5 ?? 0;
-                            break;
-                        }
-                    case 6:
-                        {
-                            Seniority = SeniorityItem.Month6 ?? 0;
-                            break;
-                        }
-                    case 7:
-                        {
-                            Seniority = SeniorityItem.Month7 ?? 0;
-                            break;
-                        }
-                    case 8:
-                        {
-                            Seniority = SeniorityItem.Month8 ?? 0;
-                            break;
-                        }
-                    case 9:
-                        {
-                            Seniority = SeniorityItem.Month9 ?? 0;
-                            break;
-                        }
-                    case 10:
-                        {
-                            Seniority = SeniorityItem.Month10 ?? 0;
-                            break;
-                        }
-                    case 11:
-                        {
-                            Seniority = SeniorityItem.Month11 ?? 0;
-                            break;
-                        }
-                    case 12:
-                        {
-                            Seniority = SeniorityItem.Month12 ?? 0;
-                            break;
-                        }
-                }
-            }
-            return Seniority;
-        }
-        private double getAnnualBonus(int uid, int year)
-        {
-            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd.Value.Year == year).Sum(m => m.AddLeaveHour ?? 0);
-            return annualBonus;
-        }
-        private double getHourLeaveInYear(int uid, int year)
-        {
-            //1. bỏ đi số ngày từ chối
-            //2. bỏ đi loại thai sản
-            //3. bỏ đi loại company trip
-            //4. bỏ đi loại non-paid
-            //5. bỏ đi loại other
-            var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode != Common.TypeLeave.E_CompanyStrip.ToString()
-            && m.LeaveCode != Common.TypeLeave.E_Materity.ToString()
-            && m.LeaveCode != Common.TypeLeave.E_NonPaid.ToString()
-            && m.LeaveCode != Common.TypeLeave.E_Other.ToString()).Select(m => m.Id).ToList();
-            int rejectType = (int)Common.StatusLeave.E_Reject;
-            double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateRegister.Year == year && m.Status != rejectType
-            && lstLeaveTypeIds.Contains(m.LeaveTypeId)
-            ).Sum(m => m.RegisterHour ?? 0);
-            return leaveInYear;
-        }
-        #endregion
-
-        
     }
 }

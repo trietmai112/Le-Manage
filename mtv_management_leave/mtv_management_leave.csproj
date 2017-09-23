@@ -215,15 +215,37 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib\Common.cs" />
+    <Compile Include="Lib\Interface\IAccountBase.cs" />
+    <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
+    <Compile Include="Lib\Interface\IDataBeginYear.cs" />
+    <Compile Include="Lib\Interface\ILeaveTotalMonthly.cs" />
     <Compile Include="Lib\Interface\ILeaveBase.cs" />
     <Compile Include="Lib\Interface\IInOut.cs" />
     <Compile Include="Lib\Interface\IDataRaw.cs" />
     <Compile Include="Lib\OverrideLib\BaseContext.cs" />
     <Compile Include="Lib\Repository\Base.cs" />
+    <Compile Include="Lib\Repository\AccountBase.cs" />
+    <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
+    <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entity\AddLeave.cs">
+      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entity\AspNetRole.cs">
+      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entity\AspNetUser.cs">
+      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entity\AspNetUserClaim.cs">
+      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entity\AspNetUserLogin.cs">
+      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entity\C__MigrationHistory.cs">
       <DependentUpon>LeaveManagementModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entity\DataBeginYear.cs">
@@ -269,6 +291,7 @@
       <DependentUpon>LeaveManagementModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MappingInOut.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
