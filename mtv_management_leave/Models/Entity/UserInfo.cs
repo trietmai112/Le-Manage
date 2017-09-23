@@ -26,6 +26,7 @@ namespace mtv_management_leave.Models.Entity
         }
     
         public int Uid { get; set; }
+        public string AspUserId { get; set; }
         public string FullName { get; set; }
         public Nullable<System.DateTime> DateOfBirth { get; set; }
         public byte UserPermission { get; set; }
@@ -41,6 +42,7 @@ namespace mtv_management_leave.Models.Entity
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AddLeave> AddLeaves { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DataBeginYear> DataBeginYears { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

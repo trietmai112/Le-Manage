@@ -4,6 +4,7 @@ using mtv_management_leave.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace mtv_management_leave.Tests.LeaveTest
         [TestMethod]
         public void RegisterLeaveTest()
         {
+            System.Web.HttpContext.Current.User =
             RegisterLeave rleave = new RegisterLeave();
             rleave.Id = 1;
             rleave.DateStart = DateTime.Today;
@@ -30,6 +32,12 @@ namespace mtv_management_leave.Tests.LeaveTest
             LeaveBase leave = new LeaveBase();
             leave.RegisterLeave(rleave);
             Assert.IsTrue(true);
+        }
+        public void GetLeaveRemainTest()
+        {
+
+            LeaveBase leave = new LeaveBase();
+            var remain =   leave.GetLeaveRemain(1, DateTime.Today);
         }
     }
 }

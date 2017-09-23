@@ -157,23 +157,6 @@ namespace mtv_management_leave.Lib.Repository
         }
         #endregion
 
-        #region test
-        public void testleaveAdd()
-        {
-            RegisterLeave rleave = new RegisterLeave();
-            rleave.Id = 1;
-            rleave.DateStart = DateTime.Today;
-            rleave.DateEnd = DateTime.Today;
-            rleave.DateRegister = DateTime.Today;
-            rleave.LeaveTypeId = 1;
-            rleave.RegisterHour = 1;
-            rleave.Uid = 1;
-            rleave.UserCreated = 2;
-            rleave.UserUpdated = 2;
-            rleave.DateCreated = DateTime.Today.AddDays(-2);
-            rleave.DateUpdated = DateTime.Today.AddDays(-2);
-            RegisterLeave(rleave);
-        }
-        #endregion
+        
     }
 }

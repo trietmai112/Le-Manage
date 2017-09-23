@@ -5,24 +5,33 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="3618167860c748fa8f75ef9bc7f3ac9c" Name="Diagram1">
-        <EntityTypeShape EntityType="LeaveManagementModel.AddLeave" Width="1.5" PointX="6" PointY="8.125" />
-        <EntityTypeShape EntityType="LeaveManagementModel.DataBeginYear" Width="1.5" PointX="3" PointY="29.375" />
-        <EntityTypeShape EntityType="LeaveManagementModel.DataInOutRaw" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="LeaveManagementModel.InOut" Width="1.5" PointX="3" PointY="11.75" />
-        <EntityTypeShape EntityType="LeaveManagementModel.LeaveMonthly" Width="1.5" PointX="3" PointY="19.5" />
-        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveDayCompany" Width="1.5" PointX="2.75" PointY="0.75" />
-        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveType" Width="1.5" PointX="3.75" PointY="7.125" />
-        <EntityTypeShape EntityType="LeaveManagementModel.RegisterLeave" Width="1.5" PointX="6" PointY="12.625" />
-        <EntityTypeShape EntityType="LeaveManagementModel.UserInfo" Width="1.5" PointX="0.75" PointY="12.5" />
-        <EntityTypeShape EntityType="LeaveManagementModel.UserSeniority" Width="1.5" PointX="3" PointY="23.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.AddLeave" Width="1.5" PointX="10.5" PointY="16.125" />
+        <EntityTypeShape EntityType="LeaveManagementModel.AspNetRole" Width="1.5" PointX="0.75" PointY="16.875" />
+        <EntityTypeShape EntityType="LeaveManagementModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="6.875" />
+        <EntityTypeShape EntityType="LeaveManagementModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="26.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.AspNetUser" Width="1.5" PointX="3" PointY="15.625" />
+        <EntityTypeShape EntityType="LeaveManagementModel.DataBeginYear" Width="1.5" PointX="7.5" PointY="32.375" />
+        <EntityTypeShape EntityType="LeaveManagementModel.DataInOutRaw" Width="1.5" PointX="2.75" PointY="0.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.InOut" Width="1.5" PointX="7.5" PointY="13.875" />
+        <EntityTypeShape EntityType="LeaveManagementModel.LeaveMonthly" Width="1.5" PointX="7.5" PointY="9.625" />
+        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveDayCompany" Width="1.5" PointX="0.75" PointY="3.75" />
+        <EntityTypeShape EntityType="LeaveManagementModel.MasterLeaveType" Width="1.5" PointX="8.25" PointY="5.125" />
+        <EntityTypeShape EntityType="LeaveManagementModel.RegisterLeave" Width="1.5" PointX="7.5" PointY="17.625" />
+        <EntityTypeShape EntityType="LeaveManagementModel.UserInfo" Width="1.5" PointX="5.25" PointY="15.25" />
+        <EntityTypeShape EntityType="LeaveManagementModel.UserSeniority" Width="1.5" PointX="7.5" PointY="26.75" />
         <AssociationConnector Association="LeaveManagementModel.FK_AddLeave_MasterLeaveType" />
         <AssociationConnector Association="LeaveManagementModel.FK_AddLeave_User" />
+        <AssociationConnector Association="LeaveManagementModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="LeaveManagementModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
+        <AssociationConnector Association="LeaveManagementModel.FK_UserInfo_UserInfo" />
         <AssociationConnector Association="LeaveManagementModel.FK_DataBeginYear_User" />
         <AssociationConnector Association="LeaveManagementModel.FK_InOut_User" />
         <AssociationConnector Association="LeaveManagementModel.FK_LeaveMonthly_User" />
         <AssociationConnector Association="LeaveManagementModel.FK_RegisterLeave_MasterLeaveType" />
         <AssociationConnector Association="LeaveManagementModel.FK_RegisterLeave_User" />
         <AssociationConnector Association="LeaveManagementModel.FK_UserSeniority_User" />
+        <AssociationConnector Association="LeaveManagementModel.AspNetUserRoles" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using mtv_management_leave.Models;
+using static mtv_management_leave.Lib.Common;
 
 namespace mtv_management_leave.Controllers
 {
@@ -422,6 +423,17 @@ namespace mtv_management_leave.Controllers
 
             base.Dispose(disposing);
         }
+
+        #region Set Role User
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetRoleUser(string AspUserId, string Role)
+        {
+            return View();
+        }
+        #endregion
+
+
 
         #region Helpers
         // Used for XSRF protection when adding external logins

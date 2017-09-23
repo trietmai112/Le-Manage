@@ -9,12 +9,11 @@
 
 namespace mtv_management_leave.Models.Entity
 {
-    using Lib.OverrideLib;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
-
-    public partial class LeaveManagementEntities : BaseContext
+    
+    public partial class LeaveManagementEntities : DbContext
     {
         public LeaveManagementEntities()
             : base("name=LeaveManagementEntities")
@@ -26,7 +25,12 @@ namespace mtv_management_leave.Models.Entity
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<AddLeave> AddLeaves { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<DataBeginYear> DataBeginYears { get; set; }
         public virtual DbSet<DataInOutRaw> DataInOutRaws { get; set; }
         public virtual DbSet<InOut> InOuts { get; set; }
