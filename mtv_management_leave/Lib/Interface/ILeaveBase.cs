@@ -24,5 +24,7 @@ namespace mtv_management_leave.Lib.Interface
         /// <returns></returns>
         double GetLeaveRemain(int uid, DateTime dateStart);
 
+        double GetLeaveHourInDay(DateTime timeStart, DateTime timeEnd);       
+
     }
 }

@@ -10,7 +10,7 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class CommonLeaveBase : Base, ICommonLeaveBase
     {
-        public double getAvailableBeginYear(LeaveManagementEntities context,int uid, int year)
+        public double GetAvailableBeginYear(LeaveManagementEntities context,int uid, int year)
         {
             return context.DataBeginYears.Where(m => m.Uid == uid && m.DateBegin.Year == year).Select(m => m.AnnualLeave).FirstOrDefault();
         }
@@ -86,12 +86,12 @@ namespace mtv_management_leave.Lib.Repository
             }
             return Seniority;
         }
-        public double getAnnualBonus(LeaveManagementEntities context, int uid, int year)
+        public double GetAnnualBonus(LeaveManagementEntities context, int uid, int year)
         {
             double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd.Value.Year == year).Sum(m => m.AddLeaveHour ?? 0);
             return annualBonus;
         }
-        public double getHourLeaveInYear(LeaveManagementEntities context, int uid, int year)
+        public double GetHourLeaveInYear(LeaveManagementEntities context, int uid, int year)
         {
             //1. bỏ đi số ngày từ chối
             //2. bỏ đi loại thai sản
@@ -108,7 +108,13 @@ namespace mtv_management_leave.Lib.Repository
             ).Sum(m => m.RegisterHour ?? 0);
             return leaveInYear;
         }
-
-
+        public List<DateTime> GetListDayOffCompany(LeaveManagementEntities context, int Year)
+        {
+            return context.MasterLeaveDayCompanies.Where(m => m.Date.Year == Year).Select(m => m.Date).ToList();
+        }
+        public bool IsDateOffCompany(LeaveManagementEntities context, DateTime date)
+        {
+            return context.MasterLeaveDayCompanies.Any(m => m.Date == date.Date);
+        }
     }
 }
