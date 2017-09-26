@@ -10,11 +10,11 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class AccountBase : Base, IAccountBase
     {
-        LeaveManagementEntities context;
-        public string GetRoleByName(string RoleName)
+        LeaveManagementContext context;
+        public int GetRoleByName(string RoleName)
         {
             InitContext(out context);
-            var roleId = context.AspNetRoles.Where(m => m.Name == RoleName).Select(m => m.Id).FirstOrDefault();
+            var roleId = context.Roles.Where(m => m.Name == RoleName).Select(m => m.Id).FirstOrDefault();
             DisposeContext(context);
             return roleId;
         }

@@ -16,7 +16,7 @@ namespace mtv_management_leave.Tests.LeaveTest
         [TestMethod]
         public void RegisterLeaveTest()
         {
-            System.Web.HttpContext.Current.User =
+            //System.Web.HttpContext.Current.User =
             RegisterLeave rleave = new RegisterLeave();
             rleave.Id = 1;
             rleave.DateStart = DateTime.Today;
