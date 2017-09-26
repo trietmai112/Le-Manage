@@ -12,7 +12,7 @@ namespace mtv_management_leave.Lib.Repository
     {
         public void InitContext(out LeaveManagementContext context)
         {
-            context = new LeaveManagementContext("name=LeaveManagementEntities");
+            context = new LeaveManagementContext();
         }
         public void DisposeContext (LeaveManagementContext context)
         {

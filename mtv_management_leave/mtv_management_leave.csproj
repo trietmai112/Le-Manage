@@ -204,13 +204,10 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -229,8 +226,11 @@
     <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
+    <Compile Include="Migrations\201709260647114_InitTables.cs" />
+    <Compile Include="Migrations\201709260647114_InitTables.Designer.cs">
+      <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
     <Compile Include="Models\Entity\DataInOutRaw.cs" />
@@ -243,10 +243,8 @@
     <Compile Include="Models\Entity\RegisterLeave.cs" />
     <Compile Include="Models\Entity\UserInfo.cs" />
     <Compile Include="Models\Entity\UserSeniority.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\MappingInOut.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -601,6 +599,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709260647114_InitTables.resx">
+      <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
