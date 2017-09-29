@@ -2603,7 +2603,6 @@ legend {
   border-bottom: 1px solid #e5e5e5;
 }
 label {
-  display: inline-block;
   max-width: 100%;
   margin-bottom: 5px;
 }
@@ -9996,9 +9995,6 @@ fieldset[disabled] .btn-inverse:hover {
   right: 40px;
   position: fixed !important;
 }
-label {
-  font-weight: 500;
-}
 input:active,
 input:focus {
   outline: 0;
@@ -14341,4 +14337,17 @@ html.ie9 .mCS-minimal-dark.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_b
 .dropzone:hover .dz-message span {
   border-color: #d7d7d7;
   color: #a8a8a8;
+}
+.input-validation-error {
+  border: 1px solid red;
+}
+.field-validation-error {
+  color: red;
+  float: left;
+}
+.validation-summary-errors {
+  color: red;
+}
+.validation-summary-errors ul {
+  list-style: none;
 }
