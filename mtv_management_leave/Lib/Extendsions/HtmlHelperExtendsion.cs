@@ -39,11 +39,19 @@ namespace mtv_management_leave.Lib.Extendsions
             return htmlHelper.LabelFor(expression, new { @class = "col-sm-3 control-label" });
         }
 
-        public static MvcHtmlString vTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        public static MvcHtmlString vTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string placeHolder = null, string dataMask = null)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
-            var inputHtmlString = htmlHelper.TextBoxFor(expression, new { @class= "form-control input-sm", placeholder= metadata.GetPlaceHolder()});
+            var inputClass = "form-control input-sm" + (string.IsNullOrEmpty(dataMask) ? "" : " input-mask");
+            var placeHolderText = string.IsNullOrEmpty(placeHolder) ? metadata.GetPlaceHolder() : placeHolder;
+
+            var dic = new Dictionary<string, object>();
+            dic.Add("class", inputClass);
+            dic.Add("placeholder", placeHolderText);
+            if (!string.IsNullOrEmpty(dataMask)) dic.Add("data-mask", dataMask);
+
+            var inputHtmlString = htmlHelper.TextBoxFor(expression, dic);
             var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
             var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
 
@@ -102,6 +110,7 @@ namespace mtv_management_leave.Lib.Extendsions
             dictionary.Add("{checkbox-hidden}", checkboxHidden);
             return new MvcHtmlString(CombineVaribleToLayout(CheckBoxTemplate, dictionary));
         }
+
 
 
     }
