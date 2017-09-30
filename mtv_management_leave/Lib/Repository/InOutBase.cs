@@ -10,7 +10,7 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class InOutBase : Base, IInOut
     {
-        LeaveManagementEntities context;
+        LeaveManagementContext context;
 
         public InOutBase()
         {
@@ -132,10 +132,10 @@ namespace mtv_management_leave.Lib.Repository
             InitContext(out context);
             List<MappingInOut> lstResult = new List<MappingInOut>();
             //get all userid
-            var queryUser = context.UserInfoes.Where(m => m.DateResign == null || (m.DateResign != null && m.DateResign.Value >= DateStart)).Select(m => new { m.Uid, m.DateResign, m.FullName });
+            var queryUser = context.Users.Where(m => m.DateResign == null || (m.DateResign != null && m.DateResign.Value >= DateStart)).Select(m => new { m.Id, m.DateResign, m.FullName });
             if (uid != null)
             {
-                queryUser = queryUser.Where(m => m.Uid == uid.Value);
+                queryUser = queryUser.Where(m => m.Id == uid.Value);
             }
             var lstUser = queryUser.ToList();
 
@@ -179,10 +179,10 @@ namespace mtv_management_leave.Lib.Repository
                     {
                         continue;
                     }
-                    var inout = lstInout.Where(m => m.Uid == user.Uid && m.Date == date).FirstOrDefault();
-                    var leave = lstLeave.Where(m => m.Uid == user.Uid && (m.DateRegister == date || (m.DateStart <= date && m.DateEnd >= date))).FirstOrDefault();
+                    var inout = lstInout.Where(m => m.Uid == user.Id && m.Date == date).FirstOrDefault();
+                    var leave = lstLeave.Where(m => m.Uid == user.Id && (m.DateRegister == date || (m.DateStart <= date && m.DateEnd >= date))).FirstOrDefault();
                     MappingInOut mapping = new MappingInOut();
-                    mapping.Uid = user.Uid;
+                    mapping.Uid = user.Id;
                     mapping.FullName = user.FullName;
                     mapping.Date = date;
                     mapping.Intime = inout != null ? inout.Intime.ToString("HH:mm") : string.Empty;
@@ -215,7 +215,7 @@ namespace mtv_management_leave.Lib.Repository
                     isValid = false;
                     timeDiff = 8;
                 }
-                else if (leave.leaveStatus != (int)Common.StatusLeave.E_Approve) // leave chua duyet
+                else if (leave.leaveStatus != Common.StatusLeave.E_Approve) // leave chua duyet
                 {
                     isValid = false;
                     timeDiff = 8;
@@ -250,7 +250,7 @@ namespace mtv_management_leave.Lib.Repository
                         timeDiff = diffBegin + diffEnd;
                     }
                     //leave chua duyet
-                    else if (leave.leaveStatus != (int)Common.StatusLeave.E_Approve)
+                    else if (leave.leaveStatus != Common.StatusLeave.E_Approve)
                     {
                         isValid = false;
                         int diffBegin = (inout.Intime - beginShiftLate).Minutes;
@@ -332,7 +332,7 @@ namespace mtv_management_leave.Lib.Repository
             public string LeaveCode { get; set; }
             public string leaveName { get; set; }
             public double? RegisterHour { get; set; }
-            public byte? leaveStatus { get; set; }
+            public Common.StatusLeave leaveStatus { get; set; }
         }
         #endregion
 
