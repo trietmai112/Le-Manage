@@ -6,7 +6,7 @@ using System;
 
 namespace mtv_management_leave.Models
 {
-    public class MappingInOutByMonth
+    public class MappingInOut
     {
         public int Uid { get; set; }
         public string FullName { get; set; }
@@ -15,27 +15,12 @@ namespace mtv_management_leave.Models
         /// thời gian lệch so với leave
         /// </summary>
         public double TimeDiff{ get; set; }
-        public DateTime MonthYear { get; set; }
-    }
-
-    /// <summary>
-    /// Mapping thời gian inout và leave theo user của tháng tính theo từng leave
-    /// </summary>
-    public class MappingInOutByUser
-    {
-        public int Uid { get; set; }
-        public string FullName { get; set; }
-        public bool IsValid { get; set; }
-        /// <summary>
-        /// thời gian lệch so với leave
-        /// </summary>
-        public double TimeDiff { get; set; }
         public DateTime Date { get; set; }
+        public string Intime { get; set; }
+        public string Outtime { get; set; }
+        public string LeaveStart { get; set; }
+        public string LeaveEnd { get; set; }
+        public string LeaveType { get; set; }
 
-        public DateTime BeginLeave { get; set; }
-        public DateTime EndLeave { get; set; }
-        public string TypeLeave { get; set; }
-        public DateTime InTime { get; set; }
-        public DateTime OutTime { get; set; }
     }
 }

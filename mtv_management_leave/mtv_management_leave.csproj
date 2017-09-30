@@ -226,6 +226,7 @@
     <Compile Include="Lib\Repository\Base.cs" />
     <Compile Include="Lib\Repository\AccountBase.cs" />
     <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
+    <Compile Include="Lib\Repository\InOutBase.cs" />
     <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
