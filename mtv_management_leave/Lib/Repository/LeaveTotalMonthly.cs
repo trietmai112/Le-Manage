@@ -10,7 +10,7 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class LeaveTotalMonthly : Base, ILeaveTotalMonthly
     {
-        LeaveManagementEntities context;
+        LeaveManagementContext context;
         ICommonLeaveBase commonLeaveBase;
 
         public LeaveTotalMonthly()

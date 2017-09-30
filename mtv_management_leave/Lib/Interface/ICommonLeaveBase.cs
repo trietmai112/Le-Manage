@@ -13,13 +13,13 @@ namespace mtv_management_leave.Lib.Interface
     /// </summary>
     interface ICommonLeaveBase
     {
-        double GetAvailableBeginYear(LeaveManagementEntities context, int uid, int year);
-        int GetSeniority(LeaveManagementEntities context, int uid, DateTime dateStart);
-        double GetAnnualBonus(LeaveManagementEntities context, int uid, int year);
-        double GetHourLeaveInYear(LeaveManagementEntities context, int uid, int year);
-        List<DateTime> GetListDayOffCompany(LeaveManagementEntities context, int Year);
-        List<DateTime> GetListDayOffCompany(LeaveManagementEntities context, DateTime dateStart, DateTime dateEnd);
-        bool IsDateOffCompany(LeaveManagementEntities context, DateTime date);
-        int GetLeaveTypeId(LeaveManagementEntities context, string CodeLeave);
+        double GetAvailableBeginYear(LeaveManagementContext context, int uid, int year);
+        int GetSeniority(LeaveManagementContext context, int uid, DateTime dateStart);
+        double GetAnnualBonus(LeaveManagementContext context, int uid, int year);
+        double GetHourLeaveInYear(LeaveManagementContext context, int uid, int year);
+        List<DateTime> GetListDayOffCompany(LeaveManagementContext context, int Year);
+        List<DateTime> GetListDayOffCompany(LeaveManagementContext context, DateTime dateStart, DateTime dateEnd);
+        bool IsDateOffCompany(LeaveManagementContext context, DateTime date);
+        int GetLeaveTypeId(LeaveManagementContext context, string CodeLeave);
     }
 }

@@ -10,7 +10,7 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class LeaveBase : Base, ILeaveBase
     {
-        LeaveManagementEntities context;
+        LeaveManagementContext context;
         ICommonLeaveBase commonLeaveBase;
 
         public LeaveBase()
@@ -90,7 +90,7 @@ namespace mtv_management_leave.Lib.Repository
         {
             InitContext(out context);
             var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
-            leave.Status = (int)Common.StatusLeave.E_Approve;
+            leave.Status = Common.StatusLeave.E_Approve;
             context.SaveChanges();
             DisposeContext(context);
 
@@ -99,7 +99,7 @@ namespace mtv_management_leave.Lib.Repository
         {
             InitContext(out context);
             var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
-            leave.Status = (int)Common.StatusLeave.E_Reject;
+            leave.Status = Common.StatusLeave.E_Reject;
             context.SaveChanges();
             DisposeContext(context);
         }

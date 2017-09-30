@@ -10,7 +10,7 @@ namespace mtv_management_leave.Lib.Interface
 {
     interface IAccountBase
     {
-        string GetRoleByName(string RoleName);
+        int GetRoleByName(string RoleName);
 
     }
 }

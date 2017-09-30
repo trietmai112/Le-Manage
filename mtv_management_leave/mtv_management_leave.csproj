@@ -204,13 +204,10 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -230,70 +227,25 @@
     <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Entity\AddLeave.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
+    <Compile Include="Migrations\201709260647114_InitTables.cs" />
+    <Compile Include="Migrations\201709260647114_InitTables.Designer.cs">
+      <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entity\AspNetRole.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\AspNetUser.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\AspNetUserClaim.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\AspNetUserLogin.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\C__MigrationHistory.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\DataBeginYear.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\DataInOutRaw.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\InOut.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\LeaveManagementModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LeaveManagementModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\LeaveManagementModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\LeaveManagementModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LeaveManagementModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\LeaveMonthly.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\MasterLeaveDayCompany.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\MasterLeaveType.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\RegisterLeave.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\UserInfo.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entity\UserSeniority.cs">
-      <DependentUpon>LeaveManagementModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Entity\AddLeave.cs" />
+    <Compile Include="Models\Entity\DataBeginYear.cs" />
+    <Compile Include="Models\Entity\DataInOutRaw.cs" />
+    <Compile Include="Models\Entity\InOut.cs" />
+    <Compile Include="Models\Entity\Interface\IEntity.cs" />
+    <Compile Include="Models\Entity\LeaveMonthly.cs" />
+    <Compile Include="Models\Entity\MasterLeaveDayCompany.cs" />
+    <Compile Include="Models\Entity\MasterLeaveType.cs" />
+    <Compile Include="Models\Entity\Override\BaseEntity.cs" />
+    <Compile Include="Models\Entity\RegisterLeave.cs" />
+    <Compile Include="Models\Entity\UserInfo.cs" />
+    <Compile Include="Models\Entity\UserSeniority.cs" />
+    <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\MappingInOut.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -547,16 +499,6 @@
     <Content Include="Content\vendors\summernote\dist\summernote.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Models\Entity\LeaveManagementModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LeaveManagementModel.edmx</DependentUpon>
-      <LastGenOutput>LeaveManagementModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\Entity\LeaveManagementModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>LeaveManagementModel.edmx</DependentUpon>
-      <LastGenOutput>LeaveManagementModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -599,13 +541,6 @@
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.ttf" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff2" />
-    <EntityDeploy Include="Models\Entity\LeaveManagementModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>LeaveManagementModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Entity\LeaveManagementModel.edmx.diagram">
-      <DependentUpon>LeaveManagementModel.edmx</DependentUpon>
-    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -665,6 +600,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709260647114_InitTables.resx">
+      <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
