@@ -22,15 +22,10 @@ namespace mtv_management_leave.Lib.Interface
         /// <summary>
         /// Hàm tính lại từ đầu Năm
         /// </summary>
-        void ReCalculateTotalMonthly(DateTime MonthTo);
-        void ReCalculateTotalMonthly(DateTime MonthTo, int uid);
+        void ReCalculateTotalMonthlyAllYear(DateTime MonthTo);
+        void ReCalculateTotalMonthlyAllYear(DateTime MonthTo, int uid);
 
-        /// <summary>
-        /// Hàm tính tổng kết leave tháng hiện tại
-        /// </summary>
-        /// <param name="MonthYear"></param>
-        void CalculateTotalMonthly(DateTime MonthYear);
-        void CalculateTotalMonthly(DateTime MonthYear, int uid);
+     
 
     }
 }

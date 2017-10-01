@@ -98,10 +98,7 @@ namespace mtv_management_leave.Lib.Repository
             //3. bỏ đi loại company trip
             //4. bỏ đi loại non-paid
             //5. bỏ đi loại other
-            var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode != Common.TypeLeave.E_CompanyStrip.ToString()
-            && m.LeaveCode != Common.TypeLeave.E_Materity.ToString()
-            && m.LeaveCode != Common.TypeLeave.E_NonPaid.ToString()
-            && m.LeaveCode != Common.TypeLeave.E_Other.ToString()).Select(m => m.Id).ToList();
+            var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode == Common.TypeLeave.E_AnnualLeave.ToString()).Select(m => m.Id).ToList();
             //int rejectType = (int)Common.StatusLeave.E_Reject;
             double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateRegister.Year == year && m.Status != Common.StatusLeave.E_Reject
             && lstLeaveTypeIds.Contains(m.LeaveTypeId)

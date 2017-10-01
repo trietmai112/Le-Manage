@@ -14,13 +14,18 @@ namespace mtv_management_leave.Models
         /// <summary>
         /// thời gian lệch so với leave
         /// </summary>
-        public double TimeDiff{ get; set; }
+        public double TimeDiff { get; set; }
         public DateTime Date { get; set; }
         public string Intime { get; set; }
         public string Outtime { get; set; }
-        public string LeaveStart { get; set; }
-        public string LeaveEnd { get; set; }
-        public string LeaveType { get; set; }
+        public string LeaveStart1 { get; set; }
+        public string LeaveEnd1 { get; set; }
+        public string LeaveStatus1 { get; set; }
+        public string LeaveType1 { get; set; }
+        public string LeaveStart2 { get; set; }
+        public string LeaveEnd2 { get; set; }
+        public string LeaveStatus2 { get; set; }
+        public string LeaveType2 { get; set; }
 
     }
 }

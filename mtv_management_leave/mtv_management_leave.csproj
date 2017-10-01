@@ -231,6 +231,10 @@
     <Compile Include="Migrations\201709260647114_InitTables.Designer.cs">
       <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710010224273_Update_LeaveMonthly.cs" />
+    <Compile Include="Migrations\201710010224273_Update_LeaveMonthly.Designer.cs">
+      <DependentUpon>201710010224273_Update_LeaveMonthly.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
@@ -604,6 +608,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201709260647114_InitTables.resx">
       <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710010224273_Update_LeaveMonthly.resx">
+      <DependentUpon>201710010224273_Update_LeaveMonthly.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
