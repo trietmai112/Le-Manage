@@ -13,8 +13,8 @@ namespace mtv_management_leave.Lib.Interface
     /// </summary>
     interface ILeaveTotalMonthly
     {
-        void GetLastTotalMonthly(int year);
-        void GetLastTotalMonthly(int year, int uid);
+        List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear);
+        List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear, int uid);
 
         void SaveLastTotalMonthly(DateTime MonthTo);
         void SaveLastTotalMonthly(DateTime MonthTo, int uid);

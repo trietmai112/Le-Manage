@@ -86,3 +86,5 @@ F:\WorkProject\mtv_management_leave\mtv_management_leave\bin\Microsoft.Owin.Secu
 F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.dll
 F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.pdb
 F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.csprojResolveAssemblyReference.cache
+F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.Migrations.InitTables.resources
+F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.csproj.GenerateResource.Cache

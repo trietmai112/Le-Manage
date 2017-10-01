@@ -10,11 +10,10 @@ namespace mtv_management_leave.Models.Entity
         public int Id { get; set; }
         public int Uid { get; set; }
         public System.DateTime Month { get; set; }
-        public bool? LeaveAvailable { get; set; }
-        public bool? LeaveUsed { get; set; }
-        public bool? LeaveRemain { get; set; }
-        public bool? LeaveNonPaid { get; set; }
-        public bool? IsMaterityLeave { get; set; }
+        public double? LeaveAvailable { get; set; }
+        public double? LeaveUsed { get; set; }
+        public double? LeaveRemain { get; set; }
+        public double? LeaveNonPaid { get; set; }
 
         [ForeignKey("Uid")]
         public virtual UserInfo UserInfo { get; set; }
