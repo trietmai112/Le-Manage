@@ -28,6 +28,7 @@ namespace mtv_management_leave.Models
         public DbSet<Entity.MasterLeaveType> MasterLeaveTypes { get; set; }
         public DbSet<Entity.RegisterLeave> RegisterLeaves { get; set; }
         public DbSet<Entity.UserSeniority> UserSeniorities { get; set; }
+        public DbSet<Entity.RequestChangeInout> RequestChangeInouts { get; set; }
 
         private void BeforeSaveChange()
         {
