@@ -1,5 +1,6 @@
 ﻿using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,8 @@ namespace mtv_management_leave.Lib.Interface
         /// <returns></returns>
         double GetLeaveRemain(int uid, DateTime dateStart);
 
-        double GetLeaveHourInDay(DateTime timeStart, DateTime timeEnd);       
+        List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd);
+        List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd, int uid);
 
     }
 }

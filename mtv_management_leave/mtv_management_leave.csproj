@@ -241,6 +241,7 @@
     <Compile Include="Lib\Repository\Base.cs" />
     <Compile Include="Lib\Repository\AccountBase.cs" />
     <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
+    <Compile Include="Lib\Repository\InOutBase.cs" />
     <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
@@ -251,6 +252,10 @@
     <Compile Include="Migrations\201709280701172_UserInfo_ChangePassword_PasswordResetToken.cs" />
     <Compile Include="Migrations\201709280701172_UserInfo_ChangePassword_PasswordResetToken.Designer.cs">
       <DependentUpon>201709280701172_UserInfo_ChangePassword_PasswordResetToken.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710010224273_Update_LeaveMonthly.cs" />
+    <Compile Include="Migrations\201710010224273_Update_LeaveMonthly.Designer.cs">
+      <DependentUpon>201710010224273_Update_LeaveMonthly.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
@@ -626,9 +631,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201709260647114_InitTables.resx">
       <DependentUpon>201709260647114_InitTables.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201709280701172_UserInfo_ChangePassword_PasswordResetToken.resx">
-      <DependentUpon>201709280701172_UserInfo_ChangePassword_PasswordResetToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

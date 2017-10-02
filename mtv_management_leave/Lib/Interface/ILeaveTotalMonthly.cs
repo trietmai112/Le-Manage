@@ -13,8 +13,8 @@ namespace mtv_management_leave.Lib.Interface
     /// </summary>
     interface ILeaveTotalMonthly
     {
-        void GetLastTotalMonthly(int year);
-        void GetLastTotalMonthly(int year, int uid);
+        List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear);
+        List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear, int uid);
 
         void SaveLastTotalMonthly(DateTime MonthTo);
         void SaveLastTotalMonthly(DateTime MonthTo, int uid);
@@ -22,15 +22,10 @@ namespace mtv_management_leave.Lib.Interface
         /// <summary>
         /// Hàm tính lại từ đầu Năm
         /// </summary>
-        void ReCalculateTotalMonthly(DateTime MonthTo);
-        void ReCalculateTotalMonthly(DateTime MonthTo, int uid);
+        void ReCalculateTotalMonthlyAllYear(DateTime MonthTo);
+        void ReCalculateTotalMonthlyAllYear(DateTime MonthTo, int uid);
 
-        /// <summary>
-        /// Hàm tính tổng kết leave tháng hiện tại
-        /// </summary>
-        /// <param name="MonthYear"></param>
-        void CalculateTotalMonthly(DateTime MonthYear);
-        void CalculateTotalMonthly(DateTime MonthYear, int uid);
+     
 
     }
 }

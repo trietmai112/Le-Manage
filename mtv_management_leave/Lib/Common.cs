@@ -22,5 +22,8 @@ namespace mtv_management_leave.Lib
             E_Register = 2,
             E_Reject = 3
         }
+
+        public static int minuteLatePermit = 45;
+        public static int minuteEarlyPermit = 15;
     }
 }
