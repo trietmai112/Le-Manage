@@ -131,7 +131,7 @@ namespace mtv_management_leave
 
         public async Task<bool> ValidateAsync(string purpose, string token, UserManager<UserInfo, int> manager, UserInfo user)
         {
-            return string.Equals( user.PasswordResetToken, token, StringComparison.CurrentCultureIgnoreCase);
+            return await Task.Run(() => string.Equals( user.PasswordResetToken, token, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

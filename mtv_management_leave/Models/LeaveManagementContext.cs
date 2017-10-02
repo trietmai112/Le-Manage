@@ -64,7 +64,8 @@ namespace mtv_management_leave.Models
                 }
             }catch(Exception ex)
             {
-
+                Console.WriteLine("Context BeforeSaveChange error");
+                Console.WriteLine(ex);
             }
         }
 
