@@ -10,6 +10,7 @@ namespace mtv_management_leave.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(mtv_management_leave.Models.LeaveManagementContext context)
