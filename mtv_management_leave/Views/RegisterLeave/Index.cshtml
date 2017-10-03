@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Register leave";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>Basic Example <small>It's just that simple. Turn your simple table into a sophisticated data table and offer your users a nice experience and great features without any effort.</small></h2>
+    </div>
+
+    <div class="table-responsive">
+
+        @Html.vBootGridFor(new BootGridTableOption
+        {
+            AjaxParameters = null,
+            ClassName = "table table-striped",
+            GuiId = "register-leave-table",
+            AjaxUrl = "/api/value/value",
+            AjaxSettings= new AjaxSetting
+            {
+                Cache = false,
+                RequestType = "GET"
+            }
+        },
+        new List<BootGridRowOption>
+        {
+            new BootGridRowOption{ Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName"},
+            new BootGridRowOption{ Sortable = true, ColumnHeaderName = "Lave time", MappingFrom = "LeaveTime"}
+        })
+    </div>
+</div>
+
+

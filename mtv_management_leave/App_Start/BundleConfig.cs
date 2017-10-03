@@ -8,8 +8,9 @@ namespace mtv_management_leave
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Clear();
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Content/vendors/bower_components/jquery/dist/jquery.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -40,11 +41,11 @@ namespace mtv_management_leave
                     "~/Content/vendors/bower_components/chosen/chosen.css",
                     "~/Content/vendors/summernote/dist/summernote.css",
                     "~/Content/vendors/bower_components/datatables.net-dt/css/jquery.dataTables.min.css",
+                    "~/Content/jquery.bootgrid.min.css",
                     "~/Content/Site.min.css"
                 ));
 
-            bundles.Add(new ScriptBundle("~/bundles/materialscript").Include(
-                    "~/Content/vendors/bower_components/jquery/dist/jquery.min.js",
+            bundles.Add(new ScriptBundle("~/bundles/materialscript").Include(                    
                     "~/Content/vendors/bower_components/bootstrap/dist/js/bootstrap.min.js",
                     "~/Content/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js",
                     "~/Content/vendors/bower_components/Waves/dist/waves.min.js",
@@ -63,8 +64,13 @@ namespace mtv_management_leave
                     "~/Content/vendors/bower_components/chosen/chosen.jquery.js",
                     "~/Content/vendors/bower_components/jquery-mask-plugin/dist/jquery.mask.min.js",
                     "~/Content/vendors/fileinput/fileinput.min.js",
-                    "~/Content/vendors/farbtastic/farbtastic.min.js",
+                    "~/Content/vendors/farbtastic/farbtastic.min.js",                    
+                    "~/Scripts/jquery.bootgrid.js",
+                    "~/Scripts/jquery.bootgrid.min.js",
+                    "~/Scripts/jquery.bootgrid.fa.js",
+                    "~/Scripts/jquery.bootgrid.fa.min.js",
                     "~/Content/js/app.min.js"
+                    
                 ));
 
             //BundleTable.EnableOptimizations = true;

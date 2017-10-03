@@ -1589,6 +1589,7 @@ pre {
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
+  margin-top: 40px;
 }
 pre code {
   padding: 0;
@@ -1597,7 +1598,6 @@ pre code {
   white-space: pre-wrap;
   border-radius: 0;
 }
-.container,
 .container-fluid {
   padding-left: 15px;
   padding-right: 15px;

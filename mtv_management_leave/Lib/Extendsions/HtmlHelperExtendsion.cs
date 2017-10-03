@@ -1,4 +1,5 @@
-﻿using System;
+﻿using mtv_management_leave.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,35 +12,13 @@ using System.Web.Mvc.Html;
 
 namespace mtv_management_leave.Lib.Extendsions
 {
-    public static class HtmlHelperExtendsion
+    public static partial class HtmlHelperExtendsion
     {
-        private readonly static string TextboxTemplate =
-            @"<div class='form-group'>
-                {label}
-                <div class='col-sm-9'>
-                    <div class='fg-line'>
-                        {textbox}
-                        {validate-message}
-                    </div>                    
-                </div>
-              </div>";
-
-        private static string CombineVaribleToLayout(string layout, Dictionary<string, string> dictionary)
-        {
-            var htmlString = layout;
-            foreach(var item in dictionary)
-            {
-                htmlString = Regex.Replace(htmlString, item.Key, item.Value);
-            }
-            return htmlString;
-        }
-
-        private static MvcHtmlString CreateLabelMvcString<TModel, TProperty>(HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
-        {
-            return htmlHelper.LabelFor(expression, new { @class = "col-sm-3 control-label" });
-        }
-
-        public static MvcHtmlString vTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, string placeHolder = null, string dataMask = null)
+        public static MvcHtmlString vTextBoxFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, 
+            Expression<Func<TModel, TProperty>> expression, 
+            string placeHolder = null, 
+            string dataMask = null,
+            string tooltip = null)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
@@ -49,6 +28,12 @@ namespace mtv_management_leave.Lib.Extendsions
             var dic = new Dictionary<string, object>();
             dic.Add("class", inputClass);
             dic.Add("placeholder", placeHolderText);
+            if (!string.IsNullOrEmpty(tooltip))
+            {
+                dic.Add("data-toggle", "tool tip");
+                dic.Add("data-placement", "top");
+                dic.Add("title", tooltip);
+            }
             if (!string.IsNullOrEmpty(dataMask)) dic.Add("data-mask", dataMask);
 
             var inputHtmlString = htmlHelper.TextBoxFor(expression, dic);
@@ -60,10 +45,11 @@ namespace mtv_management_leave.Lib.Extendsions
             dictionary.Add("{textbox}", inputHtmlString.ToHtmlString());
             dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
 
-            return new MvcHtmlString(CombineVaribleToLayout(TextboxTemplate, dictionary));
+            return new MvcHtmlString(CombineVaribleToLayout(_textboxTemplate, dictionary));
         }
 
-        public static MvcHtmlString vPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression)
+        public static MvcHtmlString vPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
@@ -76,24 +62,11 @@ namespace mtv_management_leave.Lib.Extendsions
             dictionary.Add("{textbox}", inputHtmlString.ToHtmlString());
             dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
 
-            return new MvcHtmlString(CombineVaribleToLayout(TextboxTemplate, dictionary));
+            return new MvcHtmlString(CombineVaribleToLayout(_textboxTemplate, dictionary));
         }
 
-        private readonly static string CheckBoxTemplate =
-            @"<div class='form-group'>
-                <div class='{offset}'>
-                    <div class='checkbox'>
-                        <label>
-                            {checkbox}
-                            <i class='input-helper'></i>
-                            {label}
-                        </label>
-                    </div>
-                    {checkbox-hidden}
-                </div>
-            </div>";
-
-        public static MvcHtmlString vCheckBoxFor<TModel>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, bool>> expression, int? positionOffset = null)
+        public static MvcHtmlString vCheckBoxFor<TModel>(this HtmlHelper<TModel> htmlHelper, 
+            Expression<Func<TModel, bool>> expression, int? positionOffset = null)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
             var checkboxHtmlString = htmlHelper.CheckBoxFor(expression).ToHtmlString();
@@ -108,10 +81,58 @@ namespace mtv_management_leave.Lib.Extendsions
             dictionary.Add("{checkbox}", checkbox);
             dictionary.Add("{name}", metadata.PropertyName);
             dictionary.Add("{checkbox-hidden}", checkboxHidden);
-            return new MvcHtmlString(CombineVaribleToLayout(CheckBoxTemplate, dictionary));
+            return new MvcHtmlString(CombineVaribleToLayout(_checkBoxTemplate, dictionary));
+        }
+        
+        public static MvcHtmlString vDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, 
+            Expression<Func<TModel, TProperty>> expression, 
+            IEnumerable<SelectListItem> selectList, 
+            bool liveSearch = false,
+            bool multiSelect = false)
+        {
+            var dic = new Dictionary<string, object>();
+            dic.Add("class", "selectpicker");
+            if (liveSearch) dic.Add("data-live-search", "true");
+            if (multiSelect) dic.Add("multiple", "true");
+
+            var selectHtmlString = htmlHelper.DropDownListFor(expression, selectList, dic);
+            var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
+            var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
+
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("{label}", labelHtmlString.ToHtmlString());
+            dictionary.Add("{select}", selectHtmlString.ToHtmlString());
+            dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
+
+            return new MvcHtmlString(CombineVaribleToLayout(_selectTemplate, dictionary));
         }
 
+        public static T GetT<T>(this HtmlHelper htmlHelper, 
+            string controller, string action, params object[] parameters)
+        {
+            DefaultControllerFactory factory = new DefaultControllerFactory();
+            var icontroller = factory.CreateController(HttpContext.Current.Request.RequestContext, controller);
+            var type = icontroller.GetType();
+            var method = type.GetMethod(action, System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            if (method == null) throw new NullReferenceException($"Can not find any action with name '{action}'"); 
+            var result = method.Invoke(icontroller, parameters);
+            factory.ReleaseController(icontroller);
+            return (T)result;
+        }
 
+        public static MvcHtmlString vBootGridFor(this HtmlHelper htmlHelper,
+            BootGridTableOption bootGridTableOption,
+            List<BootGridRowOption> rowOptions)
+        {
+            if (string.IsNullOrEmpty(bootGridTableOption.GuiId))
+                bootGridTableOption.GuiId = Guid.NewGuid().ToString("N");
+            var tableHtml = RenderBootGridHtml(bootGridTableOption, rowOptions);
 
+            var scriptHtml = RenderBootGridScript(bootGridTableOption, rowOptions);
+
+            var result = tableHtml + scriptHtml;
+            
+            return new MvcHtmlString(result);
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace mtv_management_leave.App_Start
     using mtv_management_leave.Models;
     using System.Data.Entity;
     using Microsoft.Owin.Security;
+    using mtv_management_leave.Lib.Repository;
 
     public static class NinjectWebCommon 
     {
@@ -62,6 +63,7 @@ namespace mtv_management_leave.App_Start
                 });
                 kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
                 kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
+                kernel.Bind<InOutBase>().ToSelf().InRequestScope();
                 RegisterServices(kernel);
                 return kernel;
             }

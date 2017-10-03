@@ -223,12 +223,16 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\RegisterLeaveController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ValueController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib\Common.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
+    <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
@@ -240,6 +244,7 @@
     <Compile Include="Lib\OverrideLib\BaseContext.cs" />
     <Compile Include="Lib\Repository\Base.cs" />
     <Compile Include="Lib\Repository\AccountBase.cs" />
+    <Compile Include="Lib\Repository\BootGridReponse.cs" />
     <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
     <Compile Include="Lib\Repository\InOutBase.cs" />
     <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
@@ -261,10 +266,15 @@
     <Compile Include="Migrations\201710020706225_AddNewTableEmployeeInfo.Designer.cs">
       <DependentUpon>201710020706225_AddNewTableEmployeeInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710030230133_InsertDefaultRoles.cs" />
+    <Compile Include="Migrations\201710030230133_InsertDefaultRoles.Designer.cs">
+      <DependentUpon>201710030230133_InsertDefaultRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
+    <Compile Include="Models\BootGridTableOption.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
     <Compile Include="Models\Entity\DataInOutRaw.cs" />
@@ -437,6 +447,8 @@
     <Content Include="Content\img\social\linkedin-128.png" />
     <Content Include="Content\img\social\twitter-128.png" />
     <Content Include="Content\img\social\youtube-128.png" />
+    <Content Include="Content\jquery.bootgrid.css" />
+    <Content Include="Content\jquery.bootgrid.min.css" />
     <Content Include="Content\js\account\account.js" />
     <Content Include="Content\js\app.min.js" />
     <Content Include="Content\Site.css">
@@ -578,10 +590,15 @@
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.ttf" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff2" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-1.11.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.11.1.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="Scripts\jquery-1.11.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.bootgrid.fa.js" />
+    <Content Include="Scripts\jquery.bootgrid.fa.min.js" />
+    <Content Include="Scripts\jquery.bootgrid.js" />
+    <Content Include="Scripts\jquery.bootgrid.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -622,6 +639,7 @@
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <Content Include="Views\RegisterLeave\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -629,7 +647,6 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -646,6 +663,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710020706225_AddNewTableEmployeeInfo.resx">
       <DependentUpon>201710020706225_AddNewTableEmployeeInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710030230133_InsertDefaultRoles.resx">
+      <DependentUpon>201710030230133_InsertDefaultRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

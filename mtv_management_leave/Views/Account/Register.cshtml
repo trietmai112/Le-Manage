@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
 }
 
 <div class="login-content">
@@ -11,7 +12,7 @@
         @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
-            @Html.ValidationSummary()
+            @Html.ValidationSummary(true)
             <div class="lcb-form">
                 <hgroup class="title">
                     <h1>@ViewBag.Title.</h1>
@@ -21,12 +22,14 @@
                 @Html.vTextBoxFor(m => m.FullName)
 
                 @Html.vTextBoxFor(m => m.PhoneNumber)
-
-                @Html.vTextBoxFor(m => m.DateOfBirth)
+               
+                @Html.vTextBoxFor(m => m.DateOfBirth, tooltip: "format mm/dd/yyyy", dataMask: "99/99/9999")
 
                 @Html.vPasswordFor(m => m.Password)
 
                 @Html.vPasswordFor(m => m.ConfirmPassword)
+
+                @Html.vDropDownListFor(m => m.RoleIds, roles)
 
                 <a href="#" class="btn btn-login btn-success btn-float"><i class="zmdi zmdi-arrow-forward"></i></a>
             </div>

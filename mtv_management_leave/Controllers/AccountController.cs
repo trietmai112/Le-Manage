@@ -4,18 +4,26 @@ using Microsoft.AspNet.Identity.Owin;
 using mtv_management_leave.Models.Account;
 using mtv_management_leave.Models.Entity;
 using Microsoft.AspNet.Identity;
+using mtv_management_leave.Models;
+using System.Linq;
+using System.Data.Entity;
+using System.Web;
 
 namespace mtv_management_leave.Controllers
 {
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
+        private LeaveManagementContext _context;
         private ApplicationUserManager _userManager;
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        public AccountController(ApplicationUserManager userManager, 
+            ApplicationSignInManager signInManager,
+            LeaveManagementContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         private void AddErrors(IdentityResult result)
@@ -24,6 +32,15 @@ namespace mtv_management_leave.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        private ActionResult RedirectToLocal(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -51,7 +68,7 @@ namespace mtv_management_leave.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return Redirect(returnUrl);
+                    return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -77,23 +94,32 @@ namespace mtv_management_leave.Controllers
         {
             if (ModelState.IsValid)
             {
+                var transaction = _context.Database.BeginTransaction();
                 var user = new UserInfo { UserName = model.Email, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
+                
                 if (result.Succeeded)
                 {
+                    var roles = await _context.Roles.Where(m => model.RoleIds.Contains(m.Id)).ToListAsync();
+                    if (roles.Count > 0)
+                    {
+                        result = _userManager.AddToRoles(user.Id, roles.Select(m => m.Name).ToArray());                       
+                    }
+
                     await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                   
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     //string code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     //await _userManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    transaction.Commit();
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
+                transaction.Rollback();
             }
-
+           
             // If we got this far, something failed, redisplay form
             return View(model);
         }    
@@ -210,6 +236,12 @@ namespace mtv_management_leave.Controllers
 
             base.Dispose(disposing);
         }
+
+        public ActionResult LogOut()
+        {
+            Request.GetOwinContext().Authentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }        
 
         ////
         //// GET: /Account/VerifyCode
@@ -413,15 +445,7 @@ namespace mtv_management_leave.Controllers
 
 
 
-        //private ActionResult RedirectToLocal(string returnUrl)
-        //{
-        //    if (Url.IsLocalUrl(returnUrl))
-        //    {
-        //        return Redirect(returnUrl);
-        //    }
-        //    return RedirectToAction("Index", "Home");
-        //}
-
+       
         //internal class ChallengeResult : HttpUnauthorizedResult
         //{
         //    public ChallengeResult(string provider, string redirectUri)
