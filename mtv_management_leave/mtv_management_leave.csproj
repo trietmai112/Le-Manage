@@ -241,6 +241,7 @@
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
     <Compile Include="Lib\Interface\IControl.cs" />
     <Compile Include="Lib\Interface\IDataBeginYear.cs" />
+    <Compile Include="Lib\Interface\IRequestChangeInout.cs" />
     <Compile Include="Lib\Interface\ILeaveTotalMonthly.cs" />
     <Compile Include="Lib\Interface\ILeaveBase.cs" />
     <Compile Include="Lib\Interface\IInOut.cs" />
@@ -250,6 +251,7 @@
     <Compile Include="Lib\Repository\AccountBase.cs" />
     <Compile Include="Lib\Repository\BootGridReponse.cs" />
     <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
+    <Compile Include="Lib\Repository\RequestChangeInoutBase.cs" />
     <Compile Include="Lib\Repository\InOutBase.cs" />
     <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
@@ -283,6 +285,7 @@
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
     <Compile Include="Models\Entity\DataInOutRaw.cs" />
+    <Compile Include="Models\Entity\RequestChangeInout.cs" />
     <Compile Include="Models\Entity\EmployeeInfo.cs" />
     <Compile Include="Models\Entity\InOut.cs" />
     <Compile Include="Models\Entity\Interface\IEntity.cs" />

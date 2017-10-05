@@ -42,84 +42,11 @@ namespace mtv_management_leave.Lib.Repository
 
         public void SaveGenerateInout(DateTime dateFrom, DateTime? DateTo)
         {
-            InitContext(out context);
-            if (DateTo == null)
-            {
-                DateTo = DateTime.Today;
-            }
-            DateTo = DateTo.Value.AddDays(1).AddSeconds(-1);
-            //del old data
-            var lstInoutDelete = context.InOuts.Where(m => m.Date >= dateFrom && m.Date <= DateTo).ToList();
-            context.InOuts.RemoveRange(lstInoutDelete);
-            //create new data
-
-            var lstInoutRaw = context.DataInOutRaws.Where(m => m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
-            var lstUid = lstInoutRaw.Select(m => m.Uid).Distinct();
-            var listInoutSave = new List<InOut>();
-            for (DateTime date = dateFrom; date <= DateTo; date = date.AddDays(1))
-            {
-                foreach (var uid in lstUid)
-                {
-                    var lstInDayByUser = lstInoutRaw.Where(m => m.Uid == uid && m.Time.Date == date).OrderBy(m => m.Time);
-                    if (lstInDayByUser == null || lstInDayByUser.Count() == 0)
-                    {
-                        continue;
-                    }
-                    InOut inOutObject = new InOut();
-                    inOutObject.Intime = lstInDayByUser.FirstOrDefault().Time;
-                    if (lstInDayByUser.Count() > 1)
-                    {
-                        inOutObject.OutTime = lstInDayByUser.LastOrDefault().Time;
-                    }
-                    inOutObject.Uid = uid;
-                    listInoutSave.Add(inOutObject);
-                }
-            }
-            if (listInoutSave.Count > 0)
-            {
-                context.InOuts.AddRange(listInoutSave);
-            }
-            context.SaveChanges();
-            DisposeContext(context);
+            SaveDataGenerateInout(null, dateFrom, DateTo);
         }
-
         public void SaveGenerateInout(int uid, DateTime dateFrom, DateTime? DateTo)
         {
-            InitContext(out context);
-            if (DateTo == null)
-            {
-                DateTo = DateTime.Today;
-            }
-            DateTo = DateTo.Value.AddDays(1).AddSeconds(-1);
-            //del old data
-            var lstInoutDelete = context.InOuts.Where(m => m.Uid == uid && m.Date >= dateFrom && m.Date <= DateTo).ToList();
-            context.InOuts.RemoveRange(lstInoutDelete);
-            //create new data
-
-            var lstInoutRaw = context.DataInOutRaws.Where(m => m.Uid == uid && m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
-            var listInoutSave = new List<InOut>();
-            for (DateTime date = dateFrom; date <= DateTo; date = date.AddDays(1))
-            {
-                var lstInDayByUser = lstInoutRaw.Where(m => m.Time.Date == date).OrderBy(m => m.Time);
-                if (lstInDayByUser == null || lstInDayByUser.Count() == 0)
-                {
-                    continue;
-                }
-                InOut inOutObject = new InOut();
-                inOutObject.Intime = lstInDayByUser.FirstOrDefault().Time;
-                if (lstInDayByUser.Count() > 1)
-                {
-                    inOutObject.OutTime = lstInDayByUser.LastOrDefault().Time;
-                }
-                inOutObject.Uid = uid;
-                listInoutSave.Add(inOutObject);
-            }
-            if (listInoutSave.Count > 0)
-            {
-                context.InOuts.AddRange(listInoutSave);
-            }
-            context.SaveChanges();
-            DisposeContext(context);
+            SaveDataGenerateInout(uid, dateFrom, DateTo);
         }
 
         #region private method
@@ -311,6 +238,64 @@ namespace mtv_management_leave.Lib.Repository
                     }
                 }
             }
+        }
+
+        private void SaveDataGenerateInout(int? uidInut, DateTime dateFrom, DateTime? DateTo)
+        {
+            InitContext(out context);
+            if (DateTo == null)
+            {
+                DateTo = DateTime.Today;
+            }
+            DateTo = DateTo.Value.AddDays(1).AddSeconds(-1);
+            //del old data
+            var lstInoutInDB_Query = context.InOuts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
+            var lstInoutRaw_Query = context.DataInOutRaws.Where(m => m.Uid == uidInut && m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
+            if (uidInut != null)
+            {
+                lstInoutInDB_Query = lstInoutInDB_Query.Where(m => m.Uid == uidInut);
+                lstInoutRaw_Query = lstInoutRaw_Query.Where(m => m.Uid == uidInut);
+            }
+
+            var lstInoutInDB = lstInoutInDB_Query.ToList();
+            var lstInoutDelete = lstInoutInDB.Where(m => m.IsModify == null || m.IsModify == false).ToList();
+            var lstInOutModified = lstInoutInDB.Where(m => m.IsModify != null && m.IsModify == true).ToList();
+            context.InOuts.RemoveRange(lstInoutDelete);
+
+            var lstInoutRaw = lstInoutRaw_Query.ToList();
+            var lstUid = lstInoutRaw.Select(m => m.Uid).Distinct();
+
+            var listInoutSave = new List<InOut>();
+            for (DateTime date = dateFrom; date <= DateTo; date = date.AddDays(1))
+            {
+                foreach (var uid in lstUid)
+                {
+                    if (lstInOutModified.Any(m => m.Uid == uid && m.Date == date))
+                    {
+                        continue; // ko tính toán lại dữ liệu đã được modify 
+                    }
+
+                    var lstInDayByUser = lstInoutRaw.Where(m => m.Uid == uid && m.Time.Date == date).OrderBy(m => m.Time);
+                    if (lstInDayByUser == null || lstInDayByUser.Count() == 0)
+                    {
+                        continue;
+                    }
+                    InOut inOutObject = new InOut();
+                    inOutObject.Intime = lstInDayByUser.FirstOrDefault().Time;
+                    if (lstInDayByUser.Count() > 1)
+                    {
+                        inOutObject.OutTime = lstInDayByUser.LastOrDefault().Time;
+                    }
+                    inOutObject.Uid = uid;
+                    listInoutSave.Add(inOutObject);
+                }
+            }
+            if (listInoutSave.Count > 0)
+            {
+                context.InOuts.AddRange(listInoutSave);
+            }
+            context.SaveChanges();
+            DisposeContext(context);
         }
 
         private class RepoInOut
