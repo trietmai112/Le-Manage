@@ -231,11 +231,15 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Lib\Common.cs" />
+    <Compile Include="Lib\Controls\CardControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
+    <Compile Include="Lib\Extendsions\ObjectExtentsion.cs" />
+    <Compile Include="Lib\Extendsions\TagBuilderExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
+    <Compile Include="Lib\Interface\IControl.cs" />
     <Compile Include="Lib\Interface\IDataBeginYear.cs" />
     <Compile Include="Lib\Interface\ILeaveTotalMonthly.cs" />
     <Compile Include="Lib\Interface\ILeaveBase.cs" />
@@ -275,6 +279,7 @@
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Models\BootGridTableOption.cs" />
+    <Compile Include="Lib\Controls\TableControl.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
     <Compile Include="Models\Entity\DataInOutRaw.cs" />

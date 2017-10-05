@@ -1,11 +1,8 @@
-﻿using mtv_management_leave.Models;
+﻿using mtv_management_leave.Lib.Controls;
+using mtv_management_leave.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
@@ -120,19 +117,26 @@ namespace mtv_management_leave.Lib.Extendsions
             return (T)result;
         }
 
-        public static MvcHtmlString vBootGridFor(this HtmlHelper htmlHelper,
-            BootGridTableOption bootGridTableOption,
-            List<BootGridRowOption> rowOptions)
+        public static TableControl vBootGridFor(this HtmlHelper htmlHelper)
+        {            
+            return new TableControl();
+        }
+
+        public static CardControl vCardPanel(this HtmlHelper htmlHelper)
         {
-            if (string.IsNullOrEmpty(bootGridTableOption.GuiId))
-                bootGridTableOption.GuiId = Guid.NewGuid().ToString("N");
-            var tableHtml = RenderBootGridHtml(bootGridTableOption, rowOptions);
+            return new CardControl();
+        }
 
-            var scriptHtml = RenderBootGridScript(bootGridTableOption, rowOptions);
+        public static MvcHtmlString vCardPanel(this HtmlHelper htmlHelper,
+            string header, string headerSummary = null, MvcHtmlString cardBody = null, Dictionary<string, object> action = null)
+        {
+            var dic = new Dictionary<string, string>();
+            dic.Add("{header}", header);
+            dic.Add("{headerSummary}", headerSummary);
+            dic.Add("{body}", cardBody != null ? cardBody.ToHtmlString() : "");
+            dic.Add("{action}", RenderCardActionHtml(action));
 
-            var result = tableHtml + scriptHtml;
-            
-            return new MvcHtmlString(result);
+            return new MvcHtmlString(CombineVaribleToLayout(_cardPanelTemplate, dic));
         }
     }
 }

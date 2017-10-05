@@ -32,7 +32,7 @@ namespace mtv_management_leave.Models
         public Dictionary<string, string> AjaxParameters { get; set; }
     }
 
-    public class BootGridRowOption
+    public class BootGridColumnOption
     {
         public string FormatJqueryHandler { get; set; }
         public string ColumnHeaderName { get; set; }
