@@ -1,46 +1,41 @@
-﻿
+﻿@model mtv_management_leave.Models.RegisterLeave.SearchRequest
 @{
     ViewBag.Title = "Register leave";
 }
-
-@*@Html.vCardPanel(
-    (string)ViewBag.Title,
-    "You can register leave at here",
-     Html.vBootGridFor(new BootGridTableOption
-     {
-         AjaxParameters = null,
-         ClassName = "table table-striped",
-         GuiId = "register-leave-table",
-         AjaxUrl = "/api/value/value",
-         AjaxSettings = new AjaxSetting
-         {
-             Cache = false,
-             RequestType = "GET"
-         }
-     },
-        new List<BootGridColumnOption>
-        {
-            new BootGridColumnOption{ Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName"},
-            new BootGridColumnOption{ Sortable = true, ColumnHeaderName = "Lave time", MappingFrom = "LeaveTime"}
-        }),
-     new Dictionary<string, object>().vAdd("Register", "").vAdd
-)*@
 
 @(Html.vCardPanel()
         .SetHeader((string)ViewBag.Title)
         .SetSummary("You can register leave at here")
         .SetName("leave-panel")
-        .AddBody(
+        .AddAction("Refesh", new { href = "google.com", onClick = "OnHandlerClick()" })
+        .AddControls(
+            Html.vBootGridHeader()
+            .AddControls(
+
+                Html.vDateTimePickerFor(m => m.DateStart).Wrap("div", new { @class="col-sm-4"}),
+                Html.vDateTimePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" }),
+                @"<div class='col-sm-4'>
+                    <button id='regisButton' class='btn btn-default'>Search</button>
+                    <button id='regisButton' class='btn btn-primary'>Register leave</button>
+                </div>"
+            ),
             Html.vBootGridFor()
-                .SetName("register-leave-table")
-                .SetAjaxUrl("/api/value/value")
-                .SetRequestType("GET")
-                .AddColumn(new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName" })
-                .AddColumn(new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName" })
+                    .SetName("register-leave-table")
+                    .SetAjaxUrl("/api/value/value")
+                    .AddAjaxParameter(Model)
+                    .AddColumn(new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName" })
+                    .AddColumn(new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName" })
         )
-        .AddAction("Refesh", new {href="google.com", onClick="OnHandlerClick()"})
         .ToHtml()
 )
 
+@section Scripts{
+    <script type="text/javascript">
+        $("#regisButton").click(function (e) {
+            $("#register-leave-table").bootgrid("reload");
+        });
+    </script>
+
+}
 
 

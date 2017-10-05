@@ -54,6 +54,16 @@ namespace mtv_management_leave.Lib.Controls
             return this;
         }
 
+        public TableControl AddAjaxParameter(object model)
+        {
+            var dic = model.vGetDictionary();
+            foreach(var d in dic)
+            {
+                AjaxParameters.Add(d.Key, d.Key);
+            }
+            return this;
+        }
+
         public TableControl AddColumn(BootGridColumnOption column)
         {
             Rows.Add(column);
@@ -79,7 +89,7 @@ namespace mtv_management_leave.Lib.Controls
                 int j = 0;
                 foreach (var item in this.AjaxParameters)
                 {
-                    scriptHtml += $"{item.Key}: $('{item.Value}').val()" + (j < this.AjaxParameters.Count - 1 ? "," : "");
+                    scriptHtml += $"{item.Key}: $('#{item.Value}').val()" + (j < this.AjaxParameters.Count - 1 ? "," : "");
                     j++;
                 }
                 scriptHtml += "                             };";
@@ -147,6 +157,12 @@ namespace mtv_management_leave.Lib.Controls
 
            
             return new MvcHtmlString(divTag.ToString());
+        }
+
+        public MvcHtmlString Wrap(string name, object attributes)
+        {
+            var divTag = new TagBuilder(name).vMergeAttributes(attributes.vGetDictionary());
+            return new MvcHtmlString(divTag.vAppendText(this.ToHtml().ToHtmlString()).ToString());
         }
     }
 }

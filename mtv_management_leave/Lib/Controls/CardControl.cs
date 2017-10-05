@@ -3,17 +3,17 @@ using System.Web.Mvc;
 using mtv_management_leave.Lib.Interface;
 using System.Collections.Generic;
 using mtv_management_leave.Lib.Extendsions;
+using System.Web;
 
 namespace mtv_management_leave.Lib.Controls
 {
-    public class CardControl : IControl
+    public class CardControl : ContainerBaseControl
     {
         public string Name { get; private set; }
         public string Header { get; set; }
         public string HeaderSummary { get; set; }
         public string ClassName { get; set; }
         public Dictionary<string, object> Actions { get; set; } = new Dictionary<string, object>();
-        public List<MvcHtmlString> Bodys { get; set; } = new List<MvcHtmlString>();
 
         public CardControl SetName(string name)
         {
@@ -46,19 +46,13 @@ namespace mtv_management_leave.Lib.Controls
             return this;
         }
 
-        public CardControl AddBody(IControl control)
+
+        public override IContainerControl AddControls(params object[] controls)
         {
-            this.Bodys.Add(control.ToHtml());
-            return this;
+            return (CardControl) base.AddControls(controls);
         }
 
-        public CardControl AddBody(MvcHtmlString control)
-        {
-            this.Bodys.Add(control);
-            return this;
-        }
-
-        public MvcHtmlString ToHtml()
+        public override MvcHtmlString ToHtml()
         {            
             var header = $"<h2>{this.Header} <small>{this.HeaderSummary}</small></h2>";
 
@@ -89,9 +83,9 @@ namespace mtv_management_leave.Lib.Controls
             var divBody = new TagBuilder("div")
                 .vAddCssClass("card-body");
 
-            foreach(var b in Bodys)
+            foreach(var b in Controls)
             {
-                divBody.vAppendText(b.ToHtmlString());
+                divBody.vAppendText(b);
             }
 
             var divTag = new TagBuilder("div")
@@ -101,6 +95,7 @@ namespace mtv_management_leave.Lib.Controls
                 .vAppendText(divBody);
 
             return new MvcHtmlString(divTag.ToString());
-        }       
+        }        
     }
+
 }

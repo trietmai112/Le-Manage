@@ -70,7 +70,7 @@ dfn {
   font-style: italic;
 }
 h1 {
-  margin: 0.67em 0;
+  margin: .67em 0;
 }
 mark {
   background: #ff0;
@@ -254,7 +254,7 @@ th {
 .btn:active,
 .dropdown-menu > .disabled > a:focus,
 .dropdown-menu > .disabled > a:hover,
-.form-control,
+m-controlrm-control,
 .navbar-toggle,
 .open > .dropdown-toggle.btn-danger,
 .open > .dropdown-toggle.btn-default,
@@ -1299,7 +1299,7 @@ small {
 .mark,
 mark {
   background-color: #ffa829;
-  padding: 0.2em;
+  padding: .2em;
 }
 .list-inline,
 .list-unstyled {
@@ -2539,7 +2539,7 @@ table th[class*=col-] {
 }
 .table-responsive {
   overflow-x: auto;
-  min-height: 0.01%;
+  min-height: .01%;
 }
 @media screen and (max-width: 767px) {
   .table-responsive {
@@ -3647,7 +3647,7 @@ fieldset[disabled] .btn-link:hover {
   opacity: 0;
   -webkit-transition: opacity .15s linear;
   -o-transition: opacity .15s linear;
-  transition: opacity 0.15s linear;
+  transition: opacity .15s linear;
 }
 .fade.in {
   opacity: 1;
@@ -4900,7 +4900,7 @@ fieldset[disabled] .navbar-inverse .btn-link:hover {
   font-weight: 700;
   color: #fff;
   vertical-align: baseline;
-  border-radius: 0.25em;
+  border-radius: .25em;
 }
 a.label:focus,
 a.label:hover {
@@ -5177,7 +5177,7 @@ a.thumbnail:hover {
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
   -webkit-transition: width .6s ease;
   -o-transition: width .6s ease;
-  transition: width 0.6s ease;
+  transition: width .6s ease;
 }
 .progress-bar-striped,
 .progress-striped .progress-bar {
@@ -7019,11 +7019,11 @@ button.close {
 }
 .waves-button {
   padding: .85em 1.1em;
-  border-radius: 0.2em;
+  border-radius: .2em;
 }
 .waves-button-input {
   margin: 0;
-  padding: 0.85em 1.1em;
+  padding: .85em 1.1em;
 }
 .waves-input-wrapper {
   border-radius: .2em;
@@ -7052,7 +7052,7 @@ button.close {
   -webkit-transition: all .3s;
   -moz-transition: all .3s;
   -o-transition: all .3s;
-  transition: all 0.3s;
+  transition: all .3s;
 }
 .waves-float:active {
   -webkit-box-shadow: 0 8px 20px 1px rgba(0, 0, 0, 0.3);
@@ -8049,7 +8049,7 @@ h6 small {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .s-profile .main-menu {
   display: none;
@@ -8071,7 +8071,7 @@ h6 small {
   -o-transition: color;
   transition: color;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .main-menu .active > a,
 .main-menu a.active,
@@ -8213,7 +8213,7 @@ h6 small {
   -o-transition: background-color;
   transition: background-color;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .dropdown-menu[class*=bgm-] > li > a {
   color: #fff;
@@ -8346,7 +8346,7 @@ h6 small {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 #chat .chat-search .zmdi-search {
   position: absolute;
@@ -9464,7 +9464,7 @@ h6 small {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .profile-view .pv-body {
   margin-top: 70px;
@@ -9689,7 +9689,7 @@ h6 small {
 #todo {
   background: #FFC107;
   color: #fff;
-  font-family: satisfy, cursive;
+  font-family: satisfy,cursive;
 }
 #todo .card-header {
   padding: 28px 35px 20px;
@@ -9968,7 +9968,7 @@ fieldset[disabled] .btn-inverse:hover {
   font-size: 23px;
   transition: all;
   -webkit-transition-duration: .5s;
-  transition-duration: 0.5s;
+  transition-duration: .5s;
 }
 .btn-float:hover i {
   -webkit-transform: rotate(360deg);
@@ -10226,7 +10226,7 @@ html:not(.ie9) .select.fg-line:before {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .fg-line:not([class*=has-]):after {
   background: #2196F3;
@@ -11105,7 +11105,7 @@ html:not(.ie9) .select.fg-line:before {
   -o-transition: background-color;
   transition: background-color;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .mbl-compose button {
   position: absolute;
@@ -11232,7 +11232,7 @@ html:not(.ie9) .select.fg-line:before {
   -o-transition: width;
   transition: width;
   -webkit-transition-duration: .2s;
-  transition-duration: 0.2s;
+  transition-duration: .2s;
 }
 .lcb-navigation a {
   color: #fff;
@@ -11764,7 +11764,7 @@ html:not(.ie9) .select.fg-line:before {
     -o-transition: all;
     transition: all;
     -webkit-transition-duration: .3s;
-    transition-duration: 0.3s;
+    transition-duration: .3s;
   }
   .p-menu .pms-inner input[type=text]:focus {
     border-color: #DFDFDF;
@@ -12133,7 +12133,7 @@ html:not(.ismobile) .page-loader .preloader p {
   color: #6B6B6B;
 }
 .ahs-close:hover {
-  opacity: 0.8;
+  opacity: .8;
 }
 .ma-backdrop {
   position: fixed;
@@ -12300,7 +12300,7 @@ html:not(.ismobile) .page-loader .preloader p {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .pt-inner .pti-footer > a:hover {
   opacity: .85;
@@ -12523,7 +12523,7 @@ html:not(.ismobile) .page-loader .preloader p {
     -o-transform: scale(0) rotate(-360deg);
     transform: scale(0) rotate(-360deg);
     -webkit-transition-duration: .5s;
-    transition-duration: 0.5s;
+    transition-duration: .5s;
   }
   #header-alt .skin-switch .dropdown-menu .ss-skin {
     position: absolute;
@@ -12824,7 +12824,7 @@ html:not(.ismobile) .page-loader .preloader p {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .2s;
-  transition-duration: 0.2s;
+  transition-duration: .2s;
 }
 .event-tag > span > input[type=radio] {
   margin: 0;
@@ -12880,7 +12880,7 @@ html:not(.ismobile) .page-loader .preloader p {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 [data-calendar-month="0"] {
   background-image: url(../img/calendar/january.jpg);
@@ -13278,7 +13278,7 @@ table.dataTable.no-footer {
   right: 15px;
   top: 5px;
 }
-.dataTables_filter label .form-control {
+.dataTables_filter label .fg-line:not(.form-group) {
   padding-right: 35px;
   width: 100% !important;
   margin: 0 !important;
@@ -14100,7 +14100,7 @@ table.dataTable.no-footer {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .8s;
-  transition-duration: 0.8s;
+  transition-duration: .8s;
 }
 .lg-outer .lg-toogle-thumb:hover {
   -webkit-transform: rotate(360deg);
@@ -14215,7 +14215,7 @@ table.dataTable.no-footer {
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .swal2-modal .styled:not(:hover) {
   opacity: .85;
@@ -14323,7 +14323,7 @@ html.ie9 .mCS-minimal-dark.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_b
   -o-transition: all;
   transition: all;
   -webkit-transition-duration: .3s;
-  transition-duration: 0.3s;
+  transition-duration: .3s;
 }
 .dropzone .dz-message span:before {
   content: '\f21e';
@@ -14350,4 +14350,7 @@ html.ie9 .mCS-minimal-dark.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_b
 }
 .validation-summary-errors ul {
   list-style: none;
+}
+.dtp-container {
+  margin-top: -5px;
 }

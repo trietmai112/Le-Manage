@@ -45,6 +45,32 @@ namespace mtv_management_leave.Lib.Extendsions
             return new MvcHtmlString(CombineVaribleToLayout(_textboxTemplate, dictionary));
         }
 
+         public static MvcHtmlString vDateTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+             Expression<Func<TModel, TProperty>> expression,
+             string placeHolder = null,
+             object attributes = null)
+        {
+            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+
+            var inputClass = "form-control date-time-picker input-sm ";
+            var placeHolderText = string.IsNullOrEmpty(placeHolder) ? metadata.GetPlaceHolder() : placeHolder;
+
+            var dic = new Dictionary<string, object>();
+            dic.Add("class", inputClass);
+            dic.Add("placeholder", placeHolderText);
+
+            var inputHtmlString = htmlHelper.TextBoxFor(expression, dic);
+            var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
+            var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
+
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("{label}", labelHtmlString.ToHtmlString());
+            dictionary.Add("{textbox}", inputHtmlString.ToHtmlString());
+            dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
+
+            return new MvcHtmlString(CombineVaribleToLayout(_dateTimePickerTemplate, dictionary));
+        }
+
         public static MvcHtmlString vPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TProperty>> expression)
         {
@@ -127,16 +153,9 @@ namespace mtv_management_leave.Lib.Extendsions
             return new CardControl();
         }
 
-        public static MvcHtmlString vCardPanel(this HtmlHelper htmlHelper,
-            string header, string headerSummary = null, MvcHtmlString cardBody = null, Dictionary<string, object> action = null)
+        public static TableHeaderControl vBootGridHeader(this HtmlHelper htmlHelper)
         {
-            var dic = new Dictionary<string, string>();
-            dic.Add("{header}", header);
-            dic.Add("{headerSummary}", headerSummary);
-            dic.Add("{body}", cardBody != null ? cardBody.ToHtmlString() : "");
-            dic.Add("{action}", RenderCardActionHtml(action));
-
-            return new MvcHtmlString(CombineVaribleToLayout(_cardPanelTemplate, dic));
+            return new TableHeaderControl();
         }
     }
 }

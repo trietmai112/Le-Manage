@@ -232,13 +232,17 @@
     </Compile>
     <Compile Include="Lib\Common.cs" />
     <Compile Include="Lib\Controls\CardControl.cs" />
+    <Compile Include="Lib\Controls\ContainerBaseControl.cs" />
+    <Compile Include="Lib\Controls\TableHeaderControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
+    <Compile Include="Lib\Extendsions\MvcHtmlStringExtension.cs" />
     <Compile Include="Lib\Extendsions\ObjectExtentsion.cs" />
     <Compile Include="Lib\Extendsions\TagBuilderExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
+    <Compile Include="Lib\Interface\IContainerControl.cs" />
     <Compile Include="Lib\Interface\IControl.cs" />
     <Compile Include="Lib\Interface\IDataBeginYear.cs" />
     <Compile Include="Lib\Interface\IRequestChangeInout.cs" />
@@ -280,8 +284,8 @@
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
-    <Compile Include="Models\BootGridTableOption.cs" />
     <Compile Include="Lib\Controls\TableControl.cs" />
+    <Compile Include="Models\BootGridTableOption.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
     <Compile Include="Models\Entity\DataInOutRaw.cs" />
@@ -299,6 +303,7 @@
     <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\MappingInOut.cs" />
+    <Compile Include="Models\RegisterLeave\SearchRequest.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

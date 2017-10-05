@@ -11,8 +11,8 @@ namespace mtv_management_leave.Controllers
     
     public class ValueController: ApiController
     {
-        [HttpGet, Route("api/value/value")]
-        public IHttpActionResult Value()
+        [HttpPost, Route("api/value/value"), AllowAnonymous]
+        public IHttpActionResult Value(Models.RegisterLeave.SearchRequest model)
         { 
             return Json( new Lib.Repository.BootGridReponse<object>
             {
