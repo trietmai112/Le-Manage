@@ -49,10 +49,12 @@ namespace mtv_management_leave.Lib.Repository
 
             if(context.RegisterLeaves.Any(m=>m.Status!= Common.StatusLeave.E_Reject && m.Uid == leave.Uid && m.DateStart< leave.DateEnd && m.DateEnd>= leave.DateStart))
             {
+                DisposeContext(context);
                 throw new Exception("Duplicate Data!");
             }
             if(leave.DateStart.Hour<8 || leave.DateEnd.Hour > 17)
             {
+                DisposeContext(context);
                 throw new Exception("Please register leave in 8:00 to 17:00!");
             }
 
@@ -144,6 +146,7 @@ namespace mtv_management_leave.Lib.Repository
             var lstLeave = context.RegisterLeaves.Where(m => lstLeaveId.Contains(m.Id)).ToList();
             if(lstLeave.Any(m=>m.Status!= Common.StatusLeave.E_Register))
             {
+                DisposeContext(context);
                 throw new Exception("Please delete only value register status!");
             }
             context.RegisterLeaves.RemoveRange(lstLeave);
@@ -193,6 +196,7 @@ namespace mtv_management_leave.Lib.Repository
 
             if (start > startBreak && end < endBreak)
             {
+                DisposeContext(context);
                 throw new Exception("Register in the breaktime");
             }
 

@@ -10,12 +10,13 @@ namespace mtv_management_leave.Lib.Interface
 {
     interface IRequestChangeInout
     {
-        void GetRequestChangeInout(DateTime dateFrom, DateTime DateTo);
-        void GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, int uid);
-        void GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, List<int> lstUid);
+        List<RequestChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo);
+        List<RequestChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, int uid);
+        List<RequestChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, List<int> lstUid);
         void ApproveRequestChange(List<int> lstIdRequest);
         void RejectRequestChange(List<int> lstIdRequest);
         void SaveRequestChange(RequestChangeInout request);
-        void DeleteRequestChange(int requestId);
+        void DeleteRequestChange(int idRequest);
+        void DeleteRequestChange(List<int> lstIdRequest);
     }
 }
