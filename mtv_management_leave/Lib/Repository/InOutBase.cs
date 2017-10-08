@@ -16,12 +16,12 @@ namespace mtv_management_leave.Lib.Repository
         {
         }
 
-        public List<MappingInOut> MappingInoutInValid(DateTime DateStart, DateTime DateEnd)
+        public List<RepoMappingInOut> MappingInoutInValid(DateTime DateStart, DateTime DateEnd)
         {
             return MappingInoutLeave(DateStart, DateEnd).Where(m => m.IsValid == false).ToList();
         }
 
-        public List<MappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd, int uid)
+        public List<RepoMappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd, int uid)
         {
             return MappingInoutLeave(DateStart, DateEnd, uid).Where(m => m.IsValid == false).ToList();
         }
@@ -31,11 +31,11 @@ namespace mtv_management_leave.Lib.Repository
         /// </summary>
         /// <param name="MonthYear"></param>
         /// <returns></returns>
-        public List<MappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd)
+        public List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd)
         {
             return CalculateMappingInoutLeave(DateStart, DateEnd, null);
         }
-        public List<MappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd, int uid)
+        public List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd, int uid)
         {
             return CalculateMappingInoutLeave(DateStart, DateEnd, uid);
         }
@@ -50,14 +50,14 @@ namespace mtv_management_leave.Lib.Repository
         }
 
         #region private method
-        private List<MappingInOut> CalculateMappingInoutLeave(DateTime DateStart, DateTime DateEnd, int? uid)
+        private List<RepoMappingInOut> CalculateMappingInoutLeave(DateTime DateStart, DateTime DateEnd, int? uid)
         {
             if (DateStart.Year != DateEnd.Year || DateStart.Month != DateEnd.Month)
             {
                 throw new Exception("Please search data in 1 month");
             }
             InitContext(out context);
-            List<MappingInOut> lstResult = new List<MappingInOut>();
+            List<RepoMappingInOut> lstResult = new List<RepoMappingInOut>();
             //get all userid
             var queryUser = context.Users.Where(m => m.DateResign == null || (m.DateResign != null && m.DateResign.Value >= DateStart)).Select(m => new { m.Id, m.DateResign, m.FullName });
             if (uid != null)
@@ -109,7 +109,7 @@ namespace mtv_management_leave.Lib.Repository
                     }
                     var inout = lstInout.Where(m => m.Uid == user.Id && m.Date == date).FirstOrDefault();
                     var lstleaveInDay = lstLeave.Where(m => m.Uid == user.Id && (m.DateRegister == date || (m.DateStart <= date && m.DateEnd >= date))).OrderBy(m => m.DateStart).ToList();
-                    MappingInOut mapping = new MappingInOut();
+                    RepoMappingInOut mapping = new RepoMappingInOut();
                     mapping.Uid = user.Id;
                     mapping.FullName = user.FullName;
                     mapping.Date = date;

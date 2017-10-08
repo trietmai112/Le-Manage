@@ -15,6 +15,9 @@ namespace mtv_management_leave.Lib.Interface
     {
         void SaveDataBeginYear(DataBeginYear dataInput);
         void CalculateFromLastYear(DateTime MonthYear);
-        void CalculateFromLastYear(DateTime MonthYear, int uid);
+        void CalculateFromLastYear(DateTime MonthYear, List<int> lstUid);
+        List<DataBeginYear> GetDataBeginYear(int year);
+        List<DataBeginYear> GetDataBeginYear(int year, int uid);
+        List<DataBeginYear> getDataBeginyear(int year, List<int> lstUid);
     }
 }

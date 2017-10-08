@@ -88,3 +88,5 @@ F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_managemen
 F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.csprojResolveAssemblyReference.cache
 F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.Migrations.InitTables.resources
 F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.csproj.GenerateResource.Cache
+F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.Migrations.Update_LeaveMonthly.resources
+F:\WorkProject\mtv_management_leave\mtv_management_leave\obj\Debug\mtv_management_leave.Migrations.UserSeniority_changeColumnType.resources

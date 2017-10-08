@@ -21,5 +21,6 @@ namespace mtv_management_leave.Lib.Interface
         List<DateTime> GetListDayOffCompany(LeaveManagementContext context, DateTime dateStart, DateTime dateEnd);
         bool IsDateOffCompany(LeaveManagementContext context, DateTime date);
         int GetLeaveTypeId(LeaveManagementContext context, string CodeLeave);
+        List<LeaveMonthly> GetTotalLeaveMonthly(LeaveManagementContext context, DateTime monthTo, List<int> lstUid);
     }
 }
