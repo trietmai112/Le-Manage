@@ -124,6 +124,10 @@ namespace mtv_management_leave.Lib.Repository
             {
                 throw new Exception("Invalidate Input Inout!");
             }
+            if (request.Intime != null && request.OutTime != null && request.Intime.Value.Date != request.OutTime.Value.Date)
+            {
+                throw new Exception("Please Update Inout In Day!");
+            }
             if (request.Intime != null)
             {
                 request.Date = request.Intime.Value;

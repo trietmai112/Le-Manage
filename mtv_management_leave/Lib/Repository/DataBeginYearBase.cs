@@ -46,6 +46,33 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
+        public void SaveDataBeginYear(DataBeginYear dataInput, List<int> lstUid)
+        {
+            InitContext(out context);
+            var dataBeginDB = context.DataBeginYears.Where(m => lstUid.Contains(m.Uid) && m.DateBegin.Year == dataInput.DateBegin.Year).ToList();
+            List<DataBeginYear> dataNew = new List<DataBeginYear>();
+            foreach (var uid in lstUid)
+            {
+                var dataAlready = dataBeginDB.Where(m => m.Uid == uid).FirstOrDefault();
+                if(dataAlready!= null)
+                {
+                    dataAlready.DateBegin = dataInput.DateBegin;
+                    dataAlready.AnnualLeave = dataInput.AnnualLeave;
+                }
+                else
+                {
+                    DataBeginYear dataInputByUser = new DataBeginYear();
+                    dataInputByUser.Uid = uid;
+                    dataInputByUser.DateBegin = dataInput.DateBegin;
+                    dataInputByUser.AnnualLeave = dataInput.AnnualLeave;
+                    context.DataBeginYears.Add(dataInputByUser);
+                }
+
+            }
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
         public List<DataBeginYear> GetDataBeginYear(int year)
         {
             return privateGetDataBeginYear(year, null);
@@ -59,6 +86,14 @@ namespace mtv_management_leave.Lib.Repository
         public List<DataBeginYear> getDataBeginyear(int year, List<int> lstUid)
         {
             return privateGetDataBeginYear(year, lstUid);
+        }
+
+        public void deleteDataBeginYear(List<int> lstId)
+        {
+            InitContext(out context);
+            var dataDel =  context.DataBeginYears.Where(m => lstId.Contains(m.Id)).ToList();
+            context.DataBeginYears.RemoveRange(dataDel);
+            DisposeContext(context);
         }
 
         #region private Method
@@ -98,6 +133,8 @@ namespace mtv_management_leave.Lib.Repository
             }
             DisposeContext(context);
         }
+
+        
 
 
         #endregion

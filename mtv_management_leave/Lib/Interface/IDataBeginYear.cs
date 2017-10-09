@@ -14,10 +14,13 @@ namespace mtv_management_leave.Lib.Interface
     interface IDataBeginYear
     {
         void SaveDataBeginYear(DataBeginYear dataInput);
+        void SaveDataBeginYear(DataBeginYear dataInput, List<int> lstUid);
         void CalculateFromLastYear(DateTime MonthYear);
         void CalculateFromLastYear(DateTime MonthYear, List<int> lstUid);
         List<DataBeginYear> GetDataBeginYear(int year);
         List<DataBeginYear> GetDataBeginYear(int year, int uid);
         List<DataBeginYear> getDataBeginyear(int year, List<int> lstUid);
+
+        void deleteDataBeginYear(List<int> lstId);
     }
 }

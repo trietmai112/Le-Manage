@@ -13,7 +13,8 @@ namespace mtv_management_leave.Lib.Interface
         List<AddLeave> GetAddLeaveBonus(DateTime DateTo);
         List<AddLeave> GetAddLeaveBonus(DateTime dateFrom, DateTime DateTo);
         List<AddLeave> GetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid);
-        void SaveAddLeaveBonus(AddLeave UserSeniorityInput);
+        void SaveAddLeaveBonus(AddLeave addLeaveInput);
+        void SaveAddLeaveBonus(AddLeave addLeaveInput, List<int> lstUid);
         void DeleteAddLeaveBonus(List<int> lstIds);
         void DeleteAddLeaveBonus(DateTime dateFrom, DateTime dateTo);
         void DeleteAddLeaveBonus(DateTime dateFrom, DateTime dateTo, List<int> lstUid);

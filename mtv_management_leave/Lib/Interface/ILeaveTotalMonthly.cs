@@ -1,5 +1,6 @@
 ﻿using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace mtv_management_leave.Lib.Interface
     {
         List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear);
         List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear, List<int> lstUid);
+        List<ResponseLeaveTotalMonthly> GetTotalMonthlyBeginYear(DateTime monthYear, List<int> lstUid);
 
         void SaveLastTotalMonthly(DateTime MonthTo);
         void SaveLastTotalMonthly(DateTime MonthTo, List<int> lstUid);
@@ -25,7 +27,9 @@ namespace mtv_management_leave.Lib.Interface
         void ReCalculateTotalMonthlyAllYear(DateTime MonthTo);
         void ReCalculateTotalMonthlyAllYear(DateTime MonthTo, List<int> lstUid);
 
-     
+
+
+
 
     }
 }

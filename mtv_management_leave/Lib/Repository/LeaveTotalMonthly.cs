@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -87,7 +88,7 @@ namespace mtv_management_leave.Lib.Repository
                 LeaveMonthly leaveMon = lstTotalMonthlyAlready.Where(m => m.Uid == item.Uid).FirstOrDefault();
                 if (leaveMon == null)
                 {
-                    context.LeaveMonthlies.Add(leaveMon);
+                    context.LeaveMonthlies.Add(item);
                 }
                 else
                 {
@@ -116,6 +117,20 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
             return lstResult;
         }
+
+        public List<ResponseLeaveTotalMonthly> GetTotalMonthlyBeginYear(DateTime monthYear, List<int> lstUid)
+        {
+            List<ResponseLeaveTotalMonthly> result = new List<ResponseLeaveTotalMonthly>();
+            var lstLeaveMonthly = new List<LeaveMonthly>();
+            for (DateTime month = new DateTime(monthYear.Year,1,1); month<= monthYear; month= month.AddMonths(1))
+            {
+                lstLeaveMonthly.AddRange(PrivateGetLastTotalMonthly(month, lstUid));
+            }
+            result = lstLeaveMonthly.Select(m => new ResponseLeaveTotalMonthly() { FullName = m.UserInfo.FullName, Id = m.Id, LeaveAvailable = m.LeaveAvailable, LeaveNonPaid = m.LeaveNonPaid, LeaveRemain = m.LeaveRemain, LeaveUsed = m.LeaveUsed, Month = m.Month, Uid = m.Uid }).ToList();
+            result = result.OrderBy(m => m.Uid).ThenBy(m => m.Month).ToList();
+            return result;
+        }
+
 
         #endregion
     }

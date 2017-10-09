@@ -89,7 +89,7 @@ namespace mtv_management_leave.Lib.Repository
         public double GetAnnualBonus(LeaveManagementContext context, int uid, DateTime dateTo)
         {
             DateTime BeginYear = new DateTime(dateTo.Year, 1, 1);
-            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd>= BeginYear && m.DateAdd.Value<= dateTo).Sum(m => m.AddLeaveHour ?? 0);
+            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd>= BeginYear && m.DateAdd.Value<= dateTo).ToList().Sum(m => m.AddLeaveHour ?? 0);
             return annualBonus;
         }
         public double GetHourLeaveInYear(LeaveManagementContext context, int uid, DateTime dateTo)
@@ -104,7 +104,7 @@ namespace mtv_management_leave.Lib.Repository
             DateTime beginYear = new DateTime(dateTo.Year, 1, 1);
             double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateStart>= beginYear && m.DateStart <= dateTo && m.Status != Common.StatusLeave.E_Reject
             && lstLeaveTypeIds.Contains(m.LeaveTypeId)
-            ).Sum(m => m.RegisterHour ?? 0);
+            ).Select(m=>m.RegisterHour).ToList().Sum(m => m ?? 0);
             return leaveInYear;
         }
         public List<DateTime> GetListDayOffCompany(LeaveManagementContext context, int Year)
@@ -161,8 +161,8 @@ namespace mtv_management_leave.Lib.Repository
             List<LeaveMonthly> lstResult = new List<LeaveMonthly>();
             foreach (var uid in lstUserId)
             {
-                var AnnualLeave_LastMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart <= lastMonth).Sum(m => m.RegisterHour);
-                var AnnualLeave_ThisMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart > lastMonth && m.DateStart <= endMonth).Sum(m => m.RegisterHour);
+                var AnnualLeave_LastMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart <= lastMonth).Select(m=>m.RegisterHour).ToList().Sum(m => m);
+                var AnnualLeave_ThisMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart > lastMonth && m.DateStart <= endMonth).Select(m=> m.RegisterHour).ToList().Sum(m => m);
                 var Annual_Available_BeginYear = lstAvailableBeginYear.Where(m => m.Uid == uid && m.DateBegin <= endMonth).Select(m => m.AnnualLeave).FirstOrDefault();
                 var SeniorityObj = lstSeniorities.Where(m => m.Uid == uid).FirstOrDefault();
                 double Seniority_ByUser = 0;
@@ -184,7 +184,7 @@ namespace mtv_management_leave.Lib.Repository
                         case 12: Seniority_ByUser = SeniorityObj.Month12 ?? 0; break;
                     }
                 }
-                var Annual_Add_ByUser = lstLeaveAdd.Where(m => m.Uid == uid).Sum(m => m.AddLeaveHour);
+                var Annual_Add_ByUser = lstLeaveAdd.Where(m => m.Uid == uid).ToList().Sum(m => m.AddLeaveHour);
                 LeaveMonthly leaveMon = new LeaveMonthly();
                 leaveMon.LeaveAvailable = Annual_Available_BeginYear - AnnualLeave_LastMonth_ByUser + Seniority_ByUser + Annual_Add_ByUser;
                 leaveMon.LeaveUsed = AnnualLeave_ThisMonth_ByUser;

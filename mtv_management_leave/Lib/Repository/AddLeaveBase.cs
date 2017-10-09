@@ -77,6 +77,32 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
+        public void SaveAddLeaveBonus(AddLeave addLeaveInput, List<int> lstUid)
+        {
+            InitContext(out context);
+            var addLeavesDb = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd == addLeaveInput.DateAdd && lstUid.Contains(m.Uid)).ToList();
+            foreach (var uid in lstUid)
+            {
+                var leaveDB = addLeavesDb.Where(m => m.Uid == uid).FirstOrDefault();
+                if (leaveDB != null)
+                {
+                    leaveDB.AddLeaveHour = addLeaveInput.AddLeaveHour;
+                }
+                else
+                {
+                    AddLeave newAdd = new AddLeave();
+                    newAdd.Uid = addLeaveInput.Uid;
+                    newAdd.AddLeaveHour = addLeaveInput.AddLeaveHour;
+                    newAdd.DateAdd = addLeaveInput.DateAdd;
+                    newAdd.Reason = addLeaveInput.Reason;
+                    context.AddLeaves.Add(newAdd);
+                }
+            }
+          
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
         #region Private method
         private List<AddLeave> PrivateGetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {

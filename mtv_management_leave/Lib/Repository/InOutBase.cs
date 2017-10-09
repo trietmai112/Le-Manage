@@ -175,10 +175,10 @@ namespace mtv_management_leave.Lib.Repository
                     isValid = true;
                     timeDiff = 0;
                 }
-                else if (lstLeave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).Sum(m => m.RegisterHour ?? 0) < 8) // dang ky leave duoi 8 tieng
+                else if (lstLeave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0) < 8) // dang ky leave duoi 8 tieng
                 {
                     isValid = false;
-                    timeDiff = (8 - lstLeave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).Sum(m => m.RegisterHour ?? 0)) * 60;
+                    timeDiff = (8 - lstLeave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0)) * 60;
                 }
             }
             else // co in out
