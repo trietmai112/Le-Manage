@@ -215,6 +215,8 @@
     <Compile Include="Lib\Interface\IAccountBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
     <Compile Include="Lib\Interface\IDataBeginYear.cs" />
+    <Compile Include="Lib\Interface\IDayOffCompany.cs" />
+    <Compile Include="Lib\Interface\IAddLeave.cs" />
     <Compile Include="Lib\Interface\IUserSeniority.cs" />
     <Compile Include="Lib\Interface\IRequestChangeInout.cs" />
     <Compile Include="Lib\Interface\ILeaveTotalMonthly.cs" />
@@ -226,6 +228,8 @@
     <Compile Include="Lib\Repository\AccountBase.cs" />
     <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
     <Compile Include="Lib\Repository\DataBeginYearBase.cs" />
+    <Compile Include="Lib\Repository\DayOffCompanyBase.cs" />
+    <Compile Include="Lib\Repository\AddLeaveBase.cs" />
     <Compile Include="Lib\Repository\UserSeniorityBase.cs" />
     <Compile Include="Lib\Repository\RequestChangeInoutBase.cs" />
     <Compile Include="Lib\Repository\InOutBase.cs" />
@@ -243,6 +247,10 @@
     <Compile Include="Migrations\201710081536331_UserSeniority_changeColumnType.cs" />
     <Compile Include="Migrations\201710081536331_UserSeniority_changeColumnType.Designer.cs">
       <DependentUpon>201710081536331_UserSeniority_changeColumnType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.cs" />
+    <Compile Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.Designer.cs">
+      <DependentUpon>201710090911177_AddleaveBonus_Remove_Column.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
@@ -628,6 +636,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710081536331_UserSeniority_changeColumnType.resx">
       <DependentUpon>201710081536331_UserSeniority_changeColumnType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.resx">
+      <DependentUpon>201710090911177_AddleaveBonus_Remove_Column.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

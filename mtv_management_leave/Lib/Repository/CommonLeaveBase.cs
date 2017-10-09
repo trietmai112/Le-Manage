@@ -86,12 +86,13 @@ namespace mtv_management_leave.Lib.Repository
             }
             return Seniority;
         }
-        public double GetAnnualBonus(LeaveManagementContext context, int uid, int year)
+        public double GetAnnualBonus(LeaveManagementContext context, int uid, DateTime dateTo)
         {
-            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd.Value.Year == year).Sum(m => m.AddLeaveHour ?? 0);
+            DateTime BeginYear = new DateTime(dateTo.Year, 1, 1);
+            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd>= BeginYear && m.DateAdd.Value<= dateTo).Sum(m => m.AddLeaveHour ?? 0);
             return annualBonus;
         }
-        public double GetHourLeaveInYear(LeaveManagementContext context, int uid, int year)
+        public double GetHourLeaveInYear(LeaveManagementContext context, int uid, DateTime dateTo)
         {
             //1. bỏ đi số ngày từ chối
             //2. bỏ đi loại thai sản
@@ -100,7 +101,8 @@ namespace mtv_management_leave.Lib.Repository
             //5. bỏ đi loại other
             var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode == Common.TypeLeave.E_AnnualLeave.ToString()).Select(m => m.Id).ToList();
             //int rejectType = (int)Common.StatusLeave.E_Reject;
-            double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateRegister.Year == year && m.Status != Common.StatusLeave.E_Reject
+            DateTime beginYear = new DateTime(dateTo.Year, 1, 1);
+            double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateStart>= beginYear && m.DateStart <= dateTo && m.Status != Common.StatusLeave.E_Reject
             && lstLeaveTypeIds.Contains(m.LeaveTypeId)
             ).Sum(m => m.RegisterHour ?? 0);
             return leaveInYear;

@@ -8,6 +8,7 @@ namespace mtv_management_leave.Models.Response
 {
     public class ResponseLeave
     {
+        public int Id { get; set; }
         public int Uid { get; set; }
         public string FullName { get; set; }
         public string LeaveFrom { get; set; }

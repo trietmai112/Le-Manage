@@ -24,7 +24,7 @@ namespace mtv_management_leave.Lib.Repository
 
         public void GenerateUserSeniority(int year, List<int> lstUid)
         {
-
+            generate(year, lstUid);
         }
 
         public List<UserSeniority> GetUserSeniority(int year)
@@ -140,6 +140,34 @@ namespace mtv_management_leave.Lib.Repository
             }
             context.SaveChanges();
             DisposeContext(context);
+        }
+
+        public void SaveUserSeniority(UserSeniority UserSeniorityInput)
+        {
+            InitContext(out context);
+            var inDB = context.UserSeniorities.Where(m => m.Year == UserSeniorityInput.Year && m.Uid == UserSeniorityInput.Uid).FirstOrDefault();
+            if(inDB!= null)
+            {
+                inDB.Month1 = UserSeniorityInput.Month1;
+                inDB.Month2 = UserSeniorityInput.Month2;
+                inDB.Month3 = UserSeniorityInput.Month3;
+                inDB.Month4 = UserSeniorityInput.Month4;
+                inDB.Month5 = UserSeniorityInput.Month5;
+                inDB.Month6 = UserSeniorityInput.Month6;
+                inDB.Month7 = UserSeniorityInput.Month7;
+                inDB.Month8 = UserSeniorityInput.Month8;
+                inDB.Month9 = UserSeniorityInput.Month9;
+                inDB.Month10 = UserSeniorityInput.Month10;
+                inDB.Month11 = UserSeniorityInput.Month11;
+                inDB.Month12 = UserSeniorityInput.Month12;
+            }
+            else
+            {
+                context.UserSeniorities.Add(UserSeniorityInput);
+            }
+            context.SaveChanges();
+            DisposeContext(context);
+                
         }
     }
 

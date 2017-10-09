@@ -15,5 +15,7 @@ namespace mtv_management_leave.Lib.Interface
         void GenerateUserSeniority(int year);
         void GenerateUserSeniority(int year, List<int> lstUid);
 
+        void SaveUserSeniority(UserSeniority UserSeniorityInput);
+
     }
 }
