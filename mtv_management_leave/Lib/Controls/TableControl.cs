@@ -59,7 +59,7 @@ namespace mtv_management_leave.Lib.Controls
             var dic = model.vGetDictionary();
             foreach(var d in dic)
             {
-                AjaxParameters.Add(d.Key, d.Key);
+                AjaxParameters.Add(d.Key.ToLower(), d.Key);
             }
             return this;
         }
@@ -70,7 +70,7 @@ namespace mtv_management_leave.Lib.Controls
             return this;
         }
 
-        public TableControl AddColumnRange(List<BootGridColumnOption> columns)
+        public TableControl AddColumnRange(params BootGridColumnOption[] columns)
         {
             Rows.AddRange(columns);
             return this;
@@ -101,6 +101,10 @@ namespace mtv_management_leave.Lib.Controls
             scriptHtml += $"                        cache: {this.AjaxSetting.Cache.ToString().ToLower()}";
             scriptHtml += "                 },";
             scriptHtml += $"                url: '{this.AjaxUrl}',";
+            scriptHtml += $"                selection: true,";
+            scriptHtml += $"                rowSelect: true,";
+            scriptHtml += $"                keepSelection: true,";
+            scriptHtml += $"                multiSelect: true,";
             scriptHtml += "                 formatters: {";
 
             //format data on row
@@ -132,11 +136,11 @@ namespace mtv_management_leave.Lib.Controls
             {
                 var thTag = new TagBuilder("th")
                     .vMergeAttribute("data-column-id", row.MappingFrom)
-                    .vMergeAttribute("data-sortable", row.Sortable.ToString());
+                    .vMergeAttribute("data-sortable", row.Sortable.ToString().ToLower());
                 if (row.Identify)
                 {
                     thTag.Attributes.Add("data-type", "numeric");
-                    thTag.Attributes.Add("data-identifier", row.Identify.ToString());
+                    thTag.Attributes.Add("data-identifier", row.Identify.vToString().ToLower());
                 }
                 if (!string.IsNullOrEmpty(row.OrderBy)) thTag.Attributes.Add("data-order", row.OrderBy);
                 thTag.SetInnerText(row.ColumnHeaderName);
@@ -157,12 +161,6 @@ namespace mtv_management_leave.Lib.Controls
 
            
             return new MvcHtmlString(divTag.ToString());
-        }
-
-        public MvcHtmlString Wrap(string name, object attributes)
-        {
-            var divTag = new TagBuilder(name).vMergeAttributes(attributes.vGetDictionary());
-            return new MvcHtmlString(divTag.vAppendText(this.ToHtml().ToHtmlString()).ToString());
         }
     }
 }

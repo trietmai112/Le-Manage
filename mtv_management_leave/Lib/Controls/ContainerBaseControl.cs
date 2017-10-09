@@ -43,11 +43,5 @@ namespace mtv_management_leave.Lib.Controls
             }
             return this;
         }
-
-        public MvcHtmlString Wrap(string name, object attributes)
-        {
-            var divTag = new TagBuilder(name).vMergeAttributes(attributes.vGetDictionary());
-            return new MvcHtmlString(divTag.vAppendText(this.ToHtml().ToHtmlString()).ToString());
-        }
     }
 }

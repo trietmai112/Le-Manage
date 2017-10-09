@@ -1,0 +1,57 @@
+﻿@model mtv_management_leave.Models.RegisterLeave.SearchRequest
+@{
+    ViewBag.Title = "Leave management";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can check all register leave at here</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @Html.HiddenFor(m => m.Uid)
+            <div class="col-sm-12">
+                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
+
+                <div class="col-sm-4">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Create New</button>
+                    <button class="btn btn-danger" id="btn-register"><i class="zmdi zmdi-delete"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("register-leave-table")
+        .SetAjaxUrl("/leavemanagement/tolist")
+        .AddAjaxParameter(Model)
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "From", FormatJqueryHandler = "validRow", MappingFrom = "LeaveFrom" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "To", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTo" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave Type", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTypeName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Hours", FormatJqueryHandler = "validRow", MappingFrom = "RegisterHour" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus" }
+        )
+        .ToHtml()
+        )
+    </div>
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-search").click(function (e) {
+            $("#register-leave-table").bootgrid("reload");
+        });
+
+        $("#btn-register").click(function (e) {
+            location.assign("/registerleave");
+        });
+
+        var validRow = function (col, row) {
+            return row[col.id];
+        };        
+    </script>
+}

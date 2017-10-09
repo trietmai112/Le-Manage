@@ -88,7 +88,8 @@ namespace mtv_management_leave.Lib.Repository
         }
         public double GetAnnualBonus(LeaveManagementContext context, int uid, int year)
         {
-            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd.Value.Year == year).Sum(m => m.AddLeaveHour ?? 0);
+            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd.Value.Year == year)
+                .Sum(m => m.AddLeaveHour) ?? 0;
             return annualBonus;
         }
         public double GetHourLeaveInYear(LeaveManagementContext context, int uid, int year)
@@ -101,8 +102,8 @@ namespace mtv_management_leave.Lib.Repository
             var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode == Common.TypeLeave.E_AnnualLeave.ToString()).Select(m => m.Id).ToList();
             //int rejectType = (int)Common.StatusLeave.E_Reject;
             double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateRegister.Year == year && m.Status != Common.StatusLeave.E_Reject
-            && lstLeaveTypeIds.Contains(m.LeaveTypeId)
-            ).Sum(m => m.RegisterHour ?? 0);
+                        && lstLeaveTypeIds.Contains(m.LeaveTypeId)
+                        ).Sum(m=> m.RegisterHour) ?? 0;
             return leaveInYear;
         }
         public List<DateTime> GetListDayOffCompany(LeaveManagementContext context, int Year)

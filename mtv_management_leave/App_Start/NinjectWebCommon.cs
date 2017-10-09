@@ -10,6 +10,8 @@ namespace mtv_management_leave.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using System.Web.Http;
+    using Ninject.Web.WebApi;
     using mtv_management_leave.Models.Entity;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -19,6 +21,7 @@ namespace mtv_management_leave.App_Start
     using System.Data.Entity;
     using Microsoft.Owin.Security;
     using mtv_management_leave.Lib.Repository;
+    using AutoMapper;
 
     public static class NinjectWebCommon 
     {
@@ -65,6 +68,7 @@ namespace mtv_management_leave.App_Start
                 kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
                 kernel.Bind<InOutBase>().ToSelf().InRequestScope();
                 RegisterServices(kernel);
+                GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
                 return kernel;
             }
             catch

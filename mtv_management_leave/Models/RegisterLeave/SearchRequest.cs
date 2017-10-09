@@ -10,9 +10,10 @@ namespace mtv_management_leave.Models.RegisterLeave
 {
     public class SearchRequest
     {
-        [DisplayFormat(DataFormatString = "mm/dd/yyyy")]
-        public DateTime DateStart { get; set; }
-        public DateTime DateEnd { get; set; }
+        [Display(Name = "Date start:")]
+        public DateTime DateStart { get; set; } = DateTime.Now;
+        [Display(Name = "Date end:")]
+        public DateTime DateEnd { get; set; } = DateTime.Now;
         public int? Uid { get; set; }
     }
 }

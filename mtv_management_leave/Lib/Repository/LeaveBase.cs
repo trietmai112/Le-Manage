@@ -120,7 +120,18 @@ namespace mtv_management_leave.Lib.Repository
             }
             List<ResponseLeave> lstResult = new List<ResponseLeave>();
             InitContext(out context);
-            lstResult = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart).Select(m => new ResponseLeave { Uid = m.Uid, FullName = m.UserInfo.FullName, LeaveFrom = m.DateStart.ToString("yyyy-MM-dd HH:mm"), LeaveTo = m.DateEnd.ToString("yyyy-MM-dd HH:mm"), LeaveTypeName = m.MasterLeaveType.Name, RegisterHour = m.RegisterHour, LeaveStatus = m.Status }).ToList();
+            lstResult = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart)
+                .ToList()
+                .Select(m => new ResponseLeave
+                {
+                    Uid = m.Uid,
+                    FullName = m.UserInfo.FullName,
+                    LeaveFrom = m.DateStart.ToString("yyyy-MM-dd HH:mm"),
+                    LeaveTo = m.DateEnd.ToString("yyyy-MM-dd HH:mm"),
+                    LeaveTypeName = m.MasterLeaveType.Name,
+                    RegisterHour = m.RegisterHour,
+                    LeaveStatus = m.Status
+                }).ToList();
             DisposeContext(context);
             return lstResult;
 

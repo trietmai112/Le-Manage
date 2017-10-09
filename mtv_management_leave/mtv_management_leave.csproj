@@ -45,6 +45,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -86,6 +89,9 @@
     </Reference>
     <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.Web.WebApi, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.WebApi.3.2.4.0\lib\net45-full\Ninject.Web.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -223,10 +229,12 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\LeaveManagementController.cs" />
     <Compile Include="Controllers\RegisterLeaveController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValueController.cs" />
+    <Compile Include="Controllers\RegisterLeaveApiController.cs" />
+    <Compile Include="Controllers\SystemController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -236,6 +244,7 @@
     <Compile Include="Lib\Controls\TableHeaderControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
+    <Compile Include="Lib\Extendsions\IListExtentsion.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
     <Compile Include="Lib\Extendsions\MvcHtmlStringExtension.cs" />
     <Compile Include="Lib\Extendsions\ObjectExtentsion.cs" />
@@ -281,7 +290,9 @@
       <DependentUpon>201710030230133_InsertDefaultRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelBinder\DateTimeBinder.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
+    <Compile Include="ModelBinder\NullableDateTimeBinder.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Lib\Controls\TableControl.cs" />
@@ -303,6 +314,7 @@
     <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\MappingInOut.cs" />
+    <Compile Include="Models\RegisterLeave\RegisterLeaveRequest.cs" />
     <Compile Include="Models\RegisterLeave\SearchRequest.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -653,6 +665,8 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\RegisterLeave\Index.cshtml" />
+    <Content Include="Views\RegisterLeave\RegisterLeave.cshtml" />
+    <Content Include="Views\LeaveManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -45,30 +45,68 @@ namespace mtv_management_leave.Lib.Extendsions
             return new MvcHtmlString(CombineVaribleToLayout(_textboxTemplate, dictionary));
         }
 
-         public static MvcHtmlString vDateTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
-             Expression<Func<TModel, TProperty>> expression,
-             string placeHolder = null,
-             object attributes = null)
+        public static MvcHtmlString vTextAreaFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression,
+            string placeHolder = null,
+            string dataMask = null,
+            string tooltip = null)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
-            var inputClass = "form-control date-time-picker input-sm ";
+            var inputClass = "form-control input-sm" + (string.IsNullOrEmpty(dataMask) ? "" : " input-mask");
             var placeHolderText = string.IsNullOrEmpty(placeHolder) ? metadata.GetPlaceHolder() : placeHolder;
 
             var dic = new Dictionary<string, object>();
             dic.Add("class", inputClass);
             dic.Add("placeholder", placeHolderText);
+            if (!string.IsNullOrEmpty(tooltip))
+            {
+                dic.Add("data-toggle", "tool tip");
+                dic.Add("data-placement", "top");
+                dic.Add("title", tooltip);
+            }
+            if (!string.IsNullOrEmpty(dataMask)) dic.Add("data-mask", dataMask);
 
-            var inputHtmlString = htmlHelper.TextBoxFor(expression, dic);
+            var inputHtmlString = htmlHelper.TextAreaFor(expression, dic);
             var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
             var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
 
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("{label}", labelHtmlString.ToHtmlString());
-            dictionary.Add("{textbox}", inputHtmlString.ToHtmlString());
+            dictionary.Add("{textarea}", inputHtmlString.ToHtmlString());
             dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
 
-            return new MvcHtmlString(CombineVaribleToLayout(_dateTimePickerTemplate, dictionary));
+            return new MvcHtmlString(CombineVaribleToLayout(_textareaTemplate, dictionary));
+        }
+
+        public static MvcHtmlString vDateTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+             Expression<Func<TModel, TProperty>> expression,
+             string placeHolder = null,
+             object attributes = null,
+             bool showTitle = true)
+        {
+            var inputClass = "form-control date-time-picker input-sm ";
+            return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
+        }
+
+        public static MvcHtmlString vDatePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression,
+            string placeHolder = null,
+            object attributes = null,
+            bool showTitle = true)
+        {
+            var inputClass = "form-control date-picker input-sm ";
+            return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
+        }
+
+        public static MvcHtmlString vTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression,
+            string placeHolder = null,
+            object attributes = null,
+            bool showTitle = true)
+        {
+            var inputClass = "form-control time-picker input-sm ";
+            return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
         }
 
         public static MvcHtmlString vPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
@@ -106,7 +144,49 @@ namespace mtv_management_leave.Lib.Extendsions
             dictionary.Add("{checkbox-hidden}", checkboxHidden);
             return new MvcHtmlString(CombineVaribleToLayout(_checkBoxTemplate, dictionary));
         }
-        
+
+
+        /*<div class="radio m-b-15">
+                                <label>
+                                    <input type="radio" name="sample" value="">
+                                    <i class="input-helper"></i>
+                                    Option one is this and that-be sure to include why it's great
+                                </label>
+                            </div>*/
+
+        public static MvcHtmlString vRadio(this HtmlHelper htmlHelper, string title, string controlName, bool value = false, object attribute = null)
+        {
+            var radioTag = new TagBuilder("input")
+               .vMergeAttribute("type", "radio")
+               .vMergeAttribute("name", controlName)
+               .vMergeAttribute("id", controlName)
+               //.vMergeAttribute("checked", value.vToString().ToLower())
+               .vMergeAttribute("value", value.vToString())
+               .vMergeAttributes(attribute.vGetDictionary());
+            if (value)
+                radioTag.vMergeAttribute("checked", "checked");
+            var html = $@"<div class='radio m-b-15'>
+                                  <label>  
+                                      {radioTag.ToString()}    
+                                           <i class='input-helper'></i>
+                                    {title}
+                                </label>
+                            </div>";
+            return new MvcHtmlString(html);
+        }
+
+        public static MvcHtmlString vRadioFor<TModel>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, bool>> expression, object attribute = null)
+        {
+            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+
+            return vRadio(htmlHelper,
+                metadata.GetDisplayName(),
+                metadata.PropertyName,
+                expression.Compile().Invoke((TModel)metadata.Container),
+                attribute);
+
+        }
         public static MvcHtmlString vDropDownListFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, 
             Expression<Func<TModel, TProperty>> expression, 
             IEnumerable<SelectListItem> selectList, 
@@ -123,7 +203,7 @@ namespace mtv_management_leave.Lib.Extendsions
             var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
 
             var dictionary = new Dictionary<string, string>();
-            dictionary.Add("{label}", labelHtmlString.ToHtmlString());
+            dictionary.Add("{label}",labelHtmlString.ToHtmlString());
             dictionary.Add("{select}", selectHtmlString.ToHtmlString());
             dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
 

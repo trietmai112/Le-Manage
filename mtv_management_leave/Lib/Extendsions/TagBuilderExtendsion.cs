@@ -31,7 +31,8 @@ namespace mtv_management_leave.Lib.Extendsions
 
         public static TagBuilder vMergeAttributes<TKey, TValue>(this TagBuilder tag, IDictionary<TKey, TValue> attributes)
         {
-            tag.MergeAttributes(attributes);
+            if(attributes != null)
+                tag.MergeAttributes(attributes);
             return tag;
         }
 

@@ -3,39 +3,115 @@
     ViewBag.Title = "Register leave";
 }
 
-@(Html.vCardPanel()
-        .SetHeader((string)ViewBag.Title)
-        .SetSummary("You can register leave at here")
-        .SetName("leave-panel")
-        .AddAction("Refesh", new { href = "google.com", onClick = "OnHandlerClick()" })
-        .AddControls(
-            Html.vBootGridHeader()
-            .AddControls(
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can register leave at here</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @Html.HiddenFor(m => m.Uid)
+            <div class="col-sm-12">
+                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
 
-                Html.vDateTimePickerFor(m => m.DateStart).Wrap("div", new { @class="col-sm-4"}),
-                Html.vDateTimePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" }),
-                @"<div class='col-sm-4'>
-                    <button id='regisButton' class='btn btn-default'>Search</button>
-                    <button id='regisButton' class='btn btn-primary'>Register leave</button>
-                </div>"
-            ),
-            Html.vBootGridFor()
-                    .SetName("register-leave-table")
-                    .SetAjaxUrl("/api/value/value")
-                    .AddAjaxParameter(Model)
-                    .AddColumn(new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName" })
-                    .AddColumn(new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "fullname()", Identify = true, MappingFrom = "FullName" })
+                <div class="col-sm-4">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Register</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("register-leave-table")
+        .SetAjaxUrl("/registerleave/tolist")
+        .AddAjaxParameter(Model)
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRow", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In-time", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out-time", FormatJqueryHandler = "validRow", MappingFrom = "Outtime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave1 start", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave1 end", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status leave 1", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave2 start", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave2 end", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status leave 2", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus2" }
         )
         .ToHtml()
-)
+        )
+    </div>
+</div>
 
+
+<div class="modal fade" id="modalRegisterLeave" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Register leave</h2>
+            </div>
+            <div class="modal-body">
+                @*@Html.Action("RegisterLeave")*@
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="modal-save"><i class="zmdi zmdi-save"></i> Save changes</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
 @section Scripts{
     <script type="text/javascript">
-        $("#regisButton").click(function (e) {
+        $("#btn-search").click(function (e) {
             $("#register-leave-table").bootgrid("reload");
         });
+
+        $("#btn-register").click(function (e) {
+            $("#modalRegisterLeave").modal("show");
+        });
+        var validRow = function (col, row) {
+            return row[col.id];
+        }; 
+
+        $("#modalRegisterLeave").on('show.bs.modal', function () {
+            var option = {
+                url: "/registerleave/registerleave",
+                type: "GET"
+            };
+            $.ajax(option).done(function (data) {
+                setupModalBodyFrom(data);
+            });
+        });
+
+        var setupModalBodyFrom = function (data) {
+            $(".modal-body").html(data);
+            registerBootstrapControl();
+        }
+
+        var registerBootstrapControl = function () {
+            $(".modal-body .time-picker").datetimepicker({ format: "LT" });
+            $(".modal-body .date-picker").datetimepicker({ format: "MM/DD/YYYY" });
+            $('.modal-body .selectpicker').selectpicker('render');
+        }
+
+        $("#modalRegisterLeave").on('hidden.bs.modal', function () {
+            $(".modal-body").html("");
+        });
+
+        $("#modal-save").click(function (e) {
+            e.preventDefault();     
+            var form = $(".modal-body form");
+            var url = form.attr("action");
+            var data = form.serialize();
+            var option = {
+                url: url,
+                type: "POST",
+                data : data
+            }
+            $.ajax(option).done(function (data) {
+                setupModalBodyFrom(data);
+            });
+        })
     </script>
-
 }
-
-

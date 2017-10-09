@@ -11,54 +11,68 @@ namespace mtv_management_leave.Lib.Extendsions
 {
     public static partial class HtmlHelperExtendsion
     {
-        private readonly static string _labelDivClass = "col-sm-3 control-label";
+        private readonly static string _labelDivClass = "col-sm-12 control-label";
+        private readonly static string _textDivClass = "col-sm-12";
         private readonly static string _textboxTemplate =
-            @"<div class='form-group'>
-                {label}
-                <div class='col-sm-9'>
+            $@"<div class='form-group'>
+                {{label}}
+                <div class='{_textDivClass}'>
                     <div class='fg-line'>
-                        {textbox}                        
+                        {{textbox}}                        
                     </div>     
-                    {validate-message}
+                    {{validate-message}}
+                </div>
+              </div>";
+
+        private readonly static string _textareaTemplate =
+            $@"<div class='form-group'>
+                {{label}}
+                <div class='{_textDivClass}'>
+                    <div class='fg-line'>
+                        {{textarea}}                        
+                    </div>     
+                    {{validate-message}}
                 </div>
               </div>";
 
         private readonly static string _selectTemplate =
-            @"<div class='form-group'>
-                {label}
-                <div class='col-sm-9'>
+            $@"<div class='form-group'>
+                {{label}}
+                <div class='{_textDivClass}'>
                     <div class='fg-line'>
-                        {select}                        
+                        {{select}}                        
                     </div>  
-                    {validate-message}
-                </div>";
+                    {{validate-message}}
+                </div>
+            </div>";
 
 
         private readonly static string _checkBoxTemplate =
-            @"<div class='form-group'>
-                <div class='{offset}'>
+           $@"<div class='form-group'>
+                <div class='{{offset}}'>
                     <div class='checkbox'>
                         <label>
-                            {checkbox}
+                            {{checkbox}}
                             <i class='input-helper'></i>
-                            {label}
+                            {{label}}
                         </label>
                     </div>
-                    {checkbox-hidden}
+                    {{checkbox-hidden}}
                 </div>
             </div>";
 
         private readonly static string _dateTimePickerTemplate =
-            @"<div class='input-group form-group'>
-                {label}
-                <div class='col-sm-9'>
+            $@"<div class='form-group'>
+                {{label}}
+                <div class='{_textDivClass}'>
                     <div class='dtp-container fg-line'>
-                        {textbox}
+                        {{textbox}}
                     </div>
-                    {validate-message}
+                    {{validate-message}}
                 </div>
               </div>";    
 
+        
         private static string CombineVaribleToLayout(string layout, Dictionary<string, string> dictionary)
         {
             var htmlString = layout;
@@ -73,6 +87,31 @@ namespace mtv_management_leave.Lib.Extendsions
             Expression<Func<TModel, TProperty>> expression)
         {
             return htmlHelper.LabelFor(expression, new { @class = _labelDivClass });
+        }
+
+        private static MvcHtmlString RenderDateTimePicker<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression,
+            string placeHolder, object attributes, string inputClass, bool showTitle)
+        {
+            ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
+
+
+            var placeHolderText = string.IsNullOrEmpty(placeHolder) ? metadata.GetPlaceHolder() : placeHolder;
+
+            var dic = new Dictionary<string, object>();
+            dic.Add("class", inputClass);
+            dic.Add("placeholder", placeHolderText);
+
+            var inputHtmlString = htmlHelper.TextBoxFor(expression, dic);
+            var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
+            var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
+
+            var dictionary = new Dictionary<string, string>();
+            dictionary.Add("{label}", showTitle ? labelHtmlString.ToHtmlString() : "");
+            dictionary.Add("{textbox}", inputHtmlString.ToHtmlString());
+            dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
+
+            return new MvcHtmlString(CombineVaribleToLayout(_dateTimePickerTemplate, dictionary));
         }
     }
 }

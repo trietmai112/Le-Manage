@@ -29,7 +29,7 @@ namespace mtv_management_leave.Models.Account
         [Display(Name = "Phone number"), PlaceHolder("please input your phone number")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name = "Birthday"), PlaceHolder("please input your birthday"), DataType(DataType.Date)]
+        [Display(Name = "Birthday"), PlaceHolder("please input your birthday")]
         public DateTime? DateOfBirth { get; set; }
 
         [Display(Name = "Roles")]

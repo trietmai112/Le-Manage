@@ -8,6 +8,8 @@ using mtv_management_leave.Models;
 using System.Linq;
 using System.Data.Entity;
 using System.Web;
+using System;
+using AutoMapper;
 
 namespace mtv_management_leave.Controllers
 {
@@ -95,7 +97,7 @@ namespace mtv_management_leave.Controllers
             if (ModelState.IsValid)
             {
                 var transaction = _context.Database.BeginTransaction();
-                var user = new UserInfo { UserName = model.Email, Email = model.Email };
+                var user = Mapper.Map<UserInfo>(model);
                 var result = await _userManager.CreateAsync(user, model.Password);
                 
                 if (result.Succeeded)
@@ -242,6 +244,19 @@ namespace mtv_management_leave.Controllers
             Request.GetOwinContext().Authentication.SignOut();
             return RedirectToAction("Index", "Home");
         }        
+
+        [HttpGet, Authorize]
+        public UserInfo GetUserInfo(int userId)
+        {
+            return _userManager.FindById(userId);
+        }
+
+        [HttpGet, Authorize]
+        public double GetLeaveRemining(int id, DateTime dateStart)
+        {
+            var leaveManager = new Lib.Repository.LeaveBase();
+            return leaveManager.GetLeaveRemain(id, dateStart);
+        }
 
         ////
         //// GET: /Account/VerifyCode

@@ -11,7 +11,7 @@ namespace mtv_management_leave.Lib.Extendsions
     {
         public static Dictionary<string, object> vGetDictionary(this object model) 
         {
-            if (model == null) return null;
+            if (model == null) return new Dictionary<string, object>();
             var properties = model.GetType().GetProperties();
             var dic = new Dictionary<string, object>();
             foreach(var prop in properties)
@@ -25,6 +25,12 @@ namespace mtv_management_leave.Lib.Extendsions
         {
             dictionary.Add(key, value);
             return dictionary;
+        }
+
+        public static string vToString(this object model, string defaultValue = "")
+        {
+            if (model == null) return defaultValue;
+            return model.ToString();
         }
     }
 }
