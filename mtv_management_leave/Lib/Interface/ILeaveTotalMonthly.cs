@@ -16,7 +16,7 @@ namespace mtv_management_leave.Lib.Interface
     {
         List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear);
         List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear, List<int> lstUid);
-        List<ResponseLeaveTotalMonthly> GetTotalMonthlyBeginYear(DateTime monthYear, List<int> lstUid);
+        //List<ResponseLeaveTotalMonthly> GetTotalMonthlyBeginYear(DateTime monthYear, List<int> lstUid);
 
         void SaveLastTotalMonthly(DateTime MonthTo);
         void SaveLastTotalMonthly(DateTime MonthTo, List<int> lstUid);
