@@ -1,8 +1,7 @@
-﻿using mtv_management_leave.Lib.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 
@@ -16,14 +15,27 @@ namespace mtv_management_leave.Lib.Repository
         {
         }
 
+        /// <summary>
+        /// only error data
+        /// </summary>
+        /// <param name="DateStart"></param>
+        /// <param name="DateEnd"></param>
+        /// <returns></returns>
         public List<RepoMappingInOut> MappingInoutInValid(DateTime DateStart, DateTime DateEnd)
         {
             return MappingInoutLeave(DateStart, DateEnd).Where(m => m.IsValid == false).ToList();
         }
 
-        public List<RepoMappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd, int uid)
+        /// <summary>
+        /// only error Data
+        /// </summary>
+        /// <param name="DateStart"></param>
+        /// <param name="DateEnd"></param>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public List<RepoMappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd, List<int> lstUid)
         {
-            return MappingInoutLeave(DateStart, DateEnd, uid).Where(m => m.IsValid == false).ToList();
+            return MappingInoutLeave(DateStart, DateEnd, lstUid).Where(m => m.IsValid == false).ToList();
         }
 
         /// <summary>
@@ -35,9 +47,9 @@ namespace mtv_management_leave.Lib.Repository
         {
             return CalculateMappingInoutLeave(DateStart, DateEnd, null);
         }
-        public List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd, int uid)
+        public List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd, List<int> lstUid)
         {
-            return CalculateMappingInoutLeave(DateStart, DateEnd, uid);
+            return CalculateMappingInoutLeave(DateStart, DateEnd, lstUid);
         }
 
         public void SaveGenerateInout(DateTime dateFrom, DateTime? DateTo)
@@ -49,8 +61,26 @@ namespace mtv_management_leave.Lib.Repository
             SaveDataGenerateInout(uid, dateFrom, DateTo);
         }
 
+        public void UpdateOrCreateInout(InOut obj)
+        {
+            InitContext(out context);
+            var inoutDB = context.InOuts.Where(m => m.Uid == obj.Uid && m.Date == obj.Date).FirstOrDefault();
+            if (inoutDB != null)
+            {
+                inoutDB.Intime = obj.Intime;
+                inoutDB.OutTime = obj.OutTime;
+            }
+            else
+            {
+                context.InOuts.Add(obj);
+            }
+            context.SaveChanges();
+            DisposeContext(context);
+
+        }
+
         #region private method
-        private List<RepoMappingInOut> CalculateMappingInoutLeave(DateTime DateStart, DateTime DateEnd, int? uid)
+        private List<RepoMappingInOut> CalculateMappingInoutLeave(DateTime DateStart, DateTime DateEnd, List<int> lstUid)
         {
             if (DateStart.Year != DateEnd.Year || DateStart.Month != DateEnd.Month)
             {
@@ -60,9 +90,9 @@ namespace mtv_management_leave.Lib.Repository
             List<RepoMappingInOut> lstResult = new List<RepoMappingInOut>();
             //get all userid
             var queryUser = context.Users.Where(m => m.DateResign == null || (m.DateResign != null && m.DateResign.Value >= DateStart)).Select(m => new { m.Id, m.DateResign, m.FullName });
-            if (uid != null)
+            if (lstUid != null && lstUid.Count > 0)
             {
-                queryUser = queryUser.Where(m => m.Id == uid.Value);
+                queryUser = queryUser.Where(m => lstUid.Contains(m.Id));
             }
             var lstUser = queryUser.ToList();
             var lstUserId = lstUser.Select(m => m.Id).ToList();
@@ -103,7 +133,7 @@ namespace mtv_management_leave.Lib.Repository
 
                 foreach (var user in lstUser)
                 {
-                    if (user.DateResign != null && user.DateResign > date)
+                    if (user.DateResign != null && user.DateResign < date)
                     {
                         continue;
                     }
@@ -207,8 +237,8 @@ namespace mtv_management_leave.Lib.Repository
                         if (inout.Intime > beginShiftLate)
                         {
                             var firstLeave = lstLeave.FirstOrDefault();
-                            
-                            if(firstLeave.DateStart > inout.Intime)
+
+                            if (firstLeave.DateStart > inout.Intime)
                             {
                                 isValid = false;
                                 timeDiff += (inout.Intime - beginShift).TotalMinutes;
@@ -228,7 +258,8 @@ namespace mtv_management_leave.Lib.Repository
                             {
                                 isValid = false;
                                 timeDiff += (endShift - inout.OutTime.Value).TotalMinutes;
-                            }else if (lastLeave.DateStart > inout.OutTime  || lastLeave.DateEnd < endShift)
+                            }
+                            else if (lastLeave.DateStart > inout.OutTime || lastLeave.DateEnd < endShift)
                             {
                                 isValid = false;
                                 timeDiff += (lastLeave.DateStart - inout.OutTime.Value).TotalMinutes < 0 ? 0 : (lastLeave.DateStart - inout.OutTime.Value).TotalMinutes;

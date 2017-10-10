@@ -9,6 +9,7 @@ namespace mtv_management_leave.Models.Entity
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int Uid { get; set; }
+        
         public System.DateTime Month { get; set; }
         public double? LeaveAvailable { get; set; }
         public double? LeaveUsed { get; set; }
