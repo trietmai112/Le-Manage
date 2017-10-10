@@ -6,7 +6,7 @@ using System;
 
 namespace mtv_management_leave.Models
 {
-    public class MappingInOut
+    public class RepoMappingInOut
     {
         public int Uid { get; set; }
         public string FullName { get; set; }

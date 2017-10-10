@@ -15,11 +15,12 @@ namespace mtv_management_leave.Lib.Interface
     {
         double GetAvailableBeginYear(LeaveManagementContext context, int uid, int year);
         int GetSeniority(LeaveManagementContext context, int uid, DateTime dateStart);
-        double GetAnnualBonus(LeaveManagementContext context, int uid, int year);
-        double GetHourLeaveInYear(LeaveManagementContext context, int uid, int year);
+        double GetAnnualBonus(LeaveManagementContext context, int uid, DateTime dateTo);
+        double GetHourLeaveInYear(LeaveManagementContext context, int uid, DateTime dateTo);
         List<DateTime> GetListDayOffCompany(LeaveManagementContext context, int Year);
         List<DateTime> GetListDayOffCompany(LeaveManagementContext context, DateTime dateStart, DateTime dateEnd);
         bool IsDateOffCompany(LeaveManagementContext context, DateTime date);
         int GetLeaveTypeId(LeaveManagementContext context, string CodeLeave);
+        List<LeaveMonthly> GetTotalLeaveMonthly(LeaveManagementContext context, DateTime monthTo, List<int> lstUid);
     }
 }

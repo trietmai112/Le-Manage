@@ -6,15 +6,15 @@ using System.Web;
 
 namespace mtv_management_leave.Models.Response
 {
-    public class ResponseLeave
+    public class ResponseLeaveTotalMonthly
     {
         public int Id { get; set; }
         public int Uid { get; set; }
+        public DateTime Month { get; set; }
+        public double? LeaveAvailable { get; set; }
+        public double? LeaveUsed { get; set; }
+        public double? LeaveRemain { get; set; }
+        public double? LeaveNonPaid { get; set; }
         public string FullName { get; set; }
-        public string LeaveFrom { get; set; }
-        public string LeaveTo { get; set; }
-        public string LeaveTypeName { get; set; }
-        public double? RegisterHour { get; set; }
-        public Common.StatusLeave LeaveStatus { get; set; }
     }
 }
