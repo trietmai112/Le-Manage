@@ -30,6 +30,8 @@ namespace mtv_management_leave.Lib.Interface
         List<RepoMappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd, List<int> lstUid);
 
         void UpdateOrCreateInout(InOut obj);
+        void DeleteInOut(List<int> lstId);
+        void DeleteInOut(DateTime dateStart, DateTime dateEnd, List<int> lstUid);
 
 
     }

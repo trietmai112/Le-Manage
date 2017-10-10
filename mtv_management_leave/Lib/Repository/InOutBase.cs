@@ -15,6 +15,24 @@ namespace mtv_management_leave.Lib.Repository
         {
         }
 
+        public void DeleteInOut(List<int> lstId)
+        {
+            InitContext(out context);
+            var lstDelete = context.InOuts.Where(m => lstId.Contains(m.Id)).ToList();
+            context.InOuts.RemoveRange(lstDelete);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
+        public void DeleteInOut(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
+        {
+            InitContext(out context);
+            var lstDelete = context.InOuts.Where(m => m.Date >= dateStart && m.Date <= dateEnd && lstUid.Contains(m.Uid)).ToList();
+            context.InOuts.RemoveRange(lstDelete);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
         /// <summary>
         /// only error data
         /// </summary>
@@ -82,6 +100,7 @@ namespace mtv_management_leave.Lib.Repository
         #region private method
         private List<RepoMappingInOut> CalculateMappingInoutLeave(DateTime DateStart, DateTime DateEnd, List<int> lstUid)
         {
+            DateEnd = DateEnd.Date.AddDays(1).AddSeconds(-1);
             if (DateStart.Year != DateEnd.Year || DateStart.Month != DateEnd.Month)
             {
                 throw new Exception("Please search data in 1 month");
@@ -107,7 +126,7 @@ namespace mtv_management_leave.Lib.Repository
             // khong du gio out
             var lstdayoff = context.MasterLeaveDayCompanies.Where(m => m.Date >= DateStart && m.Date <= DateEnd).Select(m => m.Date).ToList();
             var lstInout = context.InOuts.Where(m => m.Date >= DateStart && m.Date <= DateEnd && lstUserId.Contains(m.Uid)).Select(m => new RepoInOut { Uid = m.Uid, Date = m.Date, Intime = m.Intime, OutTime = m.OutTime }).ToList();
-            var lstLeave = context.RegisterLeaves.Where(m => m.DateRegister >= DateStart && m.DateRegister <= DateEnd && lstUserId.Contains(m.Uid)).Select(m => new RepoLeave()
+            var lstLeave = context.RegisterLeaves.Where(m => m.DateStart <= DateEnd && m.DateEnd >= DateStart&& lstUserId.Contains(m.Uid)).Select(m => new RepoLeave()
             {
                 Uid = m.Uid,
                 DateRegister = m.DateRegister,
@@ -128,7 +147,8 @@ namespace mtv_management_leave.Lib.Repository
 
                 DateTime beginShiftLate = date.AddHours(8).AddMinutes(Common.minuteLatePermit);
                 DateTime beginShift = date.AddHours(8);
-                DateTime endShift = date.AddHours(17).AddMinutes(15).AddMinutes(-Common.minuteEarlyPermit);
+                DateTime endShift = date.AddHours(17);
+                DateTime endShiftEarly = date.AddHours(17).AddMinutes(-Common.minuteEarlyPermit);
 
 
                 foreach (var user in lstUser)
@@ -138,7 +158,7 @@ namespace mtv_management_leave.Lib.Repository
                         continue;
                     }
                     var inout = lstInout.Where(m => m.Uid == user.Id && m.Date == date).FirstOrDefault();
-                    var lstleaveInDay = lstLeave.Where(m => m.Uid == user.Id && (m.DateRegister == date || (m.DateStart <= date && m.DateEnd >= date))).OrderBy(m => m.DateStart).ToList();
+                    var lstleaveInDay = lstLeave.Where(m => m.Uid == user.Id && ((m.DateStart.Date <= date && m.DateEnd.Date >= date))).OrderBy(m => m.DateStart).ToList();
                     RepoMappingInOut mapping = new RepoMappingInOut();
                     mapping.Uid = user.Id;
                     mapping.FullName = user.FullName;
@@ -172,7 +192,7 @@ namespace mtv_management_leave.Lib.Repository
 
                     bool isValid = true;
                     double timeDiff = 0;
-                    CalculateValid(inout, lstleaveInDay, beginShiftLate, beginShift, endShift, out isValid, out timeDiff);
+                    CalculateValid(inout, lstleaveInDay, beginShiftLate, beginShift, endShift, endShiftEarly, out isValid, out timeDiff);
                     mapping.IsValid = isValid;
                     mapping.TimeDiff = timeDiff;
                     lstResult.Add(mapping);
@@ -183,40 +203,42 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
             return lstResult;
         }
-        private void CalculateValid(RepoInOut inout, List<RepoLeave> lstLeave, DateTime beginShiftLate, DateTime beginShift, DateTime endShift, out bool isValid, out double timeDiff)
+        private void CalculateValid(RepoInOut inout, List<RepoLeave> lstleave, DateTime beginShiftLate, DateTime beginShift, DateTime endShift, DateTime endShiftEarly, out bool isValid, out double timeDiff)
         {
             isValid = true;
             timeDiff = 0;
+            var lstleaveApprove = lstleave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList();
+
             //ko co in out
             if (inout == null || inout.OutTime == null)
             {
-                if (lstLeave == null || lstLeave.Count == 0) //ko co leave
+                if (lstleaveApprove == null || lstleaveApprove.Count == 0) //ko co leave
                 {
                     isValid = false;
                     timeDiff = 8;
                 }
-                else if (!lstLeave.Any(m => m.leaveStatus == Common.StatusLeave.E_Approve && m.RegisterHour >= 8)) // leave chua duyet
+                else if (!lstleaveApprove.Any(m => m.leaveStatus == Common.StatusLeave.E_Approve && m.RegisterHour >= 8)) // leave chua duyet
                 {
                     isValid = false;
                     timeDiff = 8;
                 }
-                else if (lstLeave.Any(m => m.LeaveCode == Common.TypeLeave.E_Materity.ToString())) // loaij thai san
+                else if (lstleaveApprove.Any(m => m.LeaveCode == Common.TypeLeave.E_Materity.ToString())) // loaij thai san
                 {
                     isValid = true;
                     timeDiff = 0;
                 }
-                else if (lstLeave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0) < 8) // dang ky leave duoi 8 tieng
+                else if (lstleaveApprove.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0) < 8) // dang ky leave duoi 8 tieng
                 {
                     isValid = false;
-                    timeDiff = (8 - lstLeave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0)) * 60;
+                    timeDiff = (8 - lstleaveApprove.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0)) * 60;
                 }
             }
             else // co in out
             {
-                if (inout.Intime > beginShiftLate || inout.OutTime < endShift) // co tre som
+                if (inout.Intime > beginShiftLate || inout.OutTime < endShiftEarly) // co tre som
                 {
                     //khong co leave
-                    if (lstLeave == null || lstLeave.Count == 0)
+                    if (lstleaveApprove == null || lstleaveApprove.Count == 0)
                     {
                         isValid = false;
                         int diffBegin = (inout.Intime - beginShiftLate).Minutes;
@@ -226,7 +248,7 @@ namespace mtv_management_leave.Lib.Repository
                         timeDiff = diffBegin + diffEnd;
                     }
                     //leave chua duyet
-                    else if (lstLeave.Any(m => m.LeaveCode == Common.TypeLeave.E_Materity.ToString()))
+                    else if (lstleaveApprove.Any(m => m.LeaveCode == Common.TypeLeave.E_Materity.ToString()))
                     {
 
                     }
@@ -236,7 +258,7 @@ namespace mtv_management_leave.Lib.Repository
                         //dau ca
                         if (inout.Intime > beginShiftLate)
                         {
-                            var firstLeave = lstLeave.FirstOrDefault();
+                            var firstLeave = lstleaveApprove.FirstOrDefault();
 
                             if (firstLeave.DateStart > inout.Intime)
                             {
@@ -251,9 +273,9 @@ namespace mtv_management_leave.Lib.Repository
                             }
                         }
                         // ve som
-                        if (inout.OutTime < endShift)
+                        if (inout.OutTime < endShiftEarly)
                         {
-                            var lastLeave = lstLeave.LastOrDefault();
+                            var lastLeave = lstleaveApprove.LastOrDefault();
                             if (lastLeave.DateEnd < inout.OutTime)
                             {
                                 isValid = false;

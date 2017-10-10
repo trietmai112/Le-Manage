@@ -327,7 +327,6 @@
     <Compile Include="Models\Entity\UserInfo.cs" />
     <Compile Include="Models\Entity\UserSeniority.cs" />
     <Compile Include="Models\LeaveManagementContext.cs" />
-    <Compile Include="Models\MappingInOut.cs" />
     <Compile Include="Models\RepoDataBeginYear.cs" />
     <Compile Include="Models\RepoAddLeave.cs" />
     <Compile Include="Models\RepoUserUpdateInfo.cs" />
