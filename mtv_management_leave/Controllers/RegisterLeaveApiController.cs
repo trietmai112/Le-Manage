@@ -22,9 +22,9 @@ namespace mtv_management_leave.Controllers
         public IHttpActionResult ToList(Models.RegisterLeave.SearchRequest model)
         {
             var result = model.Uid.HasValue ?
-                _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd, model.Uid.Value) :
+                _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd, new List<int>() { model.Uid.Value }) :
                 _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd);
-            var resultJson = Json( new Lib.Repository.BootGridReponse<Models.MappingInOut>
+            var resultJson = Json( new Lib.Repository.BootGridReponse<Models.RepoMappingInOut>
             {
                 current = 1,
                 rowCount = 0,

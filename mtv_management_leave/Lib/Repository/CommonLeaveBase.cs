@@ -1,8 +1,7 @@
-﻿using mtv_management_leave.Lib.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 
@@ -10,7 +9,7 @@ namespace mtv_management_leave.Lib.Repository
 {
     public class CommonLeaveBase : Base, ICommonLeaveBase
     {
-        public double GetAvailableBeginYear(LeaveManagementContext context,int uid, int year)
+        public double GetAvailableBeginYear(LeaveManagementContext context, int uid, int year)
         {
             return context.DataBeginYears.Where(m => m.Uid == uid && m.DateBegin.Year == year).Select(m => m.AnnualLeave).FirstOrDefault();
         }
@@ -88,8 +87,8 @@ namespace mtv_management_leave.Lib.Repository
         }
         public double GetAnnualBonus(LeaveManagementContext context, int uid, DateTime dateTo)
         {
-            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd.Value.Year == year)
-                .Sum(m => m.AddLeaveHour) ?? 0;
+            DateTime BeginYear = new DateTime(dateTo.Year, 1, 1);
+            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd >= BeginYear && m.DateAdd.Value <= dateTo).ToList().Sum(m => m.AddLeaveHour ?? 0);
             return annualBonus;
         }
         public double GetHourLeaveInYear(LeaveManagementContext context, int uid, DateTime dateTo)
@@ -101,9 +100,10 @@ namespace mtv_management_leave.Lib.Repository
             //5. bỏ đi loại other
             var lstLeaveTypeIds = context.MasterLeaveTypes.Where(m => m.LeaveCode == Common.TypeLeave.E_AnnualLeave.ToString()).Select(m => m.Id).ToList();
             //int rejectType = (int)Common.StatusLeave.E_Reject;
-            double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateRegister.Year == year && m.Status != Common.StatusLeave.E_Reject
-                        && lstLeaveTypeIds.Contains(m.LeaveTypeId)
-                        ).Sum(m=> m.RegisterHour) ?? 0;
+            DateTime beginYear = new DateTime(dateTo.Year, 1, 1);
+            double leaveInYear = context.RegisterLeaves.Where(m => m.Uid == uid && m.DateStart >= beginYear && m.DateStart <= dateTo && m.Status != Common.StatusLeave.E_Reject
+            && lstLeaveTypeIds.Contains(m.LeaveTypeId)
+            ).Select(m => m.RegisterHour).ToList().Sum(m => m ?? 0);
             return leaveInYear;
         }
         public List<DateTime> GetListDayOffCompany(LeaveManagementContext context, int Year)
@@ -160,8 +160,8 @@ namespace mtv_management_leave.Lib.Repository
             List<LeaveMonthly> lstResult = new List<LeaveMonthly>();
             foreach (var uid in lstUserId)
             {
-                var AnnualLeave_LastMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart <= lastMonth).Select(m=>m.RegisterHour).ToList().Sum(m => m);
-                var AnnualLeave_ThisMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart > lastMonth && m.DateStart <= endMonth).Select(m=> m.RegisterHour).ToList().Sum(m => m);
+                var AnnualLeave_LastMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart <= lastMonth).Select(m => m.RegisterHour).ToList().Sum(m => m);
+                var AnnualLeave_ThisMonth_ByUser = lstLeaveFromBeginYear.Where(m => m.Uid == uid && m.DateStart > lastMonth && m.DateStart <= endMonth).Select(m => m.RegisterHour).ToList().Sum(m => m);
                 var Annual_Available_BeginYear = lstAvailableBeginYear.Where(m => m.Uid == uid && m.DateBegin <= endMonth).Select(m => m.AnnualLeave).FirstOrDefault();
                 var SeniorityObj = lstSeniorities.Where(m => m.Uid == uid).FirstOrDefault();
                 double Seniority_ByUser = 0;

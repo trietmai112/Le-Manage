@@ -1,17 +1,16 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
+using AutoMapper;
 using Microsoft.AspNet.Identity;
-using mtv_management_leave.Lib.Extendsions;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.RegisterLeave;
-using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
 {
 
-    public class RegisterLeaveController: Controller
+    public class RegisterLeaveController : Controller
     {
         private InOutBase _inOutBase;
         private LeaveBase _leaveBase;
@@ -28,7 +27,7 @@ namespace mtv_management_leave.Controllers
 
         public PartialViewResult RegisterLeave(int? userId)
         {
-            return PartialView(new Models.RegisterLeave.RegisterLeaveRequest { Uid = userId ?? User.Identity.GetUserId<int>()});
+            return PartialView(new Models.RegisterLeave.RegisterLeaveRequest { Uid = userId ?? User.Identity.GetUserId<int>() });
         }
 
         [HttpPost]
@@ -40,7 +39,8 @@ namespace mtv_management_leave.Controllers
                 try
                 {
                     _leaveBase.RegisterLeave(registerLeave);
-                } catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     ModelState.AddModelError("Error", ex.Message);
                 }
@@ -52,9 +52,9 @@ namespace mtv_management_leave.Controllers
         public JsonResult ToList(Models.RegisterLeave.SearchRequest model)
         {
             var result = model.Uid.HasValue ?
-                _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd, model.Uid.Value) :
+                _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd, new List<int>() { model.Uid.Value }) :
                 _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd);
-            var resultJson = Json(new Lib.Repository.BootGridReponse<Models.MappingInOut>
+            var resultJson = Json(new Lib.Repository.BootGridReponse<Models.RepoMappingInOut>
             {
                 current = 1,
                 rowCount = -1,

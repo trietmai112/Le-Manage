@@ -327,13 +327,13 @@
     <Compile Include="Models\Entity\UserInfo.cs" />
     <Compile Include="Models\Entity\UserSeniority.cs" />
     <Compile Include="Models\LeaveManagementContext.cs" />
+    <Compile Include="Models\MappingInOut.cs" />
     <Compile Include="Models\RepoDataBeginYear.cs" />
     <Compile Include="Models\RepoAddLeave.cs" />
     <Compile Include="Models\RepoUserUpdateInfo.cs" />
     <Compile Include="Models\RepoRegisterLeave.cs" />
     <Compile Include="Models\RepoMappingInOut.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
-    <Compile Include="Models\MappingInOut.cs" />
     <Compile Include="Models\RegisterLeave\RegisterLeaveRequest.cs" />
     <Compile Include="Models\RegisterLeave\SearchRequest.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
