@@ -31,12 +31,18 @@ namespace mtv_management_leave.Models
         public DbSet<Entity.EmployeeInfo> EmployeeInfos { get; set; }
         public DbSet<Entity.RequestChangeInout> RequestChangeInouts { get; set; }
 
+
+        
+
+
         private void BeforeSaveChange()
         {
             try
             {
-                var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
-                int userId = int.Parse(user);
+
+                //var GetUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+                var GetUserId = "1";
+                int userId = int.Parse(GetUserId.ToString());
                 var entities = ChangeTracker.Entries().Where(x => x.Entity is IEntity
                                                                               && (x.State == EntityState.Added
                                                                               || x.State == EntityState.Modified));

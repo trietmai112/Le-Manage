@@ -1,9 +1,7 @@
-﻿using mtv_management_leave.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using mtv_management_leave.Models;
+using mtv_management_leave.Models.Entity;
 
 namespace mtv_management_leave.Lib.Interface
 {
@@ -26,9 +24,13 @@ namespace mtv_management_leave.Lib.Interface
         /// <param name="DateTo"></param>
         void SaveGenerateInout(int uid, DateTime dateFrom, DateTime? DateTo);
 
-        List<MappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd);
-        List<MappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd,  int uid);
-        List<MappingInOut> MappingInoutInValid(DateTime DateStart, DateTime DateEnd);
-        List<MappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd,  int uid);
+        List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd);
+        List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd, List<int> lstUid);
+        List<RepoMappingInOut> MappingInoutInValid(DateTime DateStart, DateTime DateEnd);
+        List<RepoMappingInOut> MappingInoutInvalid(DateTime DateStart, DateTime DateEnd, List<int> lstUid);
+
+        void UpdateOrCreateInout(InOut obj);
+
+
     }
 }

@@ -28,8 +28,8 @@ namespace mtv_management_leave.Lib.Repository
 
             double AvailableBeginYear = commonLeaveBase.GetAvailableBeginYear(context, uid, dateStart.Year);
             int Seniority = commonLeaveBase.GetSeniority(context, uid, dateStart);
-            double annualBonus = commonLeaveBase.GetAnnualBonus(context, uid, dateStart.Year);
-            double leaveInYear = commonLeaveBase.GetHourLeaveInYear(context, uid, dateStart.Year);
+            double annualBonus = commonLeaveBase.GetAnnualBonus(context, uid, dateStart);
+            double leaveInYear = commonLeaveBase.GetHourLeaveInYear(context, uid, dateStart);
             var result = AvailableBeginYear + Seniority + annualBonus - leaveInYear;
 
             DisposeContext(context);
@@ -46,15 +46,12 @@ namespace mtv_management_leave.Lib.Repository
             #endregion
             leave.DateRegister = DateTime.Today;
             InitContext(out context);
-
-            if(context.RegisterLeaves.Any(m=>m.Status!= Common.StatusLeave.E_Reject && m.Uid == leave.Uid && m.DateStart< leave.DateEnd && m.DateEnd>= leave.DateStart))
+            if (context.RegisterLeaves.Any(m => m.Status != Common.StatusLeave.E_Reject && m.Uid == leave.Uid && m.DateStart < leave.DateEnd && m.DateEnd >= leave.DateStart))
             {
+                DisposeContext(context);
                 throw new Exception("Duplicate Data!");
             }
-            if(leave.DateStart.Hour<8 || leave.DateEnd.Hour > 17)
-            {
-                throw new Exception("Please register leave in 8:00 to 17:00!");
-            }
+
 
             var maternityLeaveId = commonLeaveBase.GetLeaveTypeId(context, Common.TypeLeave.E_Materity.ToString());
             if (leave.LeaveTypeId == maternityLeaveId)
@@ -63,6 +60,11 @@ namespace mtv_management_leave.Lib.Repository
             }
             else if (leave.DateStart.Date == leave.DateEnd.Date)
             {
+                if (leave.DateStart.Hour < 8 || leave.DateEnd.Hour > 17)
+                {
+                    DisposeContext(context);
+                    throw new Exception("Please register leave in 8:00 to 17:00!");
+                }
                 //gọi lại 1 lần nữa tránh việc modify rồi send lên server
                 leave.RegisterHour = GetLeaveHourInDay(leave.DateStart, leave.DateEnd);
                 context.RegisterLeaves.Add(leave);
@@ -79,9 +81,9 @@ namespace mtv_management_leave.Lib.Repository
                     }
                     RegisterLeave leaveRegister = new Models.Entity.RegisterLeave();
                     leaveRegister.DateApprove = leave.DateApprove;
-                    leaveRegister.DateEnd = leave.DateEnd;
+                    leaveRegister.DateEnd = dateLeave.Date.AddHours(17);
                     leaveRegister.DateRegister = leave.DateRegister;
-                    leaveRegister.DateStart = leave.DateStart;
+                    leaveRegister.DateStart = dateLeave.Date.AddHours(8);
                     leaveRegister.LeaveTypeId = leave.LeaveTypeId;
                     leaveRegister.Reason = leave.Reason;
                     leaveRegister.RegisterHour = 8;
@@ -97,71 +99,55 @@ namespace mtv_management_leave.Lib.Repository
         }
         public void ApproveLeave(int leaveId)
         {
-            InitContext(out context);
-            var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
-            leave.Status = Common.StatusLeave.E_Approve;
-            context.SaveChanges();
-            DisposeContext(context);
-
+            PrivateApproveLeave(new List<int>() { leaveId });
         }
+        public void ApproveLeave(List<int> lstleaveId)
+        {
+            PrivateApproveLeave(lstleaveId);
+        }
+
         public void RejectLeave(int leaveId)
         {
-            InitContext(out context);
-            var leave = context.RegisterLeaves.Where(m => m.Id == leaveId).FirstOrDefault();
-            leave.Status = Common.StatusLeave.E_Reject;
-            context.SaveChanges();
-            DisposeContext(context);
+            PrivateRejectLeave(new List<int>() { leaveId });
         }
+
+        public void RejectLeave(List<int> lstleaveId)
+        {
+            PrivateRejectLeave(lstleaveId);
+        }
+
         public List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd)
         {
-            if (dateStart.Year != dateEnd.Year || dateStart.Month != dateEnd.Month)
-            {
-                throw new Exception("Please select range date in month!");
-            }
-            List<ResponseLeave> lstResult = new List<ResponseLeave>();
-            InitContext(out context);
-            lstResult = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart)
-                .ToList()
-                .Select(m => new ResponseLeave
-                {
-                    Uid = m.Uid,
-                    FullName = m.UserInfo.FullName,
-                    LeaveFrom = m.DateStart.ToString("yyyy-MM-dd HH:mm"),
-                    LeaveTo = m.DateEnd.ToString("yyyy-MM-dd HH:mm"),
-                    LeaveTypeName = m.MasterLeaveType.Name,
-                    RegisterHour = m.RegisterHour,
-                    LeaveStatus = m.Status
-                }).ToList();
-            DisposeContext(context);
-            return lstResult;
+            return PrivateGetLeave(dateStart, dateEnd, null);
 
         }
-        public List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd, int uid)
+        public List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
         {
-            if (dateStart.Year != dateEnd.Year || dateStart.Month != dateEnd.Month)
-            {
-                throw new Exception("Please select range date in month!");
-            }
-            List<ResponseLeave> lstResult = new List<ResponseLeave>();
-            InitContext(out context);
-            lstResult = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart && m.Uid == uid).Select(m => new ResponseLeave { Uid = m.Uid, FullName = m.UserInfo.FullName, LeaveFrom = m.DateStart.ToString("yyyy-MM-dd HH:mm"), LeaveTo = m.DateEnd.ToString("yyyy-MM-dd HH:mm"), LeaveTypeName = m.MasterLeaveType.Name, RegisterHour = m.RegisterHour, LeaveStatus = m.Status }).ToList();
-            DisposeContext(context);
-            return lstResult;
+            return PrivateGetLeave(dateStart, dateEnd, lstUid);
         }
 
-        public void DeleteLeave (List<int> lstLeaveId)
+        public void DeleteLeave(List<int> lstLeaveId)
         {
             InitContext(out context);
             var lstLeave = context.RegisterLeaves.Where(m => lstLeaveId.Contains(m.Id)).ToList();
-            if(lstLeave.Any(m=>m.Status!= Common.StatusLeave.E_Register))
+            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register))
             {
+                DisposeContext(context);
                 throw new Exception("Please delete only value register status!");
             }
             context.RegisterLeaves.RemoveRange(lstLeave);
             DisposeContext(context);
 
         }
+        public void DeleteLeave(DateTime dateStart, DateTime dateEnd)
+        {
+            PrivateDeleteLeave(dateStart, dateEnd, null,true);
+        }
 
+        public void DeleteLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
+        {
+            PrivateDeleteLeave(dateStart, dateEnd, lstUid,true);
+        }
         #region Private Method
 
         /// <summary>
@@ -182,7 +168,6 @@ namespace mtv_management_leave.Lib.Repository
             {
                 throw new Exception("It's weekend");
             }
-            InitContext(out context);
             if (commonLeaveBase.IsDateOffCompany(context, timeStart.Date))
             {
                 DisposeContext(context);
@@ -204,6 +189,7 @@ namespace mtv_management_leave.Lib.Repository
 
             if (start > startBreak && end < endBreak)
             {
+                DisposeContext(context);
                 throw new Exception("Register in the breaktime");
             }
 
@@ -227,8 +213,81 @@ namespace mtv_management_leave.Lib.Repository
             {
                 result = Math.Round((end - start).TotalHours - 1, 1);
             }
-            DisposeContext(context);
             return result;
+        }
+
+        private List<ResponseLeave> PrivateGetLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
+        {
+            if (dateStart.Year != dateEnd.Year || dateStart.Month != dateEnd.Month)
+            {
+                throw new Exception("Please select range date in month!");
+            }
+            List<ResponseLeave> lstResult = new List<ResponseLeave>();
+            InitContext(out context);
+            var query = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart).Select(m => new { m.Id, m.Uid, m.UserInfo.FullName, m.DateStart, m.DateEnd, LeaveTypeName = m.MasterLeaveType.Name, m.RegisterHour, LeaveStatus = m.Status });
+            if (lstUid != null && lstUid.Count > 0)
+            {
+                query = query.Where(m => lstUid.Contains(m.Uid));
+            }
+            var lstObj = query.ToList();
+            foreach (var obj in lstObj)
+            {
+                ResponseLeave resLeave = new ResponseLeave();
+                resLeave.Id = obj.Id;
+                resLeave.LeaveTo = obj.DateEnd.ToString("yyyy-MM-dd HH:mm");
+                resLeave.LeaveFrom = obj.DateStart.ToString("yyyy-MM-dd HH:mm");
+                resLeave.FullName = obj.FullName;
+                resLeave.LeaveStatus = obj.LeaveStatus;
+                resLeave.LeaveTypeName = obj.LeaveTypeName;
+                resLeave.RegisterHour = obj.RegisterHour;
+                resLeave.Uid = obj.Uid;
+                lstResult.Add(resLeave);
+            }
+
+            DisposeContext(context);
+            return lstResult;
+        }
+
+        private void PrivateDeleteLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid, bool IsValidate)
+        {
+            InitContext(out context);
+            dateEnd = dateEnd.Date.AddDays(1).AddMinutes(-1);
+            var query = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart);
+            if (lstUid != null && lstUid.Count > 0)
+            {
+                query = query.Where(m => lstUid.Contains(m.Uid));
+            }
+            var lstLeave = query.ToList();
+            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register) && IsValidate == true)
+            {
+                DisposeContext(context);
+                throw new Exception("Please delete only value register status!");
+            }
+            context.RegisterLeaves.RemoveRange(lstLeave);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
+        private void PrivateApproveLeave(List<int> lstleaveId)
+        {
+            InitContext(out context);
+            var lstleave = context.RegisterLeaves.Where(m => lstleaveId.Contains(m.Id)).ToList();
+            lstleave.ForEach(m => m.Status = Common.StatusLeave.E_Approve);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+        private void PrivateRejectLeave(List<int> lstleaveId)
+        {
+            InitContext(out context);
+            var lstleave = context.RegisterLeaves.Where(m => lstleaveId.Contains(m.Id)).ToList();
+            lstleave.ForEach(m => m.Status = Common.StatusLeave.E_Reject);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
+        public void DeleteLeaveWithoutValidate(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
+        {
+            PrivateDeleteLeave(dateStart, dateEnd, lstUid, false);
         }
         #endregion
     }

@@ -9,12 +9,11 @@ namespace mtv_management_leave.Lib
     {
         public enum TypeLeave
         {
-            E_CompanyStrip = 1,
-            E_AnnualLeave = 2,
-            E_SickLeave = 3,
-            E_Materity = 4,
-            E_NonPaid = 5,
-            E_Other = 6
+            E_AnnualLeave = 1,
+            E_BussinessLeave = 2,
+            E_Materity = 3,
+            E_NonPaid = 4
+            
         }
         public enum StatusLeave
         {
