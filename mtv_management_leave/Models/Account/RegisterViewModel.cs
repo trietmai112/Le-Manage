@@ -7,6 +7,7 @@ namespace mtv_management_leave.Models.Account
 {
     public class RegisterViewModel
     {
+        public int? Id { get; set; }
         [Required, EmailAddress, Display(Name = "E-mail"), PlaceHolder("please input your email")]
         public string Email { get; set; }
 
@@ -34,5 +35,7 @@ namespace mtv_management_leave.Models.Account
 
         [Display(Name = "Roles")]
         public List<int> RoleIds { get; set; }
+        [Display(Name = "Finger-Print number"), PlaceHolder("finger print number")]
+        public int? FPId { get; set; }
     }
 }

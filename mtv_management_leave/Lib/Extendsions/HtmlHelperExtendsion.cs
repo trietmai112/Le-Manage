@@ -114,7 +114,7 @@ namespace mtv_management_leave.Lib.Extendsions
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
-            var inputHtmlString = htmlHelper.PasswordFor(expression, new { @class = "form-control", placeholder = metadata.GetPlaceHolder() });
+            var inputHtmlString = htmlHelper.PasswordFor(expression, new { @class = "form-control input-sm", placeholder = metadata.GetPlaceHolder() });
             var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
             var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
 

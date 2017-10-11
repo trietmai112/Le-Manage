@@ -8,9 +8,9 @@ namespace mtv_management_leave.Migrations
         public override void Up()
         {
             this.Sql("delete from AspNetRoles");
-            this.Sql("insert into AspNetRoles(Name) values('Super admin')");
-            this.Sql("insert into AspNetRoles(Name) values('Admin')");
-            this.Sql("insert into AspNetRoles(Name) values('User')");
+            this.Sql("insert into AspNetRoles(Name, IsShow) values('Super admin', 0)");
+            this.Sql("insert into AspNetRoles(Name, IsShow) values('Admin', 1)");
+            this.Sql("insert into AspNetRoles(Name, IsShow) values('User', 1)");
 
 
         }

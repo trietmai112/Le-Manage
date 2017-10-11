@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace mtv_management_leave.Lib.Extendsions
 {
-    public static class MvcHtmlStringExtension
+    public static class MvcHtmlStringExtendsion
     {
         public static MvcHtmlString Wrap(this MvcHtmlString mvcHtml, string name, object attribute)
         {

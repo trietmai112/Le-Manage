@@ -224,11 +224,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
+    <Compile Include="App_Start\PropertiesStatic.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\RegisterLeaveController.cs" />
@@ -245,9 +247,10 @@
     <Compile Include="Lib\Controls\TableHeaderControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
-    <Compile Include="Lib\Extendsions\IListExtentsion.cs" />
+    <Compile Include="Lib\Extendsions\IListExtendsion.cs" />
+    <Compile Include="Lib\Extendsions\IPrincipalExtendsion.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
-    <Compile Include="Lib\Extendsions\MvcHtmlStringExtension.cs" />
+    <Compile Include="Lib\Extendsions\MvcHtmlStringExtendsion.cs" />
     <Compile Include="Lib\Extendsions\ObjectExtentsion.cs" />
     <Compile Include="Lib\Extendsions\TagBuilderExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
@@ -293,9 +296,9 @@
     <Compile Include="Migrations\201710020706225_AddNewTableEmployeeInfo.Designer.cs">
       <DependentUpon>201710020706225_AddNewTableEmployeeInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201710030230133_InsertDefaultRoles.cs" />
-    <Compile Include="Migrations\201710030230133_InsertDefaultRoles.Designer.cs">
-      <DependentUpon>201710030230133_InsertDefaultRoles.cs</DependentUpon>
+    <Compile Include="Migrations\201710130230133_InsertDefaultRoles.cs" />
+    <Compile Include="Migrations\201710130230133_InsertDefaultRoles.Designer.cs">
+      <DependentUpon>201710130230133_InsertDefaultRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201710081536331_UserSeniority_changeColumnType.cs" />
     <Compile Include="Migrations\201710081536331_UserSeniority_changeColumnType.Designer.cs">
@@ -304,6 +307,10 @@
     <Compile Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.cs" />
     <Compile Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.Designer.cs">
       <DependentUpon>201710090911177_AddleaveBonus_Remove_Column.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111454350_AddMoreColumnInTableRole.cs" />
+    <Compile Include="Migrations\201710111454350_AddMoreColumnInTableRole.Designer.cs">
+      <DependentUpon>201710111454350_AddMoreColumnInTableRole.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\DateTimeBinder.cs" />
@@ -689,6 +696,7 @@
     <Content Include="Views\RegisterLeave\RegisterLeave.cshtml" />
     <Content Include="Views\LeaveManagement\Index.cshtml" />
     <Content Include="Views\Shared\_LeftSidebar.cshtml" />
+    <Content Include="Views\Employee\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -713,14 +721,17 @@
     <EmbeddedResource Include="Migrations\201710020706225_AddNewTableEmployeeInfo.resx">
       <DependentUpon>201710020706225_AddNewTableEmployeeInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710030230133_InsertDefaultRoles.resx">
-      <DependentUpon>201710030230133_InsertDefaultRoles.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710130230133_InsertDefaultRoles.resx">
+      <DependentUpon>201710130230133_InsertDefaultRoles.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710081536331_UserSeniority_changeColumnType.resx">
       <DependentUpon>201710081536331_UserSeniority_changeColumnType.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.resx">
       <DependentUpon>201710090911177_AddleaveBonus_Remove_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111454350_AddMoreColumnInTableRole.resx">
+      <DependentUpon>201710111454350_AddMoreColumnInTableRole.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

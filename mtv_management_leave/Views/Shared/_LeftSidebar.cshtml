@@ -8,40 +8,47 @@
     <li class="active">
         <a href="/"><i class="zmdi zmdi-home"></i> Home</a>
     </li>
+    @{
+        if (isAdmin)
+        {
+            <li><a href="/employee/register"><i class="zmdi zmdi-account-add"></i> Register User</a></li>
+        }
+    }
     <li><a href="/registerleave"><i class="zmdi zmdi-accounts"></i> Employee Information</a></li>
+
     <li class="sub-menu">
         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-swap"></i> In-Out</a>
         <ul>
-            <li><a href="dashboards/analytics.html">List In-Out</a></li>
+            <li><a href="#">List In-Out</a></li>
             @{
                 if (isAdmin)
                 {
-                    <li><a href="dashboards/school.html">Summary In-Out</a></li>
+                    <li><a href="#">Summary In-Out</a></li>
                 }
             }
         </ul>
     </li>
     @*need find an icon for each menu*@
-    <li><a href="#"><i class="zmdi zmdi-calendar-note"></i> Request Change In-Out</a></li>
+    <li><a href="#"><i class="zmdi zmdi-rotate-ccw"></i> Request Change In-Out</a></li>
     <li class="sub-menu">
         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-swap"></i> Summary Annual leave</a>
         <ul>
-            <li><a href="dashboards/analytics.html">List Summary Annual Leave</a></li>
+            <li><a href="#">List Summary Annual Leave</a></li>
             @{
                 if (isAdmin)
                 {
-                    <li><a href="dashboards/school.html">Calculate Summary Leave</a></li>
+                    <li><a href="#">Calculate Summary Leave</a></li>
                 }
             }
         </ul>
     </li>
     @if (isAdmin)
     {
-        <li><a href="/registerleave"><i class="zmdi zmdi-calendar-note"></i> Available Begin Year</a></li>
-        <li><a href="/registerleave"><i class="zmdi zmdi-calendar-note"></i> Add Leave Bonus</a></li>
-        <li><a href="/leavemanagement"><i class="zmdi zmdi-calendar-check"></i> Seniority Bonus</a></li>
-        <li><a href="/leavemanagement"><i class="zmdi zmdi-calendar-check"></i> Leave Of Company</a></li>
+        <li><a href="/registerleave"><i class=""></i> Available Begin Year</a></li>
+        <li><a href="/registerleave"><i class=""></i> Add Leave Bonus</a></li>
+        <li><a href="/leavemanagement"><i class=""></i> Seniority Bonus</a></li>
+        <li><a href="/leavemanagement"><i class=""></i> Leave Of Company</a></li>
     }
 
-    <li><a href="/account/logout"><i class="zmdi zmdi-time-restore"></i> Logout</a></li>
+    <li><a href="/account/logout"><i class="zmdi zmdi-sign-in"></i> Logout</a></li>
 </ul>

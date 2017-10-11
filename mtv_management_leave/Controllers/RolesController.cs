@@ -16,7 +16,7 @@ namespace mtv_management_leave.Controllers
         }
         public IEnumerable<SelectListItem> RolesToList()
         {
-            return _context.Roles
+            return _context.Roles.Where(m=> m.IsShow)
                 .OrderByDescending(m=> m.Id)
                 .Select(m => new SelectListItem { Value = m.Id.ToString(), Text = m.Name }).ToList();
         }

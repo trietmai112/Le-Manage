@@ -31,10 +31,12 @@ namespace mtv_management_leave.Models.Entity
     }
     public class Role : IdentityRole<int, UserRole>
     {
+        public bool IsShow { get; set; }
         public Role() { }
         public Role(string name) { Name = name; }
     }
-    public class UserRole : IdentityUserRole<int> { }
+    public class UserRole : IdentityUserRole<int> {     
+    }
     public class UserClaim : IdentityUserClaim<int> { }
     public class UserLogin : IdentityUserLogin<int> { }
 }

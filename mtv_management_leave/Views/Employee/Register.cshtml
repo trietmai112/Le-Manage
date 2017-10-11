@@ -1,0 +1,53 @@
+﻿@using mtv_management_leave.Models.Account
+@model RegisterViewModel
+@{
+    ViewBag.Title = "Register User";
+    var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
+}
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can register an user at here</small></h2>
+    </div>
+    <div class="card-body card-padding">
+            @using (Html.BeginForm("Register", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="col-sm-12">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(m=> m.Id)
+                </div>
+              
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.vTextBoxFor(m => m.Email)
+
+                        @Html.vTextBoxFor(m => m.FullName)
+
+                        @Html.vTextBoxFor(m => m.PhoneNumber)
+
+                        @Html.vDatePickerFor(m => m.DateOfBirth)
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.vTextBoxFor(m => m.FPId)
+
+                        @Html.vPasswordFor(m => m.Password)
+
+                        @Html.vPasswordFor(m => m.ConfirmPassword)
+
+                        @Html.vDropDownListFor(m => m.RoleIds, roles)                                                
+                    </div>
+                    <div class="col-sm-12">
+                        <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-plus"></i> Register</button>
+                    </div>
+                </div>
+
+            }
+    </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    
+    }
+
+
