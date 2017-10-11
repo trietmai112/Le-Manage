@@ -254,6 +254,7 @@
     <Compile Include="Lib\Interface\IContainerControl.cs" />
     <Compile Include="Lib\Interface\IControl.cs" />
     <Compile Include="Lib\Interface\IDataBeginYear.cs" />
+    <Compile Include="Lib\Interface\IMasterLeaveType.cs" />
     <Compile Include="Lib\Interface\IDayOffCompany.cs" />
     <Compile Include="Lib\Interface\IAddLeave.cs" />
     <Compile Include="Lib\Interface\IUserSeniority.cs" />
@@ -329,6 +330,7 @@
     <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\RepoDataBeginYear.cs" />
     <Compile Include="Models\RepoAddLeave.cs" />
+    <Compile Include="Models\RepoLeaveType.cs" />
     <Compile Include="Models\RepoUserUpdateInfo.cs" />
     <Compile Include="Models\RepoRegisterLeave.cs" />
     <Compile Include="Models\RepoMappingInOut.cs" />
