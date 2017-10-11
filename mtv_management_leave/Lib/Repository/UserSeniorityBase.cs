@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -18,8 +19,7 @@ namespace mtv_management_leave.Lib.Repository
 
         public void GenerateUserSeniority(int year)
         {
-            InitContext(out context);
-            DisposeContext(context);
+            generate(year, null);
         }
 
         public void GenerateUserSeniority(int year, List<int> lstUid)
@@ -27,20 +27,20 @@ namespace mtv_management_leave.Lib.Repository
             generate(year, lstUid);
         }
 
-        public List<UserSeniority> GetUserSeniority(int year)
+        public List<ResponseUserSeniority> GetUserSeniority(int year)
         {
             return getData(year, null);
         }
 
-        public List<UserSeniority> GetUserSeniority(int year, List<int> lstUid)
+        public List<ResponseUserSeniority> GetUserSeniority(int year, List<int> lstUid)
         {
             return getData(year, lstUid);
         }
 
         #region Private method
-        private List<UserSeniority> getData(int year, List<int> lstUid)
+        private List<ResponseUserSeniority> getData(int year, List<int> lstUid)
         {
-            List<UserSeniority> lstResult = new List<UserSeniority>();
+            List<ResponseUserSeniority> lstResult = new List<ResponseUserSeniority>();
             InitContext(out context);
             var query = context.UserSeniorities.Where(m => m.Year == year);
             if (lstUid != null && lstUid.Count > 0)
@@ -48,7 +48,25 @@ namespace mtv_management_leave.Lib.Repository
                 query = query.Where(m => lstUid.Contains(m.Uid));
 
             }
-            lstResult = query.ToList();
+            lstResult = query.Select(m => new ResponseUserSeniority()
+            {
+                Year = m.Year,
+                FullName = m.UserInfo.FullName,
+                Id = m.Id,
+                Month1 = m.Month1,
+                Month10 = m.Month10,
+                Month11 = m.Month11,
+                Month12 = m.Month12,
+                Month2 = m.Month2,
+                Month3 = m.Month3,
+                Month4 = m.Month4,
+                Month5 = m.Month5,
+                Month6 = m.Month6,
+                Month7 = m.Month7,
+                Month8 = m.Month8,
+                Month9 = m.Month9,
+                Uid = m.Uid
+            }).ToList();
             DisposeContext(context);
             return lstResult;
         }
@@ -73,6 +91,7 @@ namespace mtv_management_leave.Lib.Repository
                     continue;
                 UserSeniority userS = new UserSeniority();
                 userS.Uid = user.Id;
+                userS.Year = year;
                 for (DateTime month = beginYear; month <= endYear; month = month.AddMonths(1))
                 {
                     int daySeniority = 0;
@@ -83,7 +102,7 @@ namespace mtv_management_leave.Lib.Repository
                     else
                     {
                         DateTime yearlater = new DateTime(user.DateBeginWork.Value.Year + 5, user.DateBeginWork.Value.Month, 1);
-                        if(month >= yearlater)
+                        if (month >= yearlater)
                         {
                             daySeniority += 3;
                             bool isfirst = true;
@@ -117,7 +136,7 @@ namespace mtv_management_leave.Lib.Repository
                         case 12: userS.Month12 = daySeniority; break;
                     }
                     var DataDB = listUserSeniorityDB.Where(m => m.Uid == user.Id).FirstOrDefault();
-                    if(DataDB== null)
+                    if (DataDB == null)
                     {
                         context.UserSeniorities.Add(userS);
                     }
@@ -146,7 +165,7 @@ namespace mtv_management_leave.Lib.Repository
         {
             InitContext(out context);
             var inDB = context.UserSeniorities.Where(m => m.Year == UserSeniorityInput.Year && m.Uid == UserSeniorityInput.Uid).FirstOrDefault();
-            if(inDB!= null)
+            if (inDB != null)
             {
                 inDB.Month1 = UserSeniorityInput.Month1;
                 inDB.Month2 = UserSeniorityInput.Month2;
@@ -167,7 +186,7 @@ namespace mtv_management_leave.Lib.Repository
             }
             context.SaveChanges();
             DisposeContext(context);
-                
+
         }
     }
 

@@ -233,6 +233,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\UserSeniorityController.cs" />
     <Compile Include="Controllers\MasterDayOffCompanyController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
     <Compile Include="Controllers\RegisterLeaveController.cs" />
@@ -352,7 +353,9 @@
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\RegisterLeave\RegisterLeaveRequest.cs" />
     <Compile Include="Models\RegisterLeave\SearchRequest.cs" />
+    <Compile Include="Models\Request\RequestUserSeniority.cs" />
     <Compile Include="Models\Request\RequestMasterDayOff.cs" />
+    <Compile Include="Models\Response\ResponseUserSeniority.cs" />
     <Compile Include="Models\Response\ResponseMasterDayOff.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
     <Compile Include="Models\Response\ResponseLeaveTotalMonthly.cs" />
@@ -708,6 +711,7 @@
     <Content Include="Views\LeaveManagement\Index.cshtml" />
     <Content Include="Views\MasterDayOffCompany\Index.cshtml" />
     <Content Include="Views\MasterDayOffCompany\RegisterDayOffCompany.cshtml" />
+    <Content Include="Views\UserSeniority\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

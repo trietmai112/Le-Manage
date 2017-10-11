@@ -1,0 +1,75 @@
+﻿@model mtv_management_leave.Models.Request.RequestUserSeniority
+@{
+    ViewBag.Title = "UserSeniority";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can check list of user seniority</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.vDatePickerFor(m => m.DateYear).Wrap("div", new { @class = "col-sm-4" })
+                <div class="col-sm-4">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    <button class="btn btn-primary" id="btn-generate"><i class="zmdi zmdi-plus"></i> Generate</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("UserSeniority-Table")
+        .SetAjaxUrl("/UserSeniority/tolist")
+        .AddAjaxParameter(Model)
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid",  MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "FullName", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Year", MappingFrom = "Year" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month1", MappingFrom = "Month1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month2", MappingFrom = "Month2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month3", MappingFrom = "Month3" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month4", MappingFrom = "Month4" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month5", MappingFrom = "Month5" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month6", MappingFrom = "Month6" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month7", MappingFrom = "Month7" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month8", MappingFrom = "Month8" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month9", MappingFrom = "Month9" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month10", MappingFrom = "Month10" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month11", MappingFrom = "Month11" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month12", MappingFrom = "Month12" }
+        )
+        .ToHtml()
+        )
+    </div>
+
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log("111");
+            $(".card-body .date-picker").datetimepicker({ format: "MM/DD/YYYY" });
+            $('.card-body .selectpicker').selectpicker('render');
+        });
+
+        $("#btn-search").click(function (e) {
+            $("#UserSeniority-Table").bootgrid("reload");
+        });
+
+        $("#btn-generate").click(function (e) {
+            e.preventDefault();
+            var form = $(".card-body");
+            var data = form.serialize();
+            console.log(data);
+            var option = {
+                url: "/UserSeniority/Generate",
+                type: "POST",
+                data: data
+            };
+            $.ajax(option).done(function (data) {
+                $("#btn-search").click();
+            });;
+        });
+        
+    </script>
+}
