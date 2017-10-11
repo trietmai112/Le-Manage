@@ -48,6 +48,10 @@
     <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.zkemkeeper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZKemkeeper.1.0.2\lib\Interop.zkemkeeper.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.0.6.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.0.6\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -271,6 +275,7 @@
     <Compile Include="Lib\Repository\DataBeginYearBase.cs" />
     <Compile Include="Lib\Repository\DayOffCompanyBase.cs" />
     <Compile Include="Lib\Repository\AddLeaveBase.cs" />
+    <Compile Include="Lib\Repository\MasterLeaveTypeBase.cs" />
     <Compile Include="Lib\Repository\UserSeniorityBase.cs" />
     <Compile Include="Lib\Repository\RequestChangeInoutBase.cs" />
     <Compile Include="Lib\Repository\InOutBase.cs" />
@@ -304,6 +309,14 @@
     <Compile Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.cs" />
     <Compile Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.Designer.cs">
       <DependentUpon>201710090911177_AddleaveBonus_Remove_Column.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111052084_ChangeNameColumnRawData.cs" />
+    <Compile Include="Migrations\201710111052084_ChangeNameColumnRawData.Designer.cs">
+      <DependentUpon>201710111052084_ChangeNameColumnRawData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710111102567_TurnbackColumnNameRawData.cs" />
+    <Compile Include="Migrations\201710111102567_TurnbackColumnNameRawData.Designer.cs">
+      <DependentUpon>201710111102567_TurnbackColumnNameRawData.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\DateTimeBinder.cs" />
@@ -721,6 +734,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710090911177_AddleaveBonus_Remove_Column.resx">
       <DependentUpon>201710090911177_AddleaveBonus_Remove_Column.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111052084_ChangeNameColumnRawData.resx">
+      <DependentUpon>201710111052084_ChangeNameColumnRawData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710111102567_TurnbackColumnNameRawData.resx">
+      <DependentUpon>201710111102567_TurnbackColumnNameRawData.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

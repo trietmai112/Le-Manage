@@ -126,7 +126,7 @@ namespace mtv_management_leave.Lib.Repository
             // khong du gio out
             var lstdayoff = context.MasterLeaveDayCompanies.Where(m => m.Date >= DateStart && m.Date <= DateEnd).Select(m => m.Date).ToList();
             var lstInout = context.InOuts.Where(m => m.Date >= DateStart && m.Date <= DateEnd && lstUserId.Contains(m.Uid)).Select(m => new RepoInOut { Uid = m.Uid, Date = m.Date, Intime = m.Intime, OutTime = m.OutTime }).ToList();
-            var lstLeave = context.RegisterLeaves.Where(m => m.DateStart <= DateEnd && m.DateEnd >= DateStart&& lstUserId.Contains(m.Uid)).Select(m => new RepoLeave()
+            var lstLeave = context.RegisterLeaves.Where(m => m.DateStart <= DateEnd && m.DateEnd >= DateStart && lstUserId.Contains(m.Uid)).Select(m => new RepoLeave()
             {
                 Uid = m.Uid,
                 DateRegister = m.DateRegister,
@@ -303,7 +303,7 @@ namespace mtv_management_leave.Lib.Repository
             DateTo = DateTo.Value.AddDays(1).AddSeconds(-1);
             //del old data
             var lstInoutInDB_Query = context.InOuts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
-            var lstInoutRaw_Query = context.DataInOutRaws.Where(m => m.Uid == uidInut && m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
+            var lstInoutRaw_Query = context.DataInOutRaws.Where(m => m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
             if (uidInut != null)
             {
                 lstInoutInDB_Query = lstInoutInDB_Query.Where(m => m.Uid == uidInut);
@@ -316,7 +316,12 @@ namespace mtv_management_leave.Lib.Repository
             context.InOuts.RemoveRange(lstInoutDelete);
 
             var lstInoutRaw = lstInoutRaw_Query.ToList();
-            var lstUid = lstInoutRaw.Select(m => m.Uid).Distinct();
+            if (lstInoutRaw.Count > 0)
+            {
+                dateFrom = lstInoutRaw.OrderBy(m => m.Time).Select(m => m.Time).FirstOrDefault();
+                dateFrom = dateFrom.Date;
+            }
+            var lstUid = lstInoutRaw.Select(m => m.Uid).Distinct().ToList();
 
             var listInoutSave = new List<InOut>();
             for (DateTime date = dateFrom; date <= DateTo; date = date.AddDays(1))
@@ -340,6 +345,7 @@ namespace mtv_management_leave.Lib.Repository
                         inOutObject.OutTime = lstInDayByUser.LastOrDefault().Time;
                     }
                     inOutObject.Uid = uid;
+                    inOutObject.Date = date;
                     listInoutSave.Add(inOutObject);
                 }
             }
@@ -347,6 +353,10 @@ namespace mtv_management_leave.Lib.Repository
             {
                 context.InOuts.AddRange(listInoutSave);
             }
+            DateTime max = listInoutSave.Max(m => m.Date);
+            DateTime min = listInoutSave.Min(m => m.Date);
+            DateTime Max1 = listInoutSave.Max(m => m.Intime);
+            DateTime Min1 = listInoutSave.Min(m => m.Intime);
             context.SaveChanges();
             DisposeContext(context);
         }

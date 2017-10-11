@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using mtv_management_leave.Lib;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Tests.LibTest;
-using mtv_management_leave.Lib;
 
 namespace mtv_management_leave.Tests.LeaveTest
 {
@@ -269,7 +269,7 @@ namespace mtv_management_leave.Tests.LeaveTest
             //UpdateInout
             InOutBase inoutBase = new InOutBase();
             LeaveBase leaveB = new LeaveBase();
-          
+
 
             try
             {
@@ -373,7 +373,20 @@ namespace mtv_management_leave.Tests.LeaveTest
             }
         }
 
+        [TestMethod]
+        public void SaveGenerateInout_NormalCase()
+        {
+            InOutBase iob = new InOutBase();
+            try
+            {
+                iob.SaveGenerateInout(new DateTime(2000, 1, 1), null);
+            }
+            catch (Exception e)
+            {
+                Assert.Fail();
+            }
 
+        }
 
 
 
