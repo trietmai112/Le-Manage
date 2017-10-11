@@ -230,6 +230,7 @@
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\RegisterLeaveController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -687,6 +688,7 @@
     <Content Include="Views\RegisterLeave\Index.cshtml" />
     <Content Include="Views\RegisterLeave\RegisterLeave.cshtml" />
     <Content Include="Views\LeaveManagement\Index.cshtml" />
+    <Content Include="Views\Shared\_LeftSidebar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
