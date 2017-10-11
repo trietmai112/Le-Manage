@@ -26,12 +26,10 @@
                     <div class="line bottom"></div>
                 </div>
             </li>
-
             <li class="hi-logo hidden-xs">
                 <a href="/">MTI - Technology</a>
             </li>
-
-            <li class="pull-right">
+            @*<li class="pull-right">
                 <ul class="hi-menu">
 
                     <li data-ma-action="search-open">
@@ -258,16 +256,16 @@
                         </ul>
                     </li>                    
                 </ul>
-            </li>
+            </li>*@
         </ul>
 
         <!-- Top Search Content -->
-        <div class="h-search-wrap">
+        @*<div class="h-search-wrap">
             <div class="hsw-inner">
                 <i class="hsw-close zmdi zmdi-arrow-left" data-ma-action="search-close"></i>
                 <input type="text">
             </div>
-        </div>
+        </div>*@
     </header>
 
     <section id="main">
@@ -283,8 +281,8 @@
                     </div>
                 </a>
 
-                <ul class="main-menu">
-                    @*<li>
+                @*<ul class="main-menu">
+                    <li>
                         <a href="profile-about.html"><i class="zmdi zmdi-account"></i> View Profile</a>
                     </li>
                     <li>
@@ -292,20 +290,14 @@
                     </li>
                     <li>
                         <a href="#"><i class="zmdi zmdi-settings"></i> Settings</a>
-                    </li>*@
+                    </li>
                     <li>
                         <a href="/account/logout"><i class="zmdi zmdi-time-restore"></i> Logout</a>
                     </li>
-                </ul>
+                </ul>*@
             </div>
 
-            <ul class="main-menu">
-                <li class="active">
-                    <a href="/"><i class="zmdi zmdi-home"></i> Home</a>
-                </li>
-                <li><a href="/registerleave"><i class="zmdi zmdi-calendar-note"></i> Register leave</a></li>
-                <li><a href="/leavemanagement"><i class="zmdi zmdi-calendar-check"></i> Leave management</a></li>
-            </ul>
+            @Html.Action("LeftSidebar", "MasterController")
         </aside>
                 
         <section id="content">
