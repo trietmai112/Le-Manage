@@ -1,4 +1,5 @@
-﻿@model mtv_management_leave.Models.RegisterLeave.SearchRequest
+﻿@using mtv_management_leave.Models.RegisterLeave
+@model SearchRequest
 @{
     ViewBag.Title = "Register leave";
 }
@@ -23,11 +24,11 @@
         @(Html.vBootGridFor()
         .SetName("register-leave-table")
         .SetAjaxUrl("/registerleave/tolist")
-        .AddAjaxParameter(Model)
+        .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRow", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In-time", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out-time", FormatJqueryHandler = "validRow", MappingFrom = "Outtime" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave1 start", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart1" },
@@ -74,6 +75,10 @@
             return row[col.id];
         }; 
 
+        var validRowDate = function (col, row) {
+            return formatDate(row[col.id]);
+        }
+
         $("#modalRegisterLeave").on('show.bs.modal', function () {
             var option = {
                 url: "/registerleave/registerleave",
@@ -90,8 +95,9 @@
         }
 
         var registerBootstrapControl = function () {
-            $(".modal-body .time-picker").datetimepicker({ format: "LT" });
-            $(".modal-body .date-picker").datetimepicker({ format: "MM/DD/YYYY" });
+            $(".modal-body .time-picker").datetimepicker({
+                format: "LT", stepping: 15});
+            $(".modal-body .date-picker").datetimepicker({ format: "MM/DD/YYYY", showTodayButton: true });
             $('.modal-body .selectpicker').selectpicker('render');
         }
 

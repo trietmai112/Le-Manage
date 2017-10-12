@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace mtv_management_leave.Models.Entity
 {
     [Table("DataInOutRaw")]
-    public class DataInOutRaw: Override.BaseEntity
+    public class DataInOutRaw : Override.BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

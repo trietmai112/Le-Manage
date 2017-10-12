@@ -63,16 +63,33 @@ namespace mtv_management_leave.Lib.Extendsions
 
         private readonly static string _dateTimePickerTemplate =
             $@"<div class='form-group'>
-                {{label}}
-                <div class='{_textDivClass}'>
-                    <div class='dtp-container fg-line'>
-                        {{textbox}}
-                    </div>
+                    {{label}}
+                    <div class='input-group'>
+                         <span class='input-group-addon date-time-picker-clear'><i class='zmdi zmdi-close'></i></span>
+                         <div class='dtp-container'>
+                               {{textbox}}
+                         </div>
+                     </div>
                     {{validate-message}}
-                </div>
-              </div>";    
+                </div>";
 
-        
+            //$@"<div class='form-group'>
+            //    {{label}}
+                
+            //    <div class='{_textDivClass}'>
+            //        <div class='input-group'>
+            //            <span class='input-group-addon'><i class='zmdi zmdi-time'></i></span>
+            //            <div class='dtp-container fg-line'>
+            //                {{textbox}}
+            //                <button class='btn btn-link'>x</button>
+            //            </div>
+            //        </div>
+                    
+            //        {{validate-message}}
+            //    </div>
+            //  </div>";
+
+
         private static string CombineVaribleToLayout(string layout, Dictionary<string, string> dictionary)
         {
             var htmlString = layout;

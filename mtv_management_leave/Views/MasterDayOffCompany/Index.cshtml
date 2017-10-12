@@ -1,0 +1,108 @@
+﻿@using mtv_management_leave.Models.Request;
+@model RequestMasterDayOff
+@{
+    ViewBag.Title = "Day Off Company";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can check all leave of company</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
+                <div class="col-sm-4">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Create New</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("DayOffCompany-Table")
+        .SetAjaxUrl("/MasterDayOffCompany/tolist")
+        .AddAjaxParameter(typeof(RequestMasterDayOff))
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Day Off", Identify = true, MappingFrom = "DateLeave" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Description",  MappingFrom = "Reason" }
+        )
+        .ToHtml()
+        )
+    </div>
+
+</div>
+<div class="modal fade" id="modalRegisterDayOffCompany" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Register Day Off Company</h2>
+            </div>
+            <div class="modal-body">
+                @*@Html.Action("RegisterDayOffCompany")*@
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="modal-save"><i class="zmdi zmdi-save"></i> Save changes</button>
+            <button type="button" class="btn btn-default" id="modal-close" data-dismiss="modal">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-search").click(function (e) {
+            $("#DayOffCompany-Table").bootgrid("reload");
+        });
+
+        $("#btn-register").click(function (e) {
+            $("#modalRegisterDayOffCompany").modal("show");
+        });
+
+        var validRow = function (col, row) {
+            return row[col.id];
+        };
+
+        $("#modalRegisterDayOffCompany").on('show.bs.modal', function () {
+            var option = {
+                url: "/MasterDayOffCompany/RegisterDayOffCompany",
+                type: "GET"
+            };
+            $.ajax(option).done(function (data) {
+                setupModalBodyFrom(data);
+            });
+        });
+
+        var setupModalBodyFrom = function (data) {
+            $(".modal-body").html(data);
+            registerBootstrapControl();
+        }
+        var registerBootstrapControl = function () {
+            $(".modal-body .time-picker").datetimepicker({ format: "LT" });
+            $(".modal-body .date-picker").datetimepicker({ format: "MM/DD/YYYY" });
+            $('.modal-body .selectpicker').selectpicker('render');
+        }
+
+        $("#modalRegisterDayOffCompany").on('hidden.bs.modal', function () {
+            $(".modal-body").html("");
+        });
+
+        $("#modal-save").click(function (e) {
+            e.preventDefault();
+            var form = $(".modal-body form");
+            var url = form.attr("action");
+            var data = form.serialize();
+            var option = {
+                url: url,
+                type: "POST",
+                data: data
+            }
+            $.ajax(option).done(function (data) {
+                $("#modal-close").click();
+                $("#btn-search").click();
+            });
+        })
+    </script>
+}

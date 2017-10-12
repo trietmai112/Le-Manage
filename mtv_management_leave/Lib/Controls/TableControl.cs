@@ -54,8 +54,8 @@ namespace mtv_management_leave.Lib.Controls
             return this;
         }
 
-        public TableControl AddAjaxParameter(object model)
-        {
+        public TableControl AddAjaxParameter(Type model)
+        {            
             var dic = model.vGetDictionary();
             foreach(var d in dic)
             {

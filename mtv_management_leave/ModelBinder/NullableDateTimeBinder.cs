@@ -22,8 +22,8 @@ namespace mtv_management_leave.ModelBinder
 
             if (!isDate)
             {
-                bindingContext.ModelState.AddModelError(bindingContext.ModelName, new FormatException());
-                return DateTime.UtcNow;
+                //bindingContext.ModelState.AddModelError(bindingContext.ModelName, new FormatException());
+                return null;
             }
 
             return dateTime;

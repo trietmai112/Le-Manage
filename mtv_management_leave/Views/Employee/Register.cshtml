@@ -18,7 +18,7 @@
                 </div>
               
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         @Html.vTextBoxFor(m => m.Email)
 
                         @Html.vTextBoxFor(m => m.FullName)
@@ -27,7 +27,7 @@
 
                         @Html.vDatePickerFor(m => m.DateOfBirth)
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         @Html.vTextBoxFor(m => m.FPId)
 
                         @Html.vPasswordFor(m => m.Password)
@@ -36,6 +36,14 @@
 
                         @Html.vDropDownListFor(m => m.RoleIds, roles)                                                
                     </div>
+                    <div class="col-sm-4">
+                        @Html.vDatePickerFor(m => m.DateBeginWork)
+
+                        @Html.vDatePickerFor(m => m.DateBeginProbation)
+
+                        @Html.vDatePickerFor(m => m.DateResign)
+                    </div>
+
                     <div class="col-sm-12">
                         <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-plus"></i> Register</button>
                     </div>

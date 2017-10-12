@@ -1,10 +1,4 @@
-﻿using mtv_management_leave.Models;
-using mtv_management_leave.Models.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
 namespace mtv_management_leave.Lib.Interface
 {
@@ -15,6 +9,7 @@ namespace mtv_management_leave.Lib.Interface
         /// </summary>
         /// <param name="ipAddress"></param>
         /// <param name="portNumber"></param>
-        void SaveDataRaw(string ipAddress, string portNumber, DateTime dateFrom );
+        void SaveDataRaw();
+        DateTime? getLastData();
     }
 }

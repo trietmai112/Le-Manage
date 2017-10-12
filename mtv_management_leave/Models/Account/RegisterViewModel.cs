@@ -37,5 +37,13 @@ namespace mtv_management_leave.Models.Account
         public List<int> RoleIds { get; set; }
         [Display(Name = "Finger-Print number"), PlaceHolder("finger print number")]
         public int? FPId { get; set; }
+
+        [Display(Name = "Date begin work")]
+        public System.DateTime? DateBeginWork { get; set; }
+        [Display(Name = "Date begin probation")]
+        public System.DateTime? DateBeginProbation { get; set; }
+        [Display(Name = "Date resign")]
+        public System.DateTime? DateResign { get; set; }
+
     }
 }

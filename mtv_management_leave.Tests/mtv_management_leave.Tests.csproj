@@ -107,6 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LeaveTest\InOutTest.cs" />
+    <Compile Include="LeaveTest\DataRawTest.cs" />
     <Compile Include="LeaveTest\LeaveTotalMonthlyTest.cs" />
     <Compile Include="LeaveTest\LeaveBaseTest.cs" />
     <Compile Include="LibTest\BaseTest.cs" />

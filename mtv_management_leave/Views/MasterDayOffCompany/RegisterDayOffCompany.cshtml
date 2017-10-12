@@ -1,0 +1,33 @@
+﻿@using mtv_management_leave.Models.Entity;
+@using Microsoft.AspNet.Identity;
+@model mtv_management_leave.Models.Register.RegisterMasterDayOff
+
+<div class="card">
+
+    <div class="card-body register-leave-handle">
+        <div class="container-fluid">
+            @using (Html.BeginForm("RegisterDayOffCompany","MasterDayOffCompany"))
+            {
+                @Html.ValidationSummary(false)
+                <label class="control-label">
+                    <b>Infomation register</b>
+                </label>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-8 leave-type" style="padding-top: 5px;">
+                            <div class="col-sm-2 text-right"><label class="control-label">Date</label> </div>
+                            <div class="col-sm-5 md-date">@Html.vDatePickerFor(m => m.Date, showTitle: false)</div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-top: 10px;">
+                    @Html.vTextAreaFor(m => m.Description)
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+

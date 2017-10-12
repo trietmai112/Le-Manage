@@ -1,15 +1,15 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using mtv_management_leave.Models;
 using mtv_management_leave.Models.Account;
 using mtv_management_leave.Models.Entity;
-using Microsoft.AspNet.Identity;
-using mtv_management_leave.Models;
-using System.Linq;
-using System.Data.Entity;
-using System.Web;
-using System;
-using AutoMapper;
 
 namespace mtv_management_leave.Controllers
 {
@@ -19,7 +19,7 @@ namespace mtv_management_leave.Controllers
         private LeaveManagementContext _context;
         private ApplicationUserManager _userManager;
 
-        public AccountController(ApplicationUserManager userManager, 
+        public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
             LeaveManagementContext context)
         {
@@ -81,7 +81,7 @@ namespace mtv_management_leave.Controllers
                     return View(model);
             }
         }
-        
+
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
@@ -99,13 +99,13 @@ namespace mtv_management_leave.Controllers
                 var transaction = _context.Database.BeginTransaction();
                 var user = Mapper.Map<UserInfo>(model);
                 var result = await _userManager.CreateAsync(user, model.Password);
-                
+
                 if (result.Succeeded)
                 {
                     var roles = await _context.Roles.Where(m => model.RoleIds.Contains(m.Id)).ToListAsync();
                     if (roles.Count > 0)
                     {
-                        result = _userManager.AddToRoles(user.Id, roles.Select(m => m.Name).ToArray());                       
+                        result = _userManager.AddToRoles(user.Id, roles.Select(m => m.Name).ToArray());
                     }
 
                     await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
@@ -121,11 +121,11 @@ namespace mtv_management_leave.Controllers
                 AddErrors(result);
                 transaction.Rollback();
             }
-           
+
             // If we got this far, something failed, redisplay form
             return View(model);
-        }    
-        
+        }
+
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(int userId, string code)
@@ -155,7 +155,7 @@ namespace mtv_management_leave.Controllers
             {
                 var user = await _userManager.FindByNameAsync(model.Email);
                 //if (user == null || !(await _userManager.IsEmailConfirmedAsync(user.Id)))
-                if(user == null)
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
                     return View("ForgotPasswordConfirmation");
@@ -164,7 +164,7 @@ namespace mtv_management_leave.Controllers
                 // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 string code = await _userManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                 await _userManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
@@ -172,7 +172,7 @@ namespace mtv_management_leave.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        
+
         // GET: /Account/ForgotPasswordConfirmation
         [AllowAnonymous]
         public ActionResult ForgotPasswordConfirmation()
@@ -180,7 +180,7 @@ namespace mtv_management_leave.Controllers
             return View();
         }
 
-        
+
         // GET: /Account/ResetPassword
         [AllowAnonymous]
         public ActionResult ResetPassword(string code)
@@ -243,7 +243,7 @@ namespace mtv_management_leave.Controllers
         {
             Request.GetOwinContext().Authentication.SignOut();
             return RedirectToAction("Index", "Home");
-        }        
+        }
 
         [HttpGet, Authorize]
         public UserInfo GetUserInfo(int userId)
@@ -252,10 +252,10 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpGet, Authorize]
-        public double GetLeaveRemining(int id, DateTime dateStart)
+        public double GetLeaveRemining(int uid)
         {
             var leaveManager = new Lib.Repository.LeaveBase();
-            return leaveManager.GetLeaveRemain(id, dateStart);
+            return leaveManager.GetLeaveRemain(uid, DateTime.Today);
         }
 
         ////
@@ -460,7 +460,7 @@ namespace mtv_management_leave.Controllers
 
 
 
-       
+
         //internal class ChallengeResult : HttpUnauthorizedResult
         //{
         //    public ChallengeResult(string provider, string redirectUri)
