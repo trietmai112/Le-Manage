@@ -1,4 +1,5 @@
-﻿@model mtv_management_leave.Models.Request.RequestMasterDayOff
+﻿@using mtv_management_leave.Models.Request;
+@model RequestMasterDayOff
 @{
     ViewBag.Title = "Day Off Company";
 }
@@ -21,7 +22,7 @@
         @(Html.vBootGridFor()
         .SetName("DayOffCompany-Table")
         .SetAjaxUrl("/MasterDayOffCompany/tolist")
-        .AddAjaxParameter(Model)
+        .AddAjaxParameter(typeof(RequestMasterDayOff))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Day Off", Identify = true, MappingFrom = "DateLeave" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Description",  MappingFrom = "Reason" }

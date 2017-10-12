@@ -1,4 +1,5 @@
-﻿@model mtv_management_leave.Models.Request.RequestUserSeniority
+﻿@using mtv_management_leave.Models.Request
+@model RequestUserSeniority
 @{
     ViewBag.Title = "UserSeniority";
 }
@@ -20,7 +21,7 @@
         @(Html.vBootGridFor()
         .SetName("UserSeniority-Table")
         .SetAjaxUrl("/UserSeniority/tolist")
-        .AddAjaxParameter(Model)
+        .AddAjaxParameter(typeof(RequestUserSeniority))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid",  MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "FullName", MappingFrom = "FullName" },

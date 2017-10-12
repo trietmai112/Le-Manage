@@ -1,4 +1,5 @@
-﻿@model mtv_management_leave.Models.RegisterLeave.SearchRequest
+﻿@using mtv_management_leave.Models.RegisterLeave
+@model SearchRequest
 @{
     ViewBag.Title = "Register leave";
 }
@@ -23,7 +24,7 @@
         @(Html.vBootGridFor()
         .SetName("register-leave-table")
         .SetAjaxUrl("/registerleave/tolist")
-        .AddAjaxParameter(Model)
+        .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
