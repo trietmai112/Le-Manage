@@ -33,7 +33,8 @@
         .SetAjaxUrl("/leavemanagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", Identify = true, MappingFrom = "Id" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "From", FormatJqueryHandler = "validRow", MappingFrom = "LeaveFrom" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "To", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTo" },
@@ -48,7 +49,7 @@
 @section Scripts{
     <script type="text/javascript">
         $("#btn-search").click(function (e) {
-            $("#register-leave-table").bootgrid("reload");
+            $("#register-leave-table").bootgrid("reload").showAjaxError(jhx);
         });
 
         $("#btn-register").click(function (e) {
@@ -86,7 +87,7 @@
                    
                     var option = {
                         url: urlCallback,
-                        data: { Uids: selectedIds },
+                        data: { Ids: selectedIds },
                         type: "POST"
                     };
                     $.ajax(option)

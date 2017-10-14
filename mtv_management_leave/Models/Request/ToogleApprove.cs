@@ -8,6 +8,6 @@ namespace mtv_management_leave.Models.Request
 {
     public class ToogleApprove
     {
-        public List<int> Uids { get; set; }
+        public List<int> Ids { get; set; }
     }
 }

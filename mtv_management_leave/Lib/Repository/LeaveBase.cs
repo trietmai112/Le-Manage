@@ -141,12 +141,12 @@ namespace mtv_management_leave.Lib.Repository
         }
         public void DeleteLeave(DateTime dateStart, DateTime dateEnd)
         {
-            PrivateDeleteLeave(dateStart, dateEnd, null,true);
+            PrivateDeleteLeave(dateStart, dateEnd, null, true);
         }
 
         public void DeleteLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
         {
-            PrivateDeleteLeave(dateStart, dateEnd, lstUid,true);
+            PrivateDeleteLeave(dateStart, dateEnd, lstUid, true);
         }
         #region Private Method
 
@@ -218,7 +218,7 @@ namespace mtv_management_leave.Lib.Repository
 
         private List<ResponseLeave> PrivateGetLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
         {
-            if(dateStart == DateTime.MinValue && dateEnd == DateTime.MinValue)
+            if (dateStart == DateTime.MinValue && dateEnd == DateTime.MinValue)
             {
                 return new List<ResponseLeave>();
             }
@@ -242,7 +242,7 @@ namespace mtv_management_leave.Lib.Repository
                 resLeave.LeaveTo = obj.DateEnd.ToString("yyyy-MM-dd HH:mm");
                 resLeave.LeaveFrom = obj.DateStart.ToString("yyyy-MM-dd HH:mm");
                 resLeave.FullName = obj.FullName;
-                resLeave.LeaveStatus = Common.ConvertLeaveStatusToString((int) obj.LeaveStatus);
+                resLeave.LeaveStatus = Common.ConvertLeaveStatusToString((int)obj.LeaveStatus);
                 resLeave.LeaveTypeName = Common.ConvertLeaveTypeToString(obj.LeaveTypeName);
                 resLeave.RegisterHour = obj.RegisterHour;
                 resLeave.Uid = obj.Uid;
@@ -273,8 +273,28 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
+        private void PrivateDeleteLeave(List<int> lstIds)
+        {
+            if (lstIds == null || lstIds.Count == 0)
+                return;
+            InitContext(out context);
+            var lstLeave = context.RegisterLeaves.Where(m => lstIds.Contains(m.Id)).ToList();
+            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register))
+            {
+                DisposeContext(context);
+                throw new Exception("Please delete only value register status!");
+            }
+            context.RegisterLeaves.RemoveRange(lstLeave);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
+
+
         private void PrivateApproveLeave(List<int> lstleaveId)
         {
+            if (lstleaveId == null || lstleaveId.Count == 0)
+                return;
             InitContext(out context);
             var lstleave = context.RegisterLeaves.Where(m => lstleaveId.Contains(m.Id)).ToList();
             lstleave.ForEach(m => m.Status = Common.StatusLeave.E_Approve);
@@ -283,6 +303,8 @@ namespace mtv_management_leave.Lib.Repository
         }
         private void PrivateRejectLeave(List<int> lstleaveId)
         {
+            if (lstleaveId == null || lstleaveId.Count == 0)
+                return;
             InitContext(out context);
             var lstleave = context.RegisterLeaves.Where(m => lstleaveId.Contains(m.Id)).ToList();
             lstleave.ForEach(m => m.Status = Common.StatusLeave.E_Reject);
