@@ -26,17 +26,14 @@
         .SetAjaxUrl("/registerleave/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In-time", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out-time", FormatJqueryHandler = "validRow", MappingFrom = "Outtime" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave1 start", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart1" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave1 end", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd1" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status leave 1", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus1" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave2 start", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart2" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave2 end", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd2" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status leave 2", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus2" }
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "From", FormatJqueryHandler = "validRow", MappingFrom = "LeaveFrom" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "To", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTo" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave Type", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTypeName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Hour", FormatJqueryHandler = "validRow", MappingFrom = "RegisterHour" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus" }
         )
         .ToHtml()
         )
@@ -56,7 +53,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" id="modal-save"><i class="zmdi zmdi-save"></i> Save changes</button>
-            <button type="button" class="btn btn-default" data-dismiss="modal">
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">
                 Close
             </button>
         </div>
@@ -117,6 +114,7 @@
             }
             $.ajax(option).done(function (data) {
                 setupModalBodyFrom(data);
+                $("#modal-close").click();
             });
         })
     </script>

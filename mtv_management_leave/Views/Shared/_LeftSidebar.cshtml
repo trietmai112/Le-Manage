@@ -14,8 +14,21 @@
             <li><a href="/employee/register"><i class="zmdi zmdi-account-add"></i> Register User</a></li>
         }
     }
+    <li class="sub-menu">
+        <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-swap"></i>Leave</a>
+        <ul>
+            <li><a href="/registerleave">Register Leave</a></li>
+            <li><a href="/leavemanagement">Managemenet Leave</a></li>
+            @{
+                if (isAdmin)
+                {
+                    //<li><a href="/leavemanagement">Managemenet Leave</a></li>
+                }
+            }
+        </ul>
+    </li>
+
     <li><a href="/employee"><i class="zmdi zmdi-accounts"></i> Employee Information</a></li>
-    <li><a href="/registerleave"><i class="zmdi zmdi-calendar-note"></i> Register leave</a></li>
     <li class="sub-menu">
         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-swap"></i> In-Out</a>
         <ul>
@@ -49,7 +62,6 @@
         <li><a href="/leavemanagement"><i class=""></i> Seniority Bonus</a></li>
         <li><a href="/leavemanagement"><i class=""></i> Leave Of Company</a></li>
     }
-    <li><a href="/leavemanagement"><i class="zmdi zmdi-calendar-check"></i> Leave management</a></li>
     <li><a href="/userseniority"><i class="zmdi zmdi-calendar-check"></i> User seniority </a></li>
     <li><a href="/masterdayoffcompany"><i class="zmdi zmdi-calendar-check"></i> Dayoff company</a></li>
     <li><a href="/account/logout"><i class="zmdi zmdi-sign-in"></i> Logout</a></li>

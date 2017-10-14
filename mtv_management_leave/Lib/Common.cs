@@ -24,5 +24,31 @@ namespace mtv_management_leave.Lib
 
         public static int minuteLatePermit = 45;
         public static int minuteEarlyPermit = 15;
+
+        public static string ConvertLeaveStatusToString(int leaveStatus)
+        {
+            string result = string.Empty;
+            switch (leaveStatus)
+            {
+                case (int) StatusLeave.E_Approve: result = "Approved"; break;
+                case (int) StatusLeave.E_Register: result = "Register"; break;
+                case (int) StatusLeave.E_Reject: result =  "DisApproved"; break;
+                default: result = "Register"; break;
+            }
+            return result;
+        }
+        public static string ConvertLeaveTypeToString(string leaveType)
+        {
+            string result = string.Empty;
+            if (leaveType == TypeLeave.E_AnnualLeave.ToString())
+                result = "Annual";
+            else if (leaveType == TypeLeave.E_BussinessLeave.ToString())
+                result = "Bussiness";
+            else if (leaveType == TypeLeave.E_Materity.ToString())
+                result = "Materity";
+            else if (leaveType == TypeLeave.E_NonPaid.ToString())
+                result = "NonPaid";
+            return result;
+        }
     }
 }

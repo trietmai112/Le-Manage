@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.RegisterLeave;
+using System.Linq;
 
 namespace mtv_management_leave.Controllers
 {
@@ -51,17 +52,33 @@ namespace mtv_management_leave.Controllers
         [HttpPost, AllowAnonymous]
         public JsonResult ToList(Models.RegisterLeave.SearchRequest model)
         {
-            var result = model.Uid.HasValue ?
-                _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd, new List<int>() { model.Uid.Value }) :
-                _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd);
-            var resultJson = Json(new Lib.Repository.BootGridReponse<Models.RepoMappingInOut>
+
+            try
             {
-                current = 1,
-                rowCount = -1,
-                total = result.Count,
-                rows = result
-            });
-            return resultJson;
+                var lstUid = new List<int>();
+                if (model.Uid != null)
+                {
+                    lstUid.Add(model.Uid.Value);
+                }
+                else
+                {
+                    lstUid.Add(int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId()));
+                }
+                var result = _leaveBase.GetLeave(model.DateStart, model.DateEnd, lstUid);
+                var resultJson = Json(new Lib.Repository.BootGridReponse<Models.Response.ResponseLeave>
+                {
+                    current = 1,
+                    rowCount = -1,
+                    total = result.Count,
+                    rows = result
+                });
+                return resultJson;
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("Error", ex.Message);
+                return null;
+            }
         }
     }
 }

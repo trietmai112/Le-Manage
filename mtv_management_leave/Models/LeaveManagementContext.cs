@@ -40,8 +40,8 @@ namespace mtv_management_leave.Models
             try
             {
 
-                //var GetUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
-                var GetUserId = "1";
+                var GetUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+               // var GetUserId = "1";
                 int userId = int.Parse(GetUserId.ToString());
                 var entities = ChangeTracker.Entries().Where(x => x.Entity is IEntity
                                                                               && (x.State == EntityState.Added

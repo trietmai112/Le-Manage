@@ -5,6 +5,7 @@ using mtv_management_leave.Lib.Extendsions;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models.RegisterLeave;
 using mtv_management_leave.Models.Response;
+using System.Linq;
 
 namespace mtv_management_leave.Controllers
 {
@@ -27,20 +28,18 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult ToList(SearchRequest model)
         {
-            var result = model.Uid.HasValue ?
-               _leaveBase.GetLeave(model.DateStart, model.DateEnd, new List<int>() { model.Uid.Value }) :
-               _leaveBase.GetLeave(model.DateStart, model.DateEnd);
-
-            result.vAdd(new ResponseLeave
+            var listUid = new List<int>();
+            if (!string.IsNullOrEmpty(model.Uids))
             {
-                FullName = "123",
-                LeaveStatus = Lib.Common.StatusLeave.E_Approve,
-                LeaveFrom = DateTime.Now.ToShortDateString(),
-                LeaveTo = DateTime.Now.ToShortDateString(),
-                LeaveTypeName = "Year",
-                RegisterHour = 10,
-                Uid = 1
-            });
+                var lstInputID = model.Uids.Split(new char[] { ',', ':', ';' }).Where(m => !string.IsNullOrEmpty(m)).ToList();
+                foreach (var item in lstInputID)
+                {
+                    listUid.Add(int.Parse(item));
+                }
+            }
+
+            var result = _leaveBase.GetLeave(model.DateStart, model.DateEnd, listUid);
+          
             return Json(new BootGridReponse<ResponseLeave>
             {
                 current = 1,

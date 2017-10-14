@@ -14,6 +14,7 @@ namespace mtv_management_leave.Models.RegisterLeave
         public DateTime DateStart { get; set; } = DateTime.Now;
         [Display(Name = "Date end:")]
         public DateTime DateEnd { get; set; } = DateTime.Now;
+        public string Uids { get; set; }
         public int? Uid { get; set; }
     }
 }

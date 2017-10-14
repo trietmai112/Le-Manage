@@ -87,7 +87,7 @@ namespace mtv_management_leave.Lib.Repository
                     leaveRegister.LeaveTypeId = leave.LeaveTypeId;
                     leaveRegister.Reason = leave.Reason;
                     leaveRegister.RegisterHour = 8;
-                    leaveRegister.Status = leave.Status;
+                    leaveRegister.Status = Common.StatusLeave.E_Register;
                     leaveRegister.Uid = leave.Uid;
                     lstDayRegister.Add(leaveRegister);
                 }
@@ -218,6 +218,11 @@ namespace mtv_management_leave.Lib.Repository
 
         private List<ResponseLeave> PrivateGetLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
         {
+            if(dateStart == DateTime.MinValue && dateEnd == DateTime.MinValue)
+            {
+                return new List<ResponseLeave>();
+            }
+
             if (dateStart.Year != dateEnd.Year || dateStart.Month != dateEnd.Month)
             {
                 throw new Exception("Please select range date in month!");
@@ -237,8 +242,8 @@ namespace mtv_management_leave.Lib.Repository
                 resLeave.LeaveTo = obj.DateEnd.ToString("yyyy-MM-dd HH:mm");
                 resLeave.LeaveFrom = obj.DateStart.ToString("yyyy-MM-dd HH:mm");
                 resLeave.FullName = obj.FullName;
-                resLeave.LeaveStatus = obj.LeaveStatus;
-                resLeave.LeaveTypeName = obj.LeaveTypeName;
+                resLeave.LeaveStatus = Common.ConvertLeaveStatusToString((int) obj.LeaveStatus);
+                resLeave.LeaveTypeName = Common.ConvertLeaveTypeToString(obj.LeaveTypeName);
                 resLeave.RegisterHour = obj.RegisterHour;
                 resLeave.Uid = obj.Uid;
                 lstResult.Add(resLeave);

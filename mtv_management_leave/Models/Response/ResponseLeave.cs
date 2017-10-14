@@ -15,6 +15,6 @@ namespace mtv_management_leave.Models.Response
         public string LeaveTo { get; set; }
         public string LeaveTypeName { get; set; }
         public double? RegisterHour { get; set; }
-        public Common.StatusLeave LeaveStatus { get; set; }
+        public string LeaveStatus { get; set; }
     }
 }
