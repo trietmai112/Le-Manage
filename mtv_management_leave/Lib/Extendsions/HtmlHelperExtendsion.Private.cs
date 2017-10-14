@@ -44,8 +44,7 @@ namespace mtv_management_leave.Lib.Extendsions
                     </div>  
                     {{validate-message}}
                 </div>
-            </div>";
-
+            </div>";       
 
         private readonly static string _checkBoxTemplate =
            $@"<div class='form-group'>

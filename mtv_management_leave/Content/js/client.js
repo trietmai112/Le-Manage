@@ -25,7 +25,67 @@ function formatDate(jsonDate) {
     return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
 }
 
+var mySwal = function (title, content, type, timer) {
+    if (timer < 1) {
+        swal({
+            title: title,
+            type: type,
+            text: content,
+            showCloseButton: false,
+            showCancelButton: false,
+            showConfirmButton: false,
+            allowOutsideClick: false,
+            onOpen: function () {
+                swal.showLoading()
+            }
+        }).then(
+            function () { },
+            // handling the promise rejection
+            function (dismiss) { }
+            );
+    } else {
+        swal({
+            title: title,
+            text: content,
+            type: type,
+            showCancelButton: false,
+            showConfirmButton: false,
+            timer: timer,
+            allowOutsideClick: false,
+            onOpen: function () {
+                swal.showLoading()
+            }
+        }).then(
+            function () { },
+
+            function (dismiss) {
+            }
+            );
+    }
+}
+
+var showAjaxError = function (jqXHR) {
+    var msg = '';
+    if (jqXHR.status === 0) {
+        msg = 'Not connect.\n Verify Network.';
+    } else if (jqXHR.status == 404) {
+        msg = 'Requested page not found. [404]';
+    } else if (jqXHR.status == 500) {
+        msg = 'Internal Server Error [500].';
+    } else if (exception === 'parsererror') {
+        msg = 'Requested JSON parse failed.';
+    } else if (exception === 'timeout') {
+        msg = 'Time out error.';
+    } else if (exception === 'abort') {
+        msg = 'Ajax request aborted.';
+    } else {
+        msg = 'Uncaught Error.\n' + jqXHR.responseText;
+    }
+    swal("Xẩy ra lỗi", msg, "error");
+}
+
 $("body").on("click", ".date-time-picker-clear", function (e) {
     e.preventDefault();
     $(this).parent().find("input").val("")
 });
+

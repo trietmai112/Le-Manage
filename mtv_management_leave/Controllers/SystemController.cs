@@ -24,5 +24,15 @@ namespace mtv_management_leave.Controllers
             }).ToList();
             return result;
         }
+
+        public IEnumerable<SelectListItem> UserToDropdown()
+        {
+            var result = _context.Users.Select(m => new SelectListItem
+            {
+                Text = m.FullName,
+                Value = m.Id.ToString()
+            }).ToList();
+            return result;
+        }
     }
 }

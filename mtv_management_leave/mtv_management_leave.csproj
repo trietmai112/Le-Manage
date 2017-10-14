@@ -363,6 +363,7 @@
     <Compile Include="Models\RegisterLeave\SearchRequest.cs" />
     <Compile Include="Models\Request\RequestUserSeniority.cs" />
     <Compile Include="Models\Request\RequestMasterDayOff.cs" />
+    <Compile Include="Models\Request\ToogleApprove.cs" />
     <Compile Include="Models\Response\ResponseUserSeniority.cs" />
     <Compile Include="Models\Response\ResponseMasterDayOff.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />

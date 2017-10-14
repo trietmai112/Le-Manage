@@ -12,17 +12,23 @@
         <div class="row">
             @Html.HiddenFor(m => m.Uid)
             <div class="col-sm-12">
-                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-2" })
+                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-2" })
+
+                <div class="col-sm-4">
+                    @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown") , true, true)
+                </div>                
 
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
-                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-star"></i> Approve</button>
-                    <button class="btn btn-danger" id="btn-register"><i class="zmdi zmdi-star"></i> DisApprove</button>
+                    <button class="btn btn-primary" id="btn-approve"><i class="zmdi zmdi-star"></i> Approve</button>
+                    <button class="btn btn-danger" id="btn-disapprove"><i class="zmdi zmdi-star"></i> DisApprove</button>
                 </div>
             </div>
+            
         </div>
-        @(Html.vBootGridFor()
+    </div>
+    @(Html.vBootGridFor()
         .SetName("register-leave-table")
         .SetAjaxUrl("/leavemanagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
@@ -36,9 +42,7 @@
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus" }
         )
         .ToHtml()
-        )
-    </div>
-
+    )
 </div>
 
 @section Scripts{
@@ -53,6 +57,50 @@
 
         var validRow = function (col, row) {
             return row[col.id];
-        };        
+        };
+
+        $("#btn-approve").click(function (e) {
+            e.preventDefault();
+            toogleApprove("/leavemanagement/approve");
+        })
+
+        $("#btn-disapprove").click(function (e) {
+            e.preventDefault();
+            toogleApprove("/leavemanagement/disapprove");
+        })
+
+        var toogleApprove = function (urlCallback) {
+            var selectedIds = $("#register-leave-table").bootgrid("getSelectedRows");
+            if (selectedIds.length == 0) return;
+            swal({
+                title: "Confirm!",
+                type: "info",
+                text: "Do you want continue?",
+                showCloseButton: true,
+                showCancelButton: true,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+                showLoaderOnConfirm: true
+            }).then(
+                function () {
+                   
+                    var option = {
+                        url: urlCallback,
+                        data: { Uids: selectedIds },
+                        type: "POST"
+                    };
+                    $.ajax(option)
+                        .done(function (data) {
+                            console.log(data);
+                        })
+                        .error(function (jhx) {
+                            showAjaxError(jhx);
+                        })
+                },
+                // handling the promise rejection
+                function (dismiss) {
+                    console.log("swal confirm closed");
+                });
+        }
     </script>
 }
