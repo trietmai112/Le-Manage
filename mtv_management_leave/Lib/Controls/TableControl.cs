@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace mtv_management_leave.Lib.Controls
 {
-    public class TableControl: IControl
+    public class TableControl : IControl
     {
         private string Name { get; set; }
         private string AjaxUrl { get; set; }
@@ -34,7 +34,7 @@ namespace mtv_management_leave.Lib.Controls
         {
             AjaxUrl = url;
             return this;
-        } 
+        }
 
         public TableControl SetRequestType(string type)
         {
@@ -55,9 +55,9 @@ namespace mtv_management_leave.Lib.Controls
         }
 
         public TableControl AddAjaxParameter(Type model)
-        {            
+        {
             var dic = model.vGetDictionary();
-            foreach(var d in dic)
+            foreach (var d in dic)
             {
                 AjaxParameters.Add(d.Key.ToLower(), d.Key);
             }
@@ -75,7 +75,7 @@ namespace mtv_management_leave.Lib.Controls
             Rows.AddRange(columns);
             return this;
         }
-        
+
         private string RenderBootGridScript()
         {
             var scriptHtml = $"<script type='text/javascript'>";
@@ -132,7 +132,7 @@ namespace mtv_management_leave.Lib.Controls
             var trTag = new TagBuilder("tr")
                 .vGenerateId($"table_header_{this.Name}");
 
-            foreach(var row in this.Rows)
+            foreach (var row in this.Rows)
             {
                 var thTag = new TagBuilder("th")
                     .vMergeAttribute("data-column-id", row.MappingFrom)
@@ -157,9 +157,24 @@ namespace mtv_management_leave.Lib.Controls
             var divTag = new TagBuilder("div")
                 .vAddCssClass("table-responsive ")
                 .vGenerateId($"div_{this.Name}").vAppendText(tableTag)
-                .vAppendText(new StringBuilder(this.RenderBootGridScript()).Replace("  ","").ToString());
+                .vAppendText(new StringBuilder(this.RenderBootGridScript()).Replace("  ", "").ToString())
+                .vAppendText(
 
-           
+                    $@"<script> $(document).ajaxError(function(event, jqxhr, settings, thrownError) {{
+                        if (settings.url == '{this.AjaxUrl}')
+                        {{
+                            if (jqxhr.responseText == null || jqxhr.responseText == '')
+                            {{
+                                swal('Ajax error', thrownError, 'error');
+                            }}
+                            else
+                            {{
+                                var doc = $(jqxhr.responseText);
+                                var message = doc[1].innerText;
+                                swal('Ajax error', message, 'error');
+                            }}
+                        }}
+                    }});</script>");
             return new MvcHtmlString(divTag.ToString());
         }
     }
