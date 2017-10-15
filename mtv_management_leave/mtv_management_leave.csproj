@@ -235,6 +235,7 @@
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
+    <Compile Include="Controllers\InOutController.cs" />
     <Compile Include="Controllers\UserSeniorityController.cs" />
     <Compile Include="Controllers\MasterDayOffCompanyController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
@@ -724,6 +725,7 @@
     <Content Include="Views\MasterDayOffCompany\Index.cshtml" />
     <Content Include="Views\MasterDayOffCompany\RegisterDayOffCompany.cshtml" />
     <Content Include="Views\UserSeniority\Index.cshtml" />
+    <Content Include="Views\InOut\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

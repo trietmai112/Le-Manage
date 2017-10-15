@@ -46,6 +46,11 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
+                if(model.Uids!= null && model.Uids.Count()==1 && model.Uids[0] == 0)
+                {
+                    model.Uids = null;
+                }
+
                 var result = _leaveBase.GetLeave(model.DateStart, model.DateEnd, model.Uids);
 
                 return Json(new BootGridReponse<ResponseLeave>

@@ -1,12 +1,12 @@
 ﻿@using mtv_management_leave.Models.RegisterLeave
 @model SearchRequest
 @{
-    ViewBag.Title = "Register leave";
+    ViewBag.Title = "InOut Page";
 }
 
 <div class="card">
     <div class="card-header">
-        <h2>@ViewBag.Title<small>You can register leave at here</small></h2>
+        <h2>@ViewBag.Title<small>List in out of user</small></h2>
     </div>
     <div class="card-body">
         <div class="row">
@@ -17,24 +17,27 @@
                 @**chen them cai text box o day*@
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
-                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Register</button>
-                    <button class="btn btn-danger" id="btn-delete"><i class="zmdi zmdi-delete"></i> Delete</button>
+                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Register Leave</button>
                 </div>
             </div>
         </div>
         @(Html.vBootGridFor()
-        .SetName("register-leave-table")
-        .SetAjaxUrl("/registerleave/tolist")
+        .SetName("inout-table")
+        .SetAjaxUrl("/inout/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "From", FormatJqueryHandler = "validRow", MappingFrom = "LeaveFrom" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "To", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTo" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave Type", FormatJqueryHandler = "validRow", MappingFrom = "LeaveTypeName" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Hour", FormatJqueryHandler = "validRow", MappingFrom = "RegisterHour" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus" }
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out", FormatJqueryHandler = "validRow", MappingFrom = "Outtime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Valid", FormatJqueryHandler = "validRow", MappingFrom = "IsValid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveS", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveE", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveS", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveE", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus2" }
         )
         .ToHtml()
         )
@@ -63,22 +66,19 @@
 @section Scripts{
     <script type="text/javascript">
         $("#btn-search").click(function (e) {
-            $("#register-leave-table").bootgrid("reload");
+            $("#inout-table").bootgrid("reload");
         });
 
         $("#btn-register").click(function (e) {
             $("#modalRegisterLeave").modal("show");
         });
-        $("#btn-delete").click(function (e) {
-            e.preventDefault();
-            toogleApprove("/registerleave/delete");
-        })
+        
         var validRow = function (col, row) {
             return row[col.id];
-        }; 
+        };
 
         var validRowDate = function (col, row) {
-            return formatDate(row[col.id]);
+            return dateConvert(row[col.id]);
         }
 
         $("#modalRegisterLeave").on('show.bs.modal', function () {
@@ -108,7 +108,7 @@
         });
 
         $("#modal-save").click(function (e) {
-            e.preventDefault();     
+            e.preventDefault();
             var form = $(".modal-body form");
             var url = form.attr("action");
             var data = form.serialize();
@@ -122,38 +122,5 @@
                 $("#modal-close").click();
             });
         })
-        var toogleApprove = function (urlCallback) {
-            var selectedIds = $("#register-leave-table").bootgrid("getSelectedRows");
-            if (selectedIds.length == 0) return;
-            swal({
-                title: "Confirm!",
-                type: "info",
-                text: "Do you want continue?",
-                showCloseButton: true,
-                showCancelButton: true,
-                showConfirmButton: true,
-                allowOutsideClick: true,
-                showLoaderOnConfirm: true
-            }).then(
-                function () {
-
-                    var option = {
-                        url: urlCallback,
-                        data: { Ids: selectedIds },
-                        type: "POST"
-                    };
-                    $.ajax(option)
-                        .done(function (data) {
-                            console.log(data);
-                        })
-                        .error(function (jhx) {
-                            showAjaxError(jhx);
-                        })
-                },
-                // handling the promise rejection
-                function (dismiss) {
-                    console.log("swal confirm closed");
-                });
-        }
     </script>
 }

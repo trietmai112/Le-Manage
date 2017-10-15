@@ -100,6 +100,9 @@ namespace mtv_management_leave.Lib.Repository
         #region private method
         private List<RepoMappingInOut> CalculateMappingInoutLeave(DateTime DateStart, DateTime DateEnd, List<int> lstUid)
         {
+            if (DateStart.Date == DateTime.MinValue && DateEnd.Date == DateTime.MinValue)
+                return new List<RepoMappingInOut>();
+
             DateEnd = DateEnd.Date.AddDays(1).AddSeconds(-1);
             if (DateStart.Year != DateEnd.Year || DateStart.Month != DateEnd.Month)
             {
@@ -175,17 +178,17 @@ namespace mtv_management_leave.Lib.Repository
                     else if (lstleaveInDay.Count > 0)
                     {
                         var firstLeave = lstleaveInDay.FirstOrDefault();
-                        mapping.LeaveStart1 = firstLeave.DateStart.ToString("yyyy-MM-dd HH:mm");
-                        mapping.LeaveEnd1 = firstLeave.DateEnd.ToString("yyyy-MM-dd HH:mm");
+                        mapping.LeaveStart1 = firstLeave.DateStart.ToString("HH:mm");
+                        mapping.LeaveEnd1 = firstLeave.DateEnd.ToString("HH:mm");
                         mapping.LeaveType1 = firstLeave.leaveName;
-                        mapping.LeaveStatus1 = firstLeave.leaveStatus.ToString();
+                        mapping.LeaveStatus1 = Common.ConvertLeaveStatusToString((int)firstLeave.leaveStatus);
                         if (lstleaveInDay.Count > 1)
                         {
                             var lastLeave = lstleaveInDay.LastOrDefault();
-                            mapping.LeaveStart2 = lastLeave.DateStart.ToString("yyyy-MM-dd HH:mm");
-                            mapping.LeaveEnd2 = lastLeave.DateEnd.ToString("yyyy-MM-dd HH:mm");
+                            mapping.LeaveStart2 = lastLeave.DateStart.ToString("HH:mm");
+                            mapping.LeaveEnd2 = lastLeave.DateEnd.ToString("HH:mm");
                             mapping.LeaveType2 = lastLeave.leaveName;
-                            mapping.LeaveStatus2 = lastLeave.leaveStatus.ToString();
+                            mapping.LeaveStatus2 = Common.ConvertLeaveStatusToString((int)lastLeave.leaveStatus);
                         }
                     }
 

@@ -136,6 +136,7 @@ namespace mtv_management_leave.Lib.Repository
                 throw new Exception("Please delete only value register status!");
             }
             context.RegisterLeaves.RemoveRange(lstLeave);
+            context.SaveChanges();
             DisposeContext(context);
 
         }
@@ -227,6 +228,7 @@ namespace mtv_management_leave.Lib.Repository
             {
                 throw new Exception("Please select range date in month!");
             }
+            dateEnd = dateEnd.Date.AddDays(1).AddMilliseconds(-1);
             List<ResponseLeave> lstResult = new List<ResponseLeave>();
             InitContext(out context);
             var query = context.RegisterLeaves.Where(m => m.DateStart <= dateEnd && m.DateEnd >= dateStart).Select(m => new { m.Id, m.Uid, m.UserInfo.FullName, m.DateStart, m.DateEnd, LeaveTypeName = m.MasterLeaveType.Name, m.RegisterHour, LeaveStatus = m.Status });

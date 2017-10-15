@@ -8,16 +8,17 @@ using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.RegisterLeave;
 using System.Linq;
 using mtv_management_leave.Models.Request;
+using mtv_management_leave.Models;
 
 namespace mtv_management_leave.Controllers
 {
 
-    public class RegisterLeaveController : Controller
+    public class InOutController : Controller
     {
         private InOutBase _inOutBase;
         private LeaveBase _leaveBase;
 
-        public RegisterLeaveController(InOutBase inOutBase, LeaveBase leaveBase)
+        public InOutController(InOutBase inOutBase, LeaveBase leaveBase)
         {
             _inOutBase = inOutBase;
             _leaveBase = leaveBase;
@@ -80,8 +81,8 @@ namespace mtv_management_leave.Controllers
                 {
                     lstUid.Add(int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId()));
                 }
-                var result = _leaveBase.GetLeave(model.DateStart, model.DateEnd, lstUid);
-                var resultJson = Json(new Lib.Repository.BootGridReponse<Models.Response.ResponseLeave>
+                var result = _inOutBase.MappingInoutLeave(model.DateStart, model.DateEnd, lstUid);
+                var resultJson = Json(new Lib.Repository.BootGridReponse<RepoMappingInOut>
                 {
                     current = 1,
                     rowCount = -1,

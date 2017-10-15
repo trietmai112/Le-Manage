@@ -25,6 +25,12 @@ function formatDate(jsonDate) {
     return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear() + " " + hour + ":" + mins + " " + time;
 }
 
+function dateConvert(jsonDate) {
+    var ms = jsonDate.substring(6, jsonDate.length - 2);
+    var date = new Date(parseInt(ms));
+    return date.getMonth() + 1 + "/" + date.getDate() + "/" + date.getFullYear();
+}
+
 var mySwal = function (title, content, type, timer) {
     if (timer < 1) {
         swal({
@@ -72,6 +78,8 @@ var showAjaxError = function (jqXHR) {
         msg = 'Requested page not found. [404]';
     } else if (jqXHR.status == 500) {
         msg = 'Internal Server Error [500].';
+    } else if (jqXHR.status == 400) {       
+        msg = jqXHR.responseJSON.message;
     } else if (exception === 'parsererror') {
         msg = 'Requested JSON parse failed.';
     } else if (exception === 'timeout') {
