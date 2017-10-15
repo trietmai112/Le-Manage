@@ -29,7 +29,7 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult ToList(RequestUserSeniority modelRequest)
         {
-            int year = 2017;
+            int year = modelRequest.DateYear.Year;
             var resultApi = _userSeniorityBase.GetUserSeniority(year);
             return Json(new BootGridReponse<ResponseUserSeniority>
             {
@@ -43,7 +43,7 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult Generate(RequestUserSeniority modelRequest)
         {
-            int year = 2017;
+            int year = modelRequest.DateYear.Year;
             _userSeniorityBase.GenerateUserSeniority(year);
             return Json(string.Empty);
         }

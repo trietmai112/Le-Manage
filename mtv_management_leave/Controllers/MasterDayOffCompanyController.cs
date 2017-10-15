@@ -29,13 +29,11 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult ToList(RequestMasterDayOff modelRequest)
         {
-            DateTime dateStart = modelRequest.DateStart ?? new DateTime(2000, 1, 1);
-            DateTime dateEnd = modelRequest.DateEnd ?? new DateTime(2100, 1, 1);
-
-
-            var resultApi = _dayOffCompanyBase.GetLeaveDayCompany(dateStart, dateEnd).Select(m => new ResponseMasterDayOff() { DateLeave = m.Date, Reason = m.Description }).ToList();
-
-
+            var resultApi = new List<ResponseMasterDayOff>();
+            if (modelRequest.DateStart != null && modelRequest.DateEnd != null)
+            {
+                resultApi = _dayOffCompanyBase.GetLeaveDayCompany(modelRequest.DateStart.Value, modelRequest.DateEnd.Value).Select(m => new ResponseMasterDayOff() { DateLeave = m.Date, Reason = m.Description }).ToList();
+            }
             return Json(new BootGridReponse<ResponseMasterDayOff>
             {
                 current = 1,

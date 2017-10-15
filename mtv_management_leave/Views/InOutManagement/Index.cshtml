@@ -82,6 +82,7 @@
         var toogle = function (urlCallback) {
             var start = $("#DateStart").val();
             var end = $("#DateEnd").val();
+            var lstUids = $("#Uids").val();
             swal({
                 title: "Confirm!",
                 type: "info",
@@ -97,7 +98,7 @@
                     var option = {
                         url: urlCallback,
                         type: "POST",
-                        data: { DateStart: start, DateEnd: end }
+                        data: { DateStart: start, DateEnd: end, Uids: lstUids }
                     };
                     $.ajax(option)
                         .done(function (data) {

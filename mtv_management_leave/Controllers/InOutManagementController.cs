@@ -15,12 +15,12 @@ namespace mtv_management_leave.Controllers
     public class InOutManagementController : Controller
     {
         private InOutBase _inoutBase;
-        //private DataRawBase _dataRawBase;
+       // private DataRawBase _dataRawBase;
 
         public InOutManagementController(InOutBase inOutBase)
         {
             _inoutBase = inOutBase;
-          //  _dataRawBase = dataRawBase;
+            //_dataRawBase = dataRawBase;
         }
         public ActionResult Index()
         {
