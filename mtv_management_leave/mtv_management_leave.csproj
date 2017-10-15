@@ -237,6 +237,7 @@
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\InOutController.cs" />
     <Compile Include="Controllers\InOutManagementController.cs" />
+    <Compile Include="Controllers\AvailableBeginYearController.cs" />
     <Compile Include="Controllers\UserSeniorityController.cs" />
     <Compile Include="Controllers\MasterDayOffCompanyController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
@@ -337,6 +338,7 @@
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Lib\Controls\TableControl.cs" />
+    <Compile Include="Models\AvailableLeave\SearchRequest.cs" />
     <Compile Include="Models\BootGridTableOption.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
@@ -367,6 +369,7 @@
     <Compile Include="Models\Request\RequestUserSeniority.cs" />
     <Compile Include="Models\Request\RequestMasterDayOff.cs" />
     <Compile Include="Models\Request\ToogleApprove.cs" />
+    <Compile Include="Models\Response\ResponseAvailableBeginYear.cs" />
     <Compile Include="Models\Response\ResponseUserSeniority.cs" />
     <Compile Include="Models\Response\ResponseMasterDayOff.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
@@ -729,6 +732,7 @@
     <Content Include="Views\UserSeniority\Index.cshtml" />
     <Content Include="Views\InOut\Index.cshtml" />
     <Content Include="Views\InOutManagement\Index.cshtml" />
+    <Content Include="Views\AvailableBeginYear\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

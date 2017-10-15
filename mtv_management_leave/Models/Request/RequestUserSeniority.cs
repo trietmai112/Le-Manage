@@ -8,6 +8,7 @@ namespace mtv_management_leave.Models.Request
 {
     public class RequestUserSeniority
     {
-        public DateTime DateYear{ get; set; }
+        public List<int> Uids{ get; set; }
+        public DateTime DateYear { get; set; }
     }
 }

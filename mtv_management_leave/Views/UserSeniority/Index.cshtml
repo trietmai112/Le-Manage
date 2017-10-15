@@ -12,6 +12,7 @@
         <div class="row">
             <div class="col-sm-12">
                 @Html.vDatePickerFor(m => m.DateYear).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-generate"><i class="zmdi zmdi-plus"></i> Generate</button>
@@ -23,7 +24,7 @@
         .SetAjaxUrl("/UserSeniority/tolist")
         .AddAjaxParameter(typeof(RequestUserSeniority))
         .AddColumnRange(
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid",  MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "FullName", MappingFrom = "FullName" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Year", MappingFrom = "Year" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month1", MappingFrom = "Month1" },
@@ -60,7 +61,7 @@
         $("#btn-generate").click(function (e) {
             e.preventDefault();
             var dateY = $("#DateYear").val();
-            
+
             var option = {
                 url: "/UserSeniority/Generate",
                 type: "POST",
@@ -70,6 +71,6 @@
                 $("#btn-search").click();
             });;
         });
-        
+
     </script>
 }

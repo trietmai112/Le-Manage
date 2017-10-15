@@ -1,5 +1,6 @@
 ﻿using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,9 @@ namespace mtv_management_leave.Lib.Interface
         void SaveDataBeginYear(DataBeginYear dataInput, List<int> lstUid);
         void CalculateFromLastYear(DateTime MonthYear);
         void CalculateFromLastYear(DateTime MonthYear, List<int> lstUid);
-        List<DataBeginYear> GetDataBeginYear(int year);
-        List<DataBeginYear> GetDataBeginYear(int year, int uid);
-        List<DataBeginYear> getDataBeginyear(int year, List<int> lstUid);
+        List<ResponseAvailableBeginYear> GetDataBeginYear(int year);
+        List<ResponseAvailableBeginYear> GetDataBeginYear(int year, int uid);
+        List<ResponseAvailableBeginYear> GetDataBeginYear(int year, List<int> lstUid);
 
         void deleteDataBeginYear(List<int> lstId);
     }

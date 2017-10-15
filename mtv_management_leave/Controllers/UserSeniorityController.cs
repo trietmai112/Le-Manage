@@ -30,7 +30,15 @@ namespace mtv_management_leave.Controllers
         public JsonResult ToList(RequestUserSeniority modelRequest)
         {
             int year = modelRequest.DateYear.Year;
-            var resultApi = _userSeniorityBase.GetUserSeniority(year);
+            var resultApi = new List<ResponseUserSeniority>();
+            if (year!= 1)
+            {
+                if(modelRequest.Uids!= null && modelRequest.Uids.Count==1 && modelRequest.Uids[0]==0)
+                {
+                    modelRequest.Uids = null;
+                }
+                 resultApi = _userSeniorityBase.GetUserSeniority(year,modelRequest.Uids);
+            }
             return Json(new BootGridReponse<ResponseUserSeniority>
             {
                 current = 1,

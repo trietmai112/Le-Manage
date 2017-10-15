@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -54,7 +55,7 @@ namespace mtv_management_leave.Lib.Repository
             foreach (var uid in lstUid)
             {
                 var dataAlready = dataBeginDB.Where(m => m.Uid == uid).FirstOrDefault();
-                if(dataAlready!= null)
+                if (dataAlready != null)
                 {
                     dataAlready.DateBegin = dataInput.DateBegin;
                     dataAlready.AnnualLeave = dataInput.AnnualLeave;
@@ -73,17 +74,17 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
-        public List<DataBeginYear> GetDataBeginYear(int year)
+        public List<ResponseAvailableBeginYear> GetDataBeginYear(int year)
         {
             return privateGetDataBeginYear(year, null);
         }
 
-        public List<DataBeginYear> GetDataBeginYear(int year, int uid)
+        public List<ResponseAvailableBeginYear> GetDataBeginYear(int year, int uid)
         {
             return privateGetDataBeginYear(year, new List<int>() { uid });
         }
 
-        public List<DataBeginYear> getDataBeginyear(int year, List<int> lstUid)
+        public List<ResponseAvailableBeginYear> GetDataBeginYear(int year, List<int> lstUid)
         {
             return privateGetDataBeginYear(year, lstUid);
         }
@@ -91,22 +92,22 @@ namespace mtv_management_leave.Lib.Repository
         public void deleteDataBeginYear(List<int> lstId)
         {
             InitContext(out context);
-            var dataDel =  context.DataBeginYears.Where(m => lstId.Contains(m.Id)).ToList();
+            var dataDel = context.DataBeginYears.Where(m => lstId.Contains(m.Id)).ToList();
             context.DataBeginYears.RemoveRange(dataDel);
             DisposeContext(context);
         }
 
         #region private Method
-        private List<DataBeginYear> privateGetDataBeginYear(int year, List<int> lstUid)
+        private List<ResponseAvailableBeginYear> privateGetDataBeginYear(int year, List<int> lstUid)
         {
-            List<DataBeginYear> lstResult = new List<DataBeginYear>();
+            List<ResponseAvailableBeginYear> lstResult = new List<ResponseAvailableBeginYear>();
             InitContext(out context);
             var Query = context.DataBeginYears.Where(m => m.DateBegin.Year == year);
             if (lstUid != null && lstUid.Count > 0)
             {
                 Query = Query.Where(m => lstUid.Contains(m.Uid));
             }
-            lstResult = Query.ToList();
+            lstResult = Query.Select(m => new ResponseAvailableBeginYear() { AnnualLeave = m.AnnualLeave, DateBegin = m.DateBegin, FullName = m.UserInfo.FullName, Id = m.Id, Uid = m.Uid }).ToList();
             DisposeContext(context);
             return lstResult;
         }
@@ -134,7 +135,7 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
-        
+
 
 
         #endregion

@@ -55,10 +55,12 @@
 @section Scripts{
     <script type="text/javascript">
         $("#btn-search").click(function (e) {
+            e.preventDefault();
             $("#InValidData").val(false);
             $("#inout-table").bootgrid("reload");
         });
         $("#btn-invalid").click(function (e) {
+            e.preventDefault();
             $("#InValidData").val(true);
             $("#inout-table").bootgrid("reload");
         });
