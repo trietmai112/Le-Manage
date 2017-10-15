@@ -419,7 +419,7 @@ namespace mtv_management_leave.Tests.LeaveTest
                 leave.DeleteLeaveWithoutValidate(rleave.DateStart, rleave.DateEnd, new List<int>() { rleave.Uid });
                 leave.RegisterLeave(rleave);
                 leave.ApproveLeave(rleave.Id);
-                Assert.IsTrue(leave.GetLeave(dateValid, dateValid.AddDays(1).AddMinutes(-1)).FirstOrDefault().LeaveStatus == Common.StatusLeave.E_Approve);
+                Assert.IsTrue(leave.GetLeave(dateValid, dateValid.AddDays(1).AddMinutes(-1)).FirstOrDefault().LeaveStatus == Common.StatusLeave.E_Approve.ToString());
             }
             catch (Exception e)
             {
@@ -440,7 +440,7 @@ namespace mtv_management_leave.Tests.LeaveTest
                 var lstLeaveNeedChecked = leave.GetLeave(rleave.DateStart, rleave.DateEnd).ToList();
                 foreach (var item in lstLeaveNeedChecked)
                 {
-                    Assert.IsTrue(item.LeaveStatus == Common.StatusLeave.E_Approve);
+                    Assert.IsTrue(item.LeaveStatus == Common.StatusLeave.E_Approve.ToString());
                 }
             }
             catch (Exception e)

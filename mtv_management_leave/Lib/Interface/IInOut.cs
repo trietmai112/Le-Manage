@@ -22,7 +22,7 @@ namespace mtv_management_leave.Lib.Interface
         /// <param name="Uid"></param>
         /// <param name="dateFrom"></param>
         /// <param name="DateTo"></param>
-        void SaveGenerateInout(int uid, DateTime dateFrom, DateTime? DateTo);
+        void SaveGenerateInout( DateTime dateFrom, DateTime? DateTo, List<int> lstUid);
 
         List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd);
         List<RepoMappingInOut> MappingInoutLeave(DateTime DateStart, DateTime DateEnd, List<int> lstUid);

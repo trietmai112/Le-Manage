@@ -236,6 +236,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\InOutController.cs" />
+    <Compile Include="Controllers\InOutManagementController.cs" />
     <Compile Include="Controllers\UserSeniorityController.cs" />
     <Compile Include="Controllers\MasterDayOffCompanyController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
@@ -351,6 +352,7 @@
     <Compile Include="Models\Entity\RegisterLeave.cs" />
     <Compile Include="Models\Entity\UserInfo.cs" />
     <Compile Include="Models\Entity\UserSeniority.cs" />
+    <Compile Include="Models\InOut\SearchRequest.cs" />
     <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\Register\RegisterMasterDayOff.cs" />
     <Compile Include="Models\RepoDataBeginYear.cs" />
@@ -726,6 +728,7 @@
     <Content Include="Views\MasterDayOffCompany\RegisterDayOffCompany.cshtml" />
     <Content Include="Views\UserSeniority\Index.cshtml" />
     <Content Include="Views\InOut\Index.cshtml" />
+    <Content Include="Views\InOutManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

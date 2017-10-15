@@ -1,0 +1,116 @@
+﻿@using mtv_management_leave.Models.InOut
+@model SearchRequest
+@{
+    ViewBag.Title = "Inout management";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>List in out of all users</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <form id="form-ex">
+                @Html.HiddenFor(m => m.Uid)
+                @Html.HiddenFor(m => m.InValidData);
+                <div class="col-sm-6">
+                    @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
+                </div>
+                <div class="col-sm-12">
+                    @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-2" })
+                    @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-2" })
+                    <div class="col-sm-6">
+                        <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                        <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
+                        <button class="btn btn-danger" id="btn-fpData"><i class="zmdi zmdi-star"></i>FP Device Data</button>
+                        <button class="btn btn-danger" id="btn-sumaryinout"><i class="zmdi zmdi-star"></i>Sumary Inout</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    @(Html.vBootGridFor()
+        .SetName("inout-table")
+        .SetAjaxUrl("/inoutmanagement/tolist")
+        .AddAjaxParameter(typeof(SearchRequest))
+        .AddColumnRange(
+          new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out", FormatJqueryHandler = "validRow", MappingFrom = "Outtime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Valid", FormatJqueryHandler = "validRow", MappingFrom = "IsValid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveS", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveE", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus1" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveS", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveE", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd2" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus2" }
+        )
+        .ToHtml()
+    )
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-search").click(function (e) {
+            $("#InValidData").val(false);
+            $("#inout-table").bootgrid("reload");
+        });
+        $("#btn-invalid").click(function (e) {
+            $("#InValidData").val(true);
+            $("#inout-table").bootgrid("reload");
+        });
+        var validRow = function (col, row) {
+            return row[col.id];
+        };
+        var validRowDate = function (col, row) {
+            return dateConvert(row[col.id]);
+        }
+
+        $("#btn-fpData").click(function (e) {
+            e.preventDefault();
+            toogle("inoutmanagement/getfpData");
+        })
+
+        $("#btn-sumaryinout").click(function (e) {
+            e.preventDefault();
+            toogle("inOutManagement/sumaryInout");
+        })
+
+        var toogle = function (urlCallback) {
+            var start = $("#DateStart").val();
+            var end = $("#DateEnd").val();
+            swal({
+                title: "Confirm!",
+                type: "info",
+                text: "Do you want continue?",
+                showCloseButton: true,
+                showCancelButton: true,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+                showLoaderOnConfirm: true
+            }).then(
+                function () {
+
+                    var option = {
+                        url: urlCallback,
+                        type: "POST",
+                        data: { DateStart: start, DateEnd: end }
+                    };
+                    $.ajax(option)
+                        .done(function (data) {
+                            console.log(data);
+                        })
+                        .error(function (jhx) {
+                            showAjaxError(jhx);
+                        })
+                },
+                // handling the promise rejection
+                function (dismiss) {
+                    console.log("swal confirm closed");
+                });
+        }
+    </script>
+}
