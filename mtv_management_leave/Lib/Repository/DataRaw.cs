@@ -7,7 +7,7 @@ using mtv_management_leave.Models.Entity;
 
 namespace mtv_management_leave.Lib.Repository
 {
-    public class DataInOutRawDataRaw : Base, IDataRaw
+    public class DataRawBase : Base, IDataRaw
     {
 
         LeaveManagementContext context;

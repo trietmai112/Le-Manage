@@ -72,11 +72,11 @@ namespace mtv_management_leave.Lib.Repository
 
         public void SaveGenerateInout(DateTime dateFrom, DateTime? DateTo)
         {
-            SaveDataGenerateInout(null, dateFrom, DateTo);
+            SaveDataGenerateInout(dateFrom, DateTo, null);
         }
-        public void SaveGenerateInout(int uid, DateTime dateFrom, DateTime? DateTo)
+        public void SaveGenerateInout( DateTime dateFrom, DateTime? DateTo, List<int> lstUid)
         {
-            SaveDataGenerateInout(uid, dateFrom, DateTo);
+            SaveDataGenerateInout(dateFrom, DateTo, lstUid);
         }
 
         public void UpdateOrCreateInout(InOut obj)
@@ -296,7 +296,7 @@ namespace mtv_management_leave.Lib.Repository
             }
         }
 
-        private void SaveDataGenerateInout(int? uidInut, DateTime dateFrom, DateTime? DateTo)
+        private void SaveDataGenerateInout( DateTime dateFrom, DateTime? DateTo, List<int> lstUidInput)
         {
             InitContext(out context);
             if (DateTo == null)
@@ -307,10 +307,10 @@ namespace mtv_management_leave.Lib.Repository
             //del old data
             var lstInoutInDB_Query = context.InOuts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
             var lstInoutRaw_Query = context.DataInOutRaws.Where(m => m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
-            if (uidInut != null)
+            if (lstUidInput != null && lstUidInput.Count >0)
             {
-                lstInoutInDB_Query = lstInoutInDB_Query.Where(m => m.Uid == uidInut);
-                lstInoutRaw_Query = lstInoutRaw_Query.Where(m => m.Uid == uidInut);
+                lstInoutInDB_Query = lstInoutInDB_Query.Where(m =>  lstUidInput.Contains(m.Uid));
+                lstInoutRaw_Query = lstInoutRaw_Query.Where(m => lstUidInput.Contains(m.Uid));
             }
 
             var lstInoutInDB = lstInoutInDB_Query.ToList();

@@ -11,7 +11,7 @@ namespace mtv_management_leave.Tests.LeaveTest
         [TestMethod]
         public void SaveDataRaw_NormalCase()
         {
-            DataInOutRawDataRaw datar = new DataInOutRawDataRaw();
+            DataRawBase datar = new DataRawBase();
             DateTime? datetime1 = datar.getLastData();
             datar.SaveDataRaw();
             DateTime? datetime2 = datar.getLastData();
