@@ -1,0 +1,34 @@
+﻿@model mtv_management_leave.Models.Entity.DataBeginYear
+
+<div class="card">
+    
+    <div class="card-body register-leave-handle">
+        <div class="container-fluid">
+            @using (Html.BeginForm("RegisterAvailableBeginYear", "availableBeginYear"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false)
+            <label class="control-label">
+            </label>
+            <div class="row">
+                <div class="row">
+                    @Html.vDropDownListFor(m => m.Uid, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, false)
+                </div>
+                <div style="height:10px"></div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        @Html.vDatePickerFor(m => m.DateBegin)
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.vTextBoxFor(m => m.AnnualLeave)
+                    </div>
+                </div>                
+            </div>
+            
+            
+            }
+        </div>
+    </div>
+</div>
+
+

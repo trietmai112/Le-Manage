@@ -733,6 +733,7 @@
     <Content Include="Views\InOut\Index.cshtml" />
     <Content Include="Views\InOutManagement\Index.cshtml" />
     <Content Include="Views\AvailableBeginYear\Index.cshtml" />
+    <Content Include="Views\AvailableBeginYear\RegisterAvailableBeginYear.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

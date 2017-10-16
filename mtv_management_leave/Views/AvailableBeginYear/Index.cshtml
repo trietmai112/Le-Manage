@@ -12,10 +12,10 @@
         <div class="row">
             <div class="col-sm-12">
 
-                <div class="col-sm-4">
-                    @Html.vDatePickerFor(m => m.Year).Wrap("div", new { @class = "col-sm-4" })
+                <div class="col-sm-2">
+                    @Html.vDatePickerFor(m => m.Year)
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                     @**chen them cai text box o day*@
                 </div>
@@ -47,7 +47,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Register leave</h2>
+                <h2 class="modal-title">Register Available Begin Year</h2>
             </div>
             <div class="modal-body">
                 @*@Html.Action("RegisterLeave")*@
@@ -79,7 +79,7 @@
         };
 
         var validRowDate = function (col, row) {
-            return converDate(row[col.id]);
+            return dateConvert(row[col.id]);
         }
 
         $("#modalRegisterAvailableLeave").on('show.bs.modal', function () {
