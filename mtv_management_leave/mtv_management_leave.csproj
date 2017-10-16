@@ -253,6 +253,7 @@
     <Compile Include="Lib\Common.cs" />
     <Compile Include="Lib\Controls\CardControl.cs" />
     <Compile Include="Lib\Controls\ContainerBaseControl.cs" />
+    <Compile Include="Lib\Controls\DateTimePickerControl.cs" />
     <Compile Include="Lib\Controls\TableHeaderControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
