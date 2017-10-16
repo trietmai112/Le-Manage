@@ -13,40 +13,39 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
 
-    public class AvailableBeginYearController : Controller
+    public class LeaveBonusController : Controller
     {
-        private DataBeginYearBase _dataBeginYearBase;
+        private AddLeaveBase _leaveBase;
 
-        public AvailableBeginYearController(DataBeginYearBase dataBeginYearBase)
+        public LeaveBonusController(AddLeaveBase leaveBase)
         {
-            _dataBeginYearBase = dataBeginYearBase;
+            _leaveBase = leaveBase;
         }
         public ActionResult Index()
         {
-            return View(new Models.AvailableLeave.SearchRequest());
+            return View(new Models.LeaveBonus.SearchRequest());
         }
 
-        public PartialViewResult RegisterAvailableBeginYear()
+        public PartialViewResult RegisterLeaveBonus()
         {
             return PartialView();
         }
 
         [HttpPost]
-        public PartialViewResult RegisterAvailableBeginYear(DataBeginYear registerAvailableInput)
+        public PartialViewResult RegisterLeaveBonus(AddLeave registerLeaveBonusRequest)
         {
-            DataBeginYear registerLeave = registerAvailableInput;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _dataBeginYearBase.SaveDataBeginYear(registerLeave);
+                    _leaveBase.SaveAddLeaveBonus(registerLeaveBonusRequest);
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("Error", ex.Message);
                 }
             }
-            return PartialView(registerAvailableInput);
+            return PartialView(registerLeaveBonusRequest);
         }
 
         [HttpPost]
@@ -54,7 +53,7 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
-                _dataBeginYearBase.deleteDataBeginYear(model.Ids);
+                _leaveBase.DeleteAddLeaveBonus(model.Ids);
                 return Json(new { Status = 0, Message = "Action complete" });
             }
             catch (Exception e)
@@ -65,24 +64,22 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpPost, AllowAnonymous]
-        public JsonResult ToList(Models.AvailableLeave.SearchRequest model)
+        public JsonResult ToList(Models.LeaveBonus.SearchRequest model)
         {
-
             try
             {
-                List<ResponseAvailableBeginYear> result = new List<ResponseAvailableBeginYear>();
-                if (model.Year != null)
+
+                List<ResponseLeaveBonus> result = new List<ResponseLeaveBonus>();
+
+                if (model.DateStart != null && model.DateEnd != null)
                 {
-                    if (model.Year.Value.Year != 1)
+                    if (model.Uids != null && model.Uids.Count == 1 && model.Uids[0] == 0)
                     {
-                        if (model.Uids != null && model.Uids.Count == 1 && model.Uids[0] == 0)
-                        {
-                            model.Uids = null;
-                        }
-                        result = _dataBeginYearBase.GetDataBeginYear(model.Year.Value.Year, model.Uids);
+                        model.Uids = null;
                     }
+                    result = _leaveBase.GetAddLeaveBonus(model.DateStart.Value, model.DateEnd.Value, model.Uids);
                 }
-                var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseAvailableBeginYear>
+                var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseLeaveBonus>
                 {
                     current = 1,
                     rowCount = -1,
