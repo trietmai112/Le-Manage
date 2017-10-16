@@ -9,18 +9,21 @@ using System.Linq;
 using mtv_management_leave.Models.Request;
 using System.Net;
 using mtv_management_leave.Models;
+using System.Text;
+using System.IO.Pipes;
+using System.IO;
 
 namespace mtv_management_leave.Controllers
 {
     public class InOutManagementController : Controller
     {
         private InOutBase _inoutBase;
-       // private DataRawBase _dataRawBase;
+        private DataRawBase _dataRawBase;
 
-        public InOutManagementController(InOutBase inOutBase)
+        public InOutManagementController(InOutBase inOutBase, DataRawBase dataRawBase)
         {
             _inoutBase = inOutBase;
-            //_dataRawBase = dataRawBase;
+            _dataRawBase = dataRawBase;
         }
         public ActionResult Index()
         {
@@ -31,7 +34,33 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
-               // _dataRawBase.SaveDataRaw();
+                var pipeClient = new NamedPipeClientStream(".",
+                     "demo", PipeDirection.InOut, PipeOptions.None);
+
+                if (pipeClient.IsConnected != true) { pipeClient.Connect(); }
+
+                StreamReader sr = new StreamReader(pipeClient);
+                StreamWriter sw = new StreamWriter(pipeClient);
+
+                string temp;
+                temp = sr.ReadLine();
+
+                if (temp == "Waiting")
+                {
+                    try
+                    {
+                        sw.WriteLine("getdata");
+                        sw.Flush();
+                        string test = sr.ReadLine();
+                        if(test == "complete")
+                        {
+
+                        }
+                        Console.WriteLine("============================ " + test + "======================================");
+                        pipeClient.Close();
+                    }
+                    catch (Exception ex) { throw ex; }
+                }
                 return Json(new { Status = 0, Message = "Action complete" });
             }
             catch (Exception e)

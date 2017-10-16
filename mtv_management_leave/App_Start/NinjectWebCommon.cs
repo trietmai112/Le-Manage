@@ -67,6 +67,7 @@ namespace mtv_management_leave.App_Start
                 kernel.Bind<ApplicationUserManager>().ToSelf().InRequestScope();
                 kernel.Bind<ApplicationSignInManager>().ToSelf().InRequestScope();
                 kernel.Bind<InOutBase>().ToSelf().InRequestScope();
+                kernel.Bind<DataRawBase>().ToSelf().InRequestScope();
                 RegisterServices(kernel);
                 GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
                 return kernel;
