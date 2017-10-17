@@ -55,7 +55,19 @@
             }
         </ul>
     </li>
-    <li><a href="#"><i class="zmdi zmdi-rotate-ccw"></i> Request Change In-Out</a></li>
+    <li class="sub-menu">
+        <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-swap"></i>Request Change In-Out</a>
+        <ul>
+            <li><a href="/changeinout">Change In-out</a></li>
+            <li><a href="/InOutManagement">Management Change In-Out</a></li>
+            @{
+                if (isAdmin)
+                {
+                    // <li><a href="#">Summary In-Out</a></li>
+                }
+            }
+        </ul>
+    </li>
     <li><a href="/leavebonus"><i class="zmdi zmdi-calendar-check"></i> Add Leave Bonus</a></li>
     <li><a href="/availablebeginyear"><i class="zmdi zmdi-calendar-check"></i> Available Begin Year</a></li>
     @if (isAdmin)

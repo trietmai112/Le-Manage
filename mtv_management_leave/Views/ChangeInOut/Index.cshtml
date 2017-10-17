@@ -1,0 +1,166 @@
+﻿
+@using mtv_management_leave.Models.LeaveBonus
+@model SearchRequest
+@{
+    ViewBag.Title = "List of request change inout";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can list request change inout of user</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="col-sm-2">
+                    @Html.vDatePickerFor(m => m.DateStart)
+                </div>
+                <div class="col-sm-2">
+                    @Html.vDatePickerFor(m => m.DateEnd)
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Register</button>
+                    <button class="btn btn-danger" id="btn-delete"><i class="zmdi zmdi-delete"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("request-changeinout-table")
+        .SetAjaxUrl("/changeinout/tolist")
+        .AddAjaxParameter(typeof(SearchRequest))
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out", FormatJqueryHandler = "validRow", MappingFrom = "OutTime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In Request", FormatJqueryHandler = "validRow", MappingFrom = "IntimeRequest" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out Request", FormatJqueryHandler = "validRow", MappingFrom = "OutTimeRequest" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "Status" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Reason", FormatJqueryHandler = "validRow", MappingFrom = "Reason" }
+        )
+        .ToHtml()
+        )
+    </div>
+</div>
+
+
+<div class="modal fade" id="modalRegisterchangeinout" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Register Change Inout</h2>
+            </div>
+            <div class="modal-body">
+                @*@Html.Action("RegisterLeave")*@
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="modal-save"><i class="zmdi zmdi-save"></i> Save changes</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-search").click(function (e) {
+            $("#request-changeinout-table").bootgrid("reload");
+        });
+
+        $("#btn-register").click(function (e) {
+            $("#modalRegisterchangeinout").modal("show");
+        });
+        $("#btn-delete").click(function (e) {
+            e.preventDefault();
+            toogle("/changeinout/delete");
+        })
+        var validRow = function (col, row) {
+            return row[col.id];
+        };
+
+        var validRowDate = function (col, row) {
+            return dateConvert(row[col.id]);
+        }
+
+        $("#modalRegisterchangeinout").on('show.bs.modal', function () {
+            var option = {
+                url: "/changeinout/registerchangeinout",
+                type: "GET"
+            };
+            $.ajax(option).done(function (data) {
+                setupModalBodyFrom(data);
+            });
+        });
+
+        var setupModalBodyFrom = function (data) {
+            $(".modal-body").html(data);
+            registerBootstrapControl();
+        }
+
+        var registerBootstrapControl = function () {
+            $(".modal-body .time-picker").datetimepicker({
+                format: "LT", stepping: 15
+            });
+            $(".modal-body .date-picker").datetimepicker({ format: "MM/DD/YYYY", showTodayButton: true });
+            $('.modal-body .selectpicker').selectpicker('render');
+        }
+
+        $("#modalRegisterchangeinout").on('hidden.bs.modal', function () {
+            $(".modal-body").html("");
+        });
+
+        $("#modal-save").click(function (e) {
+            e.preventDefault();
+            var form = $(".modal-body form");
+            var url = form.attr("action");
+            var data = form.serialize();
+            var option = {
+                url: url,
+                type: "POST",
+                data: data
+            }
+            $.ajax(option).done(function (data) {
+                setupModalBodyFrom(data);
+                $("#modal-close").click();
+            });
+        })
+        var toogle = function (urlCallback) {
+            var selectedIds = $("#request-changeinout-table").bootgrid("getSelectedRows");
+            if (selectedIds.length == 0) return;
+            swal({
+                title: "Confirm!",
+                type: "info",
+                text: "Do you want continue?",
+                showCloseButton: true,
+                showCancelButton: true,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+                showLoaderOnConfirm: true
+            }).then(
+                function () {
+
+                    var option = {
+                        url: urlCallback,
+                        data: { Ids: selectedIds },
+                        type: "POST"
+                    };
+                    $.ajax(option)
+                        .done(function (data) {
+                            console.log(data);
+                        })
+                        .error(function (jhx) {
+                            showAjaxError(jhx);
+                        })
+                },
+                // handling the promise rejection
+                function (dismiss) {
+                    console.log("swal confirm closed");
+                });
+        }
+    </script>
+}

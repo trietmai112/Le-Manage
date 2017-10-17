@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -89,7 +90,7 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
-        public List<RequestChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo)
+        public List<ResponseChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo)
         {
             #region logic 
             //1. lấy toàn bộ dữ liệu trong khoảng từ và đến
@@ -98,15 +99,15 @@ namespace mtv_management_leave.Lib.Repository
             return getRequestChange(dateFrom, DateTo, null);
         }
 
-        public List<RequestChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, int uid)
+        public List<ResponseChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, int uid)
         {
             #region logic 
             //1. lấy toàn bộ dữ liệu trong khoảng từ và đến theo Uid
             #endregion
-            return getRequestChange(dateFrom, DateTo, new List<int>() { uid});
+            return getRequestChange(dateFrom, DateTo, new List<int>() { uid });
         }
 
-        public List<RequestChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
+        public List<ResponseChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {
             #region logic 
             //1. lấy toàn bộ dữ liệu trong khoảng từ và đến theo danh sách uid
@@ -120,7 +121,7 @@ namespace mtv_management_leave.Lib.Repository
             //1. Validate dữ liệu trùng
             //2. lưu dữ liệu vs status là request
             #endregion
-            if(request.Intime== null && request.OutTime== null)
+            if (request.Intime == null && request.OutTime == null)
             {
                 throw new Exception("Invalidate Input Inout!");
             }
@@ -128,24 +129,17 @@ namespace mtv_management_leave.Lib.Repository
             {
                 throw new Exception("Please Update Inout In Day!");
             }
-            if (request.Intime != null)
-            {
-                request.Date = request.Intime.Value;
-            }
-            else
-            {
-                request.Date = request.OutTime.Value;
-            }
-
             InitContext(out context);
-            
-            if (context.RequestChangeInouts.Any(m=>m.Uid== request.Uid && m.Date== request.Date && m.status!= Common.StatusLeave.E_Reject))
+
+            if (context.RequestChangeInouts.Any(m => m.Uid == request.Uid && m.Date == request.Date && m.status != Common.StatusLeave.E_Reject))
             {
                 DisposeContext(context);
                 throw new Exception("Duplicate!");
             }
             request.status = Common.StatusLeave.E_Register;
             context.RequestChangeInouts.Add(request);
+            context.SaveChanges();
+
             DisposeContext(context);
         }
 
@@ -181,16 +175,40 @@ namespace mtv_management_leave.Lib.Repository
         }
 
         #region Private method
-        private List<RequestChangeInout> getRequestChange(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
+        private List<ResponseChangeInout> getRequestChange(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {
-            var lstResult = new List<RequestChangeInout>();
+            var lstResult = new List<ResponseChangeInout>();
             InitContext(out context);
             var query = context.RequestChangeInouts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
+            var queryInout = context.InOuts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
             if (lstUid != null && lstUid.Count > 0)
             {
                 query = query.Where(m => lstUid.Contains(m.Uid));
+                queryInout = queryInout.Where(m => lstUid.Contains(m.Uid));
             }
-            lstResult = query.ToList();
+            var lstRqChange = query.Select(m => new { m.Uid, m.UserInfo.FullName, m.Intime, m.OutTime, m.Id, m.Reason, m.status, m.Date }).ToList();
+            var lstInout = queryInout.Select(m => new { m.Date, m.Uid, m.Intime, m.OutTime }).ToList();
+            foreach (var item in lstRqChange)
+            {
+                ResponseChangeInout rp = new ResponseChangeInout();
+                rp.Id = item.Id;
+                rp.Uid = item.Uid;
+                rp.Date = item.Date;
+                rp.FullName = item.FullName;
+                rp.IntimeRequest = item.Intime!= null? item.Intime.Value.ToString("HH:mm") : string.Empty;
+                rp.OutTimeRequest = item.OutTime != null ? item.OutTime.Value.ToString("HH:mm"): string.Empty;
+                rp.Reason = item.Reason;
+                rp.Status = Common.ConvertLeaveStatusToString((int)item.status);
+                var inout = lstInout.Where(m => m.Uid == item.Uid && m.Date == item.Date).FirstOrDefault();
+                if (inout != null)
+                {
+                    rp.Intime = inout.Intime != null ? inout.Intime.ToString("HH:mm"): string.Empty;
+                    rp.OutTime = inout.OutTime != null ? inout.OutTime.Value.ToString("HH:mm") : string.Empty; 
+                }
+                lstResult.Add(rp);
+            }
+
+
             DisposeContext(context);
             return lstResult;
         }
