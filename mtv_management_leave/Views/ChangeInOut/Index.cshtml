@@ -1,23 +1,23 @@
-﻿@using mtv_management_leave.Models.AvailableLeave
+﻿
+@using mtv_management_leave.Models.LeaveBonus
 @model SearchRequest
 @{
-    ViewBag.Title = "Available leave begin year";
+    ViewBag.Title = "List of request change inout";
 }
 
 <div class="card">
     <div class="card-header">
-        <h2>@ViewBag.Title<small>You can list available data begin year of user</small></h2>
+        <h2>@ViewBag.Title<small>You can list request change inout of user</small></h2>
     </div>
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
 
                 <div class="col-sm-2">
-                    @Html.vDatePickerFor(m => m.Year)
+                    @Html.vDatePickerFor(m => m.DateStart)
                 </div>
-                <div class="col-sm-6">
-                    @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
-                    @**chen them cai text box o day*@
+                <div class="col-sm-2">
+                    @Html.vDatePickerFor(m => m.DateEnd)
                 </div>
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
@@ -27,15 +27,20 @@
             </div>
         </div>
         @(Html.vBootGridFor()
-        .SetName("available-leave-table")
-        .SetAjaxUrl("/availablebeginyear/tolist")
+        .SetName("request-changeinout-table")
+        .SetAjaxUrl("/changeinout/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date Begin", FormatJqueryHandler = "validRowDate", MappingFrom = "DateBegin" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "AnnualLeave", FormatJqueryHandler = "validRow", MappingFrom = "AnnualLeave" }
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out", FormatJqueryHandler = "validRow", MappingFrom = "OutTime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In Request", FormatJqueryHandler = "validRow", MappingFrom = "IntimeRequest" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out Request", FormatJqueryHandler = "validRow", MappingFrom = "OutTimeRequest" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "Status" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Reason", FormatJqueryHandler = "validRow", MappingFrom = "Reason" }
         )
         .ToHtml()
         )
@@ -43,11 +48,11 @@
 </div>
 
 
-<div class="modal fade" id="modalRegisterAvailableLeave" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="modalRegisterchangeinout" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Register Available Begin Year</h2>
+                <h2 class="modal-title">Register Change Inout</h2>
             </div>
             <div class="modal-body">
                 @*@Html.Action("RegisterLeave")*@
@@ -64,15 +69,15 @@
 @section Scripts{
     <script type="text/javascript">
         $("#btn-search").click(function (e) {
-            $("#available-leave-table").bootgrid("reload");
+            $("#request-changeinout-table").bootgrid("reload");
         });
 
         $("#btn-register").click(function (e) {
-            $("#modalRegisterAvailableLeave").modal("show");
+            $("#modalRegisterchangeinout").modal("show");
         });
         $("#btn-delete").click(function (e) {
             e.preventDefault();
-            toogle("/availablebeginyear/delete");
+            toogle("/changeinout/delete");
         })
         var validRow = function (col, row) {
             return row[col.id];
@@ -82,9 +87,9 @@
             return dateConvert(row[col.id]);
         }
 
-        $("#modalRegisterAvailableLeave").on('show.bs.modal', function () {
+        $("#modalRegisterchangeinout").on('show.bs.modal', function () {
             var option = {
-                url: "/availablebeginyear/registeravailablebeginyear",
+                url: "/changeinout/registerchangeinout",
                 type: "GET"
             };
             $.ajax(option).done(function (data) {
@@ -105,7 +110,7 @@
             $('.modal-body .selectpicker').selectpicker('render');
         }
 
-        $("#modalRegisterAvailableLeave").on('hidden.bs.modal', function () {
+        $("#modalRegisterchangeinout").on('hidden.bs.modal', function () {
             $(".modal-body").html("");
         });
 
@@ -125,7 +130,7 @@
             });
         })
         var toogle = function (urlCallback) {
-            var selectedIds = $("#available-leave-table").bootgrid("getSelectedRows");
+            var selectedIds = $("#request-changeinout-table").bootgrid("getSelectedRows");
             if (selectedIds.length == 0) return;
             swal({
                 title: "Confirm!",

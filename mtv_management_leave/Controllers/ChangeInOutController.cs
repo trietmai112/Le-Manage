@@ -13,40 +13,44 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
 
-    public class AvailableBeginYearController : Controller
+    public class ChangeInOutController : Controller
     {
-        private DataBeginYearBase _dataBeginYearBase;
+        private RequestChangeInoutBase _inout;
 
-        public AvailableBeginYearController(DataBeginYearBase dataBeginYearBase)
+        public ChangeInOutController(RequestChangeInoutBase inout)
         {
-            _dataBeginYearBase = dataBeginYearBase;
+            _inout = inout;
         }
         public ActionResult Index()
         {
-            return View(new Models.AvailableLeave.SearchRequest());
+            return View(new Models.LeaveBonus.SearchRequest());
         }
 
-        public PartialViewResult RegisterAvailableBeginYear()
+        public PartialViewResult RegisterChangeInout()
         {
             return PartialView();
         }
 
         [HttpPost]
-        public PartialViewResult RegisterAvailableBeginYear(DataBeginYear registerAvailableInput)
+        public PartialViewResult RegisterChangeInout(RequestChangeInout rqChangeInout)
         {
-            DataBeginYear registerLeave = registerAvailableInput;
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _dataBeginYearBase.SaveDataBeginYear(registerLeave);
+                    rqChangeInout.Uid = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                    if (rqChangeInout.Intime != null)
+                        rqChangeInout.Intime = rqChangeInout.Date.Date.AddHours(rqChangeInout.Intime.Value.Hour).AddMinutes(rqChangeInout.Intime.Value.Minute);
+                    if (rqChangeInout.OutTime != null)
+                        rqChangeInout.OutTime = rqChangeInout.Date.Date.AddHours(rqChangeInout.OutTime.Value.Hour).AddMinutes(rqChangeInout.OutTime.Value.Minute);
+                    _inout.SaveRequestChange(rqChangeInout);
                 }
                 catch (Exception ex)
                 {
                     ModelState.AddModelError("Error", ex.Message);
                 }
             }
-            return PartialView(registerAvailableInput);
+            return PartialView(rqChangeInout);
         }
 
         [HttpPost]
@@ -54,7 +58,7 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
-                _dataBeginYearBase.deleteDataBeginYear(model.Ids);
+                _inout.DeleteRequestChange(model.Ids);
                 return Json(new { Status = 0, Message = "Action complete" });
             }
             catch (Exception e)
@@ -65,24 +69,19 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpPost, AllowAnonymous]
-        public JsonResult ToList(Models.AvailableLeave.SearchRequest model)
+        public JsonResult ToList(Models.LeaveBonus.SearchRequest model)
         {
-
             try
             {
-                List<ResponseAvailableBeginYear> result = new List<ResponseAvailableBeginYear>();
-                if (model.Year != null)
+
+                List<ResponseChangeInout> result = new List<ResponseChangeInout>();
+
+                if (model.DateStart != null && model.DateEnd != null)
                 {
-                    if (model.Year.Value.Year != 1)
-                    {
-                        if (model.Uids != null && model.Uids.Count == 1 && model.Uids[0] == 0)
-                        {
-                            model.Uids = null;
-                        }
-                        result = _dataBeginYearBase.GetDataBeginYear(model.Year.Value.Year, model.Uids);
-                    }
+                    var uid = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                    result = _inout.GetRequestChangeInout(model.DateStart.Value, model.DateEnd.Value, new List<int>() { uid });
                 }
-                var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseAvailableBeginYear>
+                var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseChangeInout>
                 {
                     current = 1,
                     rowCount = -1,

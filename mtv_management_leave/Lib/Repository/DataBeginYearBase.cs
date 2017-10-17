@@ -1,8 +1,7 @@
-﻿using mtv_management_leave.Lib.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.Response;
@@ -94,6 +93,7 @@ namespace mtv_management_leave.Lib.Repository
             InitContext(out context);
             var dataDel = context.DataBeginYears.Where(m => lstId.Contains(m.Id)).ToList();
             context.DataBeginYears.RemoveRange(dataDel);
+            context.SaveChanges();
             DisposeContext(context);
         }
 

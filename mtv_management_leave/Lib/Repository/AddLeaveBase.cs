@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -46,17 +47,17 @@ namespace mtv_management_leave.Lib.Repository
         }
 
 
-        public List<AddLeave> GetAddLeaveBonus(DateTime DateTo)
+        public List<ResponseLeaveBonus> GetAddLeaveBonus(DateTime DateTo)
         {
             return PrivateGetAddLeaveBonus(new DateTime(DateTo.Year, 1, 1), DateTo, null);
         }
 
-        public List<AddLeave> GetAddLeaveBonus(DateTime dateFrom, DateTime DateTo)
+        public List<ResponseLeaveBonus> GetAddLeaveBonus(DateTime dateFrom, DateTime DateTo)
         {
             return PrivateGetAddLeaveBonus(dateFrom, DateTo, null);
         }
 
-        public List<AddLeave> GetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
+        public List<ResponseLeaveBonus> GetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {
             return PrivateGetAddLeaveBonus(dateFrom, DateTo, lstUid);
         }
@@ -98,13 +99,13 @@ namespace mtv_management_leave.Lib.Repository
                     context.AddLeaves.Add(newAdd);
                 }
             }
-          
+
             context.SaveChanges();
             DisposeContext(context);
         }
 
         #region Private method
-        private List<AddLeave> PrivateGetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
+        private List<ResponseLeaveBonus> PrivateGetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {
             InitContext(out context);
             var query = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd.Value >= dateFrom && m.DateAdd.Value <= DateTo);
@@ -112,7 +113,7 @@ namespace mtv_management_leave.Lib.Repository
             {
                 query = query.Where(m => lstUid.Contains(m.Uid));
             }
-            var lstResult = query.ToList();
+            var lstResult = query.Select(m => new ResponseLeaveBonus() { Id = m.Id, Uid = m.Uid, FullName = m.UserInfo.FullName, DateAdd = m.DateAdd, AddLeaveHour = m.AddLeaveHour, Reason = m.Reason }).ToList();
             DisposeContext(context);
             return lstResult;
         }

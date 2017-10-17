@@ -238,6 +238,8 @@
     <Compile Include="Controllers\InOutController.cs" />
     <Compile Include="Controllers\InOutManagementController.cs" />
     <Compile Include="Controllers\AvailableBeginYearController.cs" />
+    <Compile Include="Controllers\ChangeInOutController.cs" />
+    <Compile Include="Controllers\LeaveBonusController.cs" />
     <Compile Include="Controllers\UserSeniorityController.cs" />
     <Compile Include="Controllers\MasterDayOffCompanyController.cs" />
     <Compile Include="Controllers\LeaveManagementController.cs" />
@@ -356,6 +358,7 @@
     <Compile Include="Models\Entity\UserInfo.cs" />
     <Compile Include="Models\Entity\UserSeniority.cs" />
     <Compile Include="Models\InOut\SearchRequest.cs" />
+    <Compile Include="Models\LeaveBonus\SearchRequest.cs" />
     <Compile Include="Models\LeaveManagementContext.cs" />
     <Compile Include="Models\Register\RegisterMasterDayOff.cs" />
     <Compile Include="Models\RepoDataBeginYear.cs" />
@@ -371,6 +374,8 @@
     <Compile Include="Models\Request\RequestMasterDayOff.cs" />
     <Compile Include="Models\Request\ToogleApprove.cs" />
     <Compile Include="Models\Response\ResponseAvailableBeginYear.cs" />
+    <Compile Include="Models\Response\ResponseChangeInout.cs" />
+    <Compile Include="Models\Response\ResponseLeaveBonus.cs" />
     <Compile Include="Models\Response\ResponseUserSeniority.cs" />
     <Compile Include="Models\Response\ResponseMasterDayOff.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
@@ -734,6 +739,11 @@
     <Content Include="Views\InOut\Index.cshtml" />
     <Content Include="Views\InOutManagement\Index.cshtml" />
     <Content Include="Views\AvailableBeginYear\Index.cshtml" />
+    <Content Include="Views\AvailableBeginYear\RegisterAvailableBeginYear.cshtml" />
+    <Content Include="Views\LeaveBonus\Index.cshtml" />
+    <Content Include="Views\LeaveBonus\RegisterLeaveBonus.cshtml" />
+    <Content Include="Views\ChangeInOut\Index.cshtml" />
+    <Content Include="Views\ChangeInOut\RegisterChangeInout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
