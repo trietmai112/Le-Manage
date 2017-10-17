@@ -234,6 +234,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ChangeInOutManagementController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\InOutController.cs" />
     <Compile Include="Controllers\InOutManagementController.cs" />
@@ -745,6 +746,7 @@
     <Content Include="Views\LeaveBonus\RegisterLeaveBonus.cshtml" />
     <Content Include="Views\ChangeInOut\Index.cshtml" />
     <Content Include="Views\ChangeInOut\RegisterChangeInout.cshtml" />
+    <Content Include="Views\ChangeInOutManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
