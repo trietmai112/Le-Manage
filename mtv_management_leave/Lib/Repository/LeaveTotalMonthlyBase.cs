@@ -1,33 +1,38 @@
-﻿using mtv_management_leave.Lib.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
-    public class LeaveTotalMonthly : Base, ILeaveTotalMonthly
+    public class LeaveTotalMonthlyBase : Base, ILeaveTotalMonthly
     {
         LeaveManagementContext context;
         ICommonLeaveBase commonLeaveBase;
 
-        public LeaveTotalMonthly()
+        public LeaveTotalMonthlyBase()
         {
             commonLeaveBase = new CommonLeaveBase();
         }
 
         public List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear)
         {
-            return PrivateGetLastTotalMonthly(monthYear, null);
+            InitContext(out context);
+            var result = PrivateGetLastTotalMonthly(context, monthYear, null);
+            DisposeContext(context);
+            return result;
 
         }
 
         public List<LeaveMonthly> GetLastTotalMonthly(DateTime monthYear, List<int> lstUid)
         {
-            return PrivateGetLastTotalMonthly(monthYear, lstUid);
+            InitContext(out context);
+            var result = PrivateGetLastTotalMonthly(context, monthYear, lstUid);
+            DisposeContext(context);
+            return result;
         }
 
         public List<LeaveMonthly> GetLastTotalMonthly(int year, int uid)
@@ -103,31 +108,34 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
-        private List<LeaveMonthly> PrivateGetLastTotalMonthly(DateTime monthYear, List<int> lstUid)
+        private List<LeaveMonthly> PrivateGetLastTotalMonthly(LeaveManagementContext _context, DateTime monthYear, List<int> lstUid)
         {
             var lstResult = new List<LeaveMonthly>();
-            InitContext(out context);
 
-            var query = context.LeaveMonthlies.Where(m => m.Month == monthYear);
+            var query = _context.LeaveMonthlies.Where(m => m.Month == monthYear);
             if (lstUid != null && lstUid.Count > 0)
             {
                 query = query.Where(m => lstUid.Contains(m.Uid));
             }
             lstResult = query.ToList();
-            DisposeContext(context);
             return lstResult;
         }
 
         public List<ResponseLeaveTotalMonthly> GetTotalMonthlyBeginYear(DateTime monthYear, List<int> lstUid)
         {
+
             List<ResponseLeaveTotalMonthly> result = new List<ResponseLeaveTotalMonthly>();
             var lstLeaveMonthly = new List<LeaveMonthly>();
-            for (DateTime month = new DateTime(monthYear.Year,1,1); month<= monthYear; month= month.AddMonths(1))
+            InitContext(out context);
+
+            for (DateTime month = new DateTime(monthYear.Year, 1, 1); month <= monthYear; month = month.AddMonths(1))
             {
-                lstLeaveMonthly.AddRange(PrivateGetLastTotalMonthly(month, lstUid));
+                lstLeaveMonthly.AddRange(PrivateGetLastTotalMonthly(context, month, lstUid));
             }
             result = lstLeaveMonthly.Select(m => new ResponseLeaveTotalMonthly() { FullName = m.UserInfo.FullName, Id = m.Id, LeaveAvailable = m.LeaveAvailable, LeaveNonPaid = m.LeaveNonPaid, LeaveRemain = m.LeaveRemain, LeaveUsed = m.LeaveUsed, Month = m.Month, Uid = m.Uid }).ToList();
             result = result.OrderBy(m => m.Uid).ThenBy(m => m.Month).ToList();
+            result.ForEach(m => m.MonthDisplay = m.Month.ToString("yyyy-MM"));
+            DisposeContext(context);
             return result;
         }
 

@@ -234,6 +234,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\SummaryLeaveAnnualManagementController.cs" />
+    <Compile Include="Controllers\SummaryLeaveAnnualController.cs" />
     <Compile Include="Controllers\ChangeInOutManagementController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\InOutController.cs" />
@@ -291,7 +293,7 @@
     <Compile Include="Lib\Repository\UserSeniorityBase.cs" />
     <Compile Include="Lib\Repository\RequestChangeInoutBase.cs" />
     <Compile Include="Lib\Repository\InOutBase.cs" />
-    <Compile Include="Lib\Repository\LeaveTotalMonthly.cs" />
+    <Compile Include="Lib\Repository\LeaveTotalMonthlyBase.cs" />
     <Compile Include="Lib\Repository\LeaveBase.cs" />
     <Compile Include="Lib\Repository\DataRaw.cs" />
     <Compile Include="Migrations\201709260647114_InitTables.cs" />
@@ -745,6 +747,8 @@
     <Content Include="Views\ChangeInOut\Index.cshtml" />
     <Content Include="Views\ChangeInOut\RegisterChangeInout.cshtml" />
     <Content Include="Views\ChangeInOutManagement\Index.cshtml" />
+    <Content Include="Views\SummaryLeaveAnnual\Index.cshtml" />
+    <Content Include="Views\SummaryLeaveAnnualManagement\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,8 +1,4 @@
-﻿using mtv_management_leave.Lib;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System;
 
 namespace mtv_management_leave.Models.Response
 {
@@ -11,6 +7,7 @@ namespace mtv_management_leave.Models.Response
         public int Id { get; set; }
         public int Uid { get; set; }
         public DateTime Month { get; set; }
+        public string MonthDisplay { get; set; }
         public double? LeaveAvailable { get; set; }
         public double? LeaveUsed { get; set; }
         public double? LeaveRemain { get; set; }

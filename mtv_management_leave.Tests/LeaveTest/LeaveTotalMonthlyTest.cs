@@ -30,7 +30,7 @@ namespace mtv_management_leave.Tests.LeaveTest
             addLeaveBase.DeleteAddLeaveBonus(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10));
             addLeaveBase.SaveAddLeaveBonus(new AddLeave() { AddLeaveHour = 8, DateAdd = new DateTime(2000, 1, 10), Reason = "test", Uid = 1, });
 
-            LeaveTotalMonthly totalMonthlyBase = new LeaveTotalMonthly();
+            LeaveTotalMonthlyBase totalMonthlyBase = new LeaveTotalMonthlyBase();
 
             var rleave = createLeave(dateValid.AddHours(8), dateValid.AddDays(3).AddHours(17));
             LeaveBase leave = new LeaveBase();
@@ -69,7 +69,7 @@ namespace mtv_management_leave.Tests.LeaveTest
             addLeaveBase.DeleteAddLeaveBonus(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10));
             addLeaveBase.SaveAddLeaveBonus(new AddLeave() { AddLeaveHour = 8, DateAdd = new DateTime(2000, 1, 10), Reason = "test", Uid = 1, });
 
-            LeaveTotalMonthly totalMonthlyBase = new LeaveTotalMonthly();
+            LeaveTotalMonthlyBase totalMonthlyBase = new LeaveTotalMonthlyBase();
 
             var rleave = createLeave(dateValid.AddHours(8), dateValid.AddDays(3).AddHours(17));
             LeaveBase leave = new LeaveBase();

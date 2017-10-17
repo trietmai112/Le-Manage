@@ -1,0 +1,57 @@
+﻿
+
+@using mtv_management_leave.Models.LeaveBonus
+@model SearchRequest
+@{
+    ViewBag.Title = "Summary leave annual";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>List data summary leave annual</small></h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <div class="col-sm-4">
+                    @Html.vDatePickerFor(m => m.DateStart)
+                </div>
+                <div class="col-sm-6">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("summaryLeaveAnnual-table")
+        .SetAjaxUrl("/summaryLeaveAnnual/tolist")
+        .AddAjaxParameter(typeof(SearchRequest))
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Month", FormatJqueryHandler = "validRow", MappingFrom = "MonthDisplay" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave Available", FormatJqueryHandler = "validRow", MappingFrom = "LeaveAvailable" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave Used", FormatJqueryHandler = "validRow", MappingFrom = "LeaveUsed" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Leave Remain", FormatJqueryHandler = "validRow", MappingFrom = "LeaveRemain" }
+        )
+        .ToHtml()
+        )
+    </div>
+</div>
+
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-search").click(function (e) {
+            $("#summaryLeaveAnnual-table").bootgrid("reload");
+        });
+        var validRow = function (col, row) {
+            return row[col.id];
+        };
+        var validRowDate = function (col, row) {
+            return dateConvert(row[col.id]);
+        }
+    </script>
+}
