@@ -24,6 +24,7 @@ namespace mtv_management_leave.Controllers
         }
         public ActionResult Index()
         {
+            var now = DateTime.Now;
             return View(new Models.RegisterLeave.SearchRequest());
         }
 

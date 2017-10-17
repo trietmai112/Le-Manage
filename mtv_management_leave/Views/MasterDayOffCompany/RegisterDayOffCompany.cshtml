@@ -16,7 +16,7 @@
                     <div class="col-sm-12">
                         <div class="col-sm-8 leave-type" style="padding-top: 5px;">
                             <div class="col-sm-2 text-right"><label class="control-label">Date</label> </div>
-                            <div class="col-sm-5 md-date">@Html.vDatePickerFor(m => m.Date, showTitle: false)</div>
+                            <div class="col-sm-5 md-date">@Html.vDateTimePickerFor(m => m.Date).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).HiddenLabel().ToHtml()</div>
                             
                         </div>
                     </div>

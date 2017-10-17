@@ -38,9 +38,22 @@
                         </div>
                         <div class="col-sm-9 leave-type" style="padding-top: 5px;">
                             <div class="col-sm-2 text-right"><label class="control-label">From</label> </div>
-                            <div class="col-sm-5 md-date md-date-from">@Html.vDatePickerFor(m => m.DateStart, showTitle: false)</div>
+                            <div class="col-sm-5 md-date md-date-from">
+                                @(
+                                    Html.vDateTimePickerFor(m => m.DateStart)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date)
+                                    .HiddenLabel()
+                                    .OnChangeJQuery("dateFromChange")
+                                    .ToHtml()
+                                )
+                            </div>
                             <div class="col-sm-5 md-hour md-hour-from" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>
-                                @Html.vTimePickerFor(m => m.DateStart, showTitle: false)
+                                @(
+                                    Html.vDateTimePickerFor(m => m.DateStart)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Time)
+                                    .HiddenLabel()
+                                    .ToHtml()
+                                )
                             </div>
                         </div>
                     </div>
@@ -50,8 +63,22 @@
                         </div>
                         <div class="col-sm-9 leave-type" style="padding-top: 5px;">
                             <div class="col-sm-2 text-right">To</div>
-                            <div class="col-sm-5 md-date md-date-to">@Html.vDatePickerFor(m => m.DateEnd, showTitle: false, attributes: new { disabled = true })</div>
-                            <div class="col-sm-5 md-hour md-hour-to" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>@Html.vTimePickerFor(m => m.DateEnd, showTitle: false)</div>
+                            <div class="col-sm-5 md-date md-date-to">
+                                @(
+                                    Html.vDateTimePickerFor(m => m.DateEnd, new { disabled = true, @class="date-from" })
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date)
+                                    .HiddenLabel()
+                                    .ToHtml()
+                                )
+                            </div>
+                            <div class="col-sm-5 md-hour md-hour-to" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>
+                                @(
+                                    Html.vDateTimePickerFor(m=> m.DateEnd)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Time)
+                                    .HiddenLabel()
+                                    .ToHtml()
+                                )
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -67,53 +94,50 @@
 </div>
 
 <script type="text/javascript">
-    $(".md-date-from .date-picker").on("dp.change", function (e) {
-        debugger;
+    var dateFromChange = function (e) {
         if ($("#IsToday").val() == "True") {
-            $(".leave-type:last .date-picker").data("DateTimePicker").date($(".leave-type:first .date-picker").val());
+            $(".leave-type:last .date-picker").data("DateTimePicker").date(e.val());
         }
-    });
+    };
 
-    $(".md-hour-from .time-picker").datetimepicker({
-        format: "LT", stepping: 15, useCurrent: false
-    });
+    //$(".md-hour-from .time-picker").datetimepicker({
+    //    format: "LT", stepping: 15, useCurrent: false
+    //});
 
-    $(".md-hour-to .time-picker").datetimepicker({
-        format: "LT", stepping: 15, useCurrent: false
-    });
+    //$(".md-hour-to .time-picker").datetimepicker({
+    //    format: "LT", stepping: 15, useCurrent: false
+    //});
 
-    $(".leave-type .date-picker").datetimepicker({ format: "MM/DD/YYYY", useCurrent: false });
+    //$(".leave-type .date-picker").datetimepicker({ format: "MM/DD/YYYY", useCurrent: false });
     $('.modal-body .selectpicker').selectpicker('render');
 
 
     var setDefaultDateTime = function () {
         $(".md-hour-from .time-picker").data("DateTimePicker").date('@Model.DateStart.ToString("HH:mm:ss")');
-        $(".md-date-from .date-picker").data("DateTimePicker").date(new Date( '@Model.DateStart.ToString("MM-dd-yyyy")'));
+        $(".md-date-from .date-picker").data("DateTimePicker").date(new Date('@Model.DateStart.ToString("MM-dd-yyyy")'));
 
         $(".md-hour-to .time-picker").data("DateTimePicker").date('@Model.DateEnd.ToString("HH:mm:ss")');
-        $(".md-date-to .date-picker").data("DateTimePicker").date(new Date( '@Model.DateEnd.ToString("MM-dd-yyyy")'));
+        $(".md-date-to .date-picker").data("DateTimePicker").date(new Date('@Model.DateEnd.ToString("MM-dd-yyyy")'));
     }
     $(document).ready(function () {
-        setDefaultDateTime();
+        //setDefaultDateTime();
+        $("body").on("change", ".register-leave-handle input[type=radio]", function (e) {
+            e.preventDefault();
+            var type = $(this).attr("datatype");
+            if (type == "md-hour") {
+                $(".leave-type .md-hour").css({ "display": "block" });
+                $(".leave-type .md-date").css({ "display": "block" });
+                $(".md-date-to .date-picker").attr("disabled", "true");
+                $("#IsToday").val("True");
+            }
+            else if (type == "md-date") {
+                $(".leave-type .md-hour").css({ "display": "none" });
+                $(".leave-type .md-date").css({ "display": "block" });
+                $(".md-date-to .date-picker").removeAttr("disabled");
+                $("#IsToday").val("False");
+            }
+            //setDefaultDateTime();
+        });
     })
-
-
-    $("body").on("change", ".register-leave-handle input[type=radio]", function (e) {
-        e.preventDefault();
-        var type = $(this).attr("datatype");
-        if (type == "md-hour") {
-            $(".leave-type .md-hour").css({ "display": "block" });
-            $(".leave-type .md-date").css({ "display": "block" });
-            $(".md-date-to .date-picker").attr("disabled", "true");
-            $("#IsToday").val("True");
-        }
-        else if (type == "md-date") {
-            $(".leave-type .md-hour").css({ "display": "none" });
-            $(".leave-type .md-date").css({ "display": "block" });
-            $(".md-date-to .date-picker").removeAttr("disabled");
-            $("#IsToday").val("False");
-        }
-        setDefaultDateTime();
-    });
 </script>
 

@@ -17,7 +17,7 @@
                     <div style="height:10px"></div>
                     <div class="row">
                         <div class="col-sm-6">
-                            @Html.vDatePickerFor(m => m.DateAdd)
+                            @Html.vDateTimePickerFor(m => m.DateAdd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                         </div>
                         <div class="col-sm-6">
                             @Html.vTextBoxFor(m => m.AddLeaveHour)

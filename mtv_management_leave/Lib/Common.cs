@@ -9,7 +9,6 @@ namespace mtv_management_leave.Lib
     {
         public enum DateTimePickerViewMode
         {
-            SideBySide,
             Full,
             Date,
             Time,

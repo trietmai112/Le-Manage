@@ -79,35 +79,41 @@ namespace mtv_management_leave.Lib.Extendsions
             return new MvcHtmlString(CombineVaribleToLayout(_textareaTemplate, dictionary));
         }
 
-        public static MvcHtmlString vDateTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
-             Expression<Func<TModel, TProperty>> expression,
-             string placeHolder = null,
-             object attributes = null,
-             bool showTitle = true)
+        //public static MvcHtmlString vDateTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+        //     Expression<Func<TModel, TProperty>> expression,
+        //     string placeHolder = null,
+        //     object attributes = null,
+        //     bool showTitle = true)
+        //{
+        //    var inputClass = "form-control date-time-picker input-sm ";
+        //    return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
+        //}
+
+        //public static MvcHtmlString vDatePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+        //    Expression<Func<TModel, TProperty>> expression,
+        //    string placeHolder = null,
+        //    object attributes = null,
+        //    bool showTitle = true)
+        //{
+        //    var inputClass = "form-control date-picker input-sm ";
+        //    return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
+        //}
+
+        public static DateTimePickerControl vDateTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+            Expression<Func<TModel, TProperty>> expression = null, object attributeHtml = null)
         {
-            var inputClass = "form-control date-time-picker input-sm ";
-            return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
+            return new DateTimePickerControl(htmlHelper).Binding(expression, attributeHtml);
         }
 
-        public static MvcHtmlString vDatePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TProperty>> expression,
-            string placeHolder = null,
-            object attributes = null,
-            bool showTitle = true)
-        {
-            var inputClass = "form-control date-picker input-sm ";
-            return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
-        }
-
-        public static MvcHtmlString vTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
-            Expression<Func<TModel, TProperty>> expression,
-            string placeHolder = null,
-            object attributes = null,
-            bool showTitle = true)
-        {
-            var inputClass = "form-control time-picker input-sm ";
-            return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
-        }
+        //public static MvcHtmlString vTimePickerFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
+        //    Expression<Func<TModel, TProperty>> expression,
+        //    string placeHolder = null,
+        //    object attributes = null,
+        //    bool showTitle = true)
+        //{
+        //    var inputClass = "form-control time-picker input-sm ";
+        //    return RenderDateTimePicker(htmlHelper, expression, placeHolder, attributes, inputClass, showTitle);
+        //}
 
         public static MvcHtmlString vPasswordFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper,
             Expression<Func<TModel, TProperty>> expression)
@@ -237,6 +243,5 @@ namespace mtv_management_leave.Lib.Extendsions
         {
             return new TableHeaderControl();
         }
-        
     }
 }

@@ -264,6 +264,7 @@
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
     <Compile Include="Lib\Extendsions\MvcHtmlStringExtendsion.cs" />
     <Compile Include="Lib\Extendsions\ObjectExtentsion.cs" />
+    <Compile Include="Lib\Extendsions\StringExtendsion.cs" />
     <Compile Include="Lib\Extendsions\TagBuilderExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />

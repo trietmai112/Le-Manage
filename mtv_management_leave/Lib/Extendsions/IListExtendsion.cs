@@ -13,5 +13,19 @@ namespace mtv_management_leave.Lib.Extendsions
             list.Add(model);
             return list;
         }
+
+        public static bool vEmpty<T>(this List<T> list)
+        {
+            if (list == null || list.Count == 0)
+                return true;
+            return false;
+        }
+
+        public static bool vEmpty<T>(this T[] array)
+        {
+            if (array == null || array.Length == 0)
+                return true;
+            return false;
+        }
     }
 }

@@ -23,7 +23,7 @@
 
                 @Html.vTextBoxFor(m => m.PhoneNumber)
                
-                @Html.vDatePickerFor(m => m.DateOfBirth)
+                @Html.vDateTimePickerFor(m => m.DateOfBirth).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
 
                 @Html.vPasswordFor(m => m.Password)
 
