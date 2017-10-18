@@ -3,13 +3,18 @@
 @{
     ViewBag.Title = "Register User";
     var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
+    if(Model != null)
+    {
+        var selectItems = roles.Where(m => Model.RoleIds.Contains(int.Parse(m.Value)));
+        foreach (var item in selectItems) { item.Selected = true; }
+    }
 }
 <div class="card">
     <div class="card-header">
         <h2>@ViewBag.Title<small>You can register an user at here</small></h2>
     </div>
     <div class="card-body card-padding">
-            @using (Html.BeginForm("Register", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            @using (Html.BeginForm((Model?.Id > 0 ? "Update": "Register"), "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                 <div class="col-sm-12">
                     @Html.AntiForgeryToken()

@@ -190,6 +190,7 @@ namespace mtv_management_leave.Lib.Repository
 
         public RegisterViewModel GetById(int id)
         {
+            InitContext(out context);
             var iquery = from user in context.Users
                          join userRole in context.Set<UserRole>() on user.Id equals userRole.UserId into gUserRole
                          from gur in gUserRole.DefaultIfEmpty()
@@ -211,9 +212,11 @@ namespace mtv_management_leave.Lib.Repository
                              PhoneNumber = user.PhoneNumber,
                              ConfirmPassword = null,
                              Password = null,
-                             RoleIds = gr != null? new List<int> { gr.Id} : null                            
+                             RoleIds = gUserRole.Select(x=> x.RoleId).ToList()                       
                          };
-            return iquery.FirstOrDefault();
+            var result =  iquery.FirstOrDefault();
+            DisposeContext(context);
+            return result;
         }
     }
 }

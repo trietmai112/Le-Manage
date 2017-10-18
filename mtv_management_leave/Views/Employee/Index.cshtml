@@ -61,7 +61,7 @@
         });
 
         var actionOfRow = function (col, row) {
-            return "<button data-row-id='"+ row.Id+"' class='btn btn-primary action-edit' onclick='redirectToUpdateLink()' data-ma-action='clear-notification'><i class='zmdi zmdi-edit'></i></button>";
+            return "<a href='/employee/update?id="+row.Id+"' data-row-id='"+ row.Id+"' class='btn btn-link action-edit' data-ma-action='clear-notification'><i class='zmdi zmdi-edit'></i></a>";
         }
 
         var validRow = function (col, row) {
@@ -82,14 +82,14 @@
             console.log("alert");
         }
 
-        $("body").on("click", "#btn-register", function (e) {
-            location.assign("/employee/register");
-        });
+        //$("body").on("click", "#btn-register", function (e) {
+        //    location.assign("/employee/register");
+        //});
 
-        $("body").on("click", ".action-edit", function (e) {
-            var id = $(this).data("row-id");
-            location.assign("/employee/update?id=" + id);
-        });
+        //$("body").on("click", ".action-edit", function (e) {
+        //    var id = $(this).data("row-id");
+        //    location.assign("/employee/update?id=" + id);
+        //});
 
     </script>
 }
