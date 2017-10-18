@@ -3,7 +3,7 @@ namespace mtv_management_leave.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InsertDefaultRoles : DbMigration
+    public partial class AddDefaultRoles : DbMigration
     {
         public override void Up()
         {

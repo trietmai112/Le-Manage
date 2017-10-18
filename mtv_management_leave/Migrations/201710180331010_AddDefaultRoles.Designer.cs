@@ -7,13 +7,13 @@ namespace mtv_management_leave.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InsertDefaultRoles : IMigrationMetadata
+    public sealed partial class AddDefaultRoles : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InsertDefaultRoles));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddDefaultRoles));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710030230133_InsertDefaultRoles"; }
+            get { return "201710180331010_AddDefaultRoles"; }
         }
         
         string IMigrationMetadata.Source
