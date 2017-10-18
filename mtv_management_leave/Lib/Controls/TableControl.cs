@@ -89,7 +89,7 @@ namespace mtv_management_leave.Lib.Controls
                 int j = 0;
                 foreach (var item in this.AjaxParameters)
                 {
-                    scriptHtml += $"{item.Key}: $('#{item.Value}').val()" + (j < this.AjaxParameters.Count - 1 ? "," : "");
+                    scriptHtml += $"{item.Key}: $('[name={item.Value}]').val()" + (j < this.AjaxParameters.Count - 1 ? "," : "");
                     j++;
                 }
                 scriptHtml += "                             };";
