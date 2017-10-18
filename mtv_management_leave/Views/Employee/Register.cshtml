@@ -25,7 +25,7 @@
 
                         @Html.vTextBoxFor(m => m.PhoneNumber)
 
-                        @Html.vDatePickerFor(m => m.DateOfBirth)
+                        @Html.vDateTimePickerFor(m => m.DateOfBirth).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                     </div>
                     <div class="col-sm-4">
                         @Html.vTextBoxFor(m => m.FPId)
@@ -37,11 +37,11 @@
                         @Html.vDropDownListFor(m => m.RoleIds, roles)                                                
                     </div>
                     <div class="col-sm-4">
-                        @Html.vDatePickerFor(m => m.DateBeginWork)
+                        @Html.vDateTimePickerFor(m => m.DateBeginWork).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
 
-                        @Html.vDatePickerFor(m => m.DateBeginProbation)
+                        @Html.vDateTimePickerFor(m => m.DateBeginProbation).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
 
-                        @Html.vDatePickerFor(m => m.DateResign)
+                        @Html.vDateTimePickerFor(m => m.DateResign).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                     </div>
 
                     <div class="col-sm-12">

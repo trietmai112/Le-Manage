@@ -14,24 +14,36 @@
                     <div style="height:10px"></div>
                     <div class="row">
                         <div class="col-sm-6">
-                            @Html.vDatePickerFor(m => m.Date)
+                            @(
+                                Html.vDateTimePickerFor(m => m.Date)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date)
+                                    .ToHtml()
+                            )
                         </div>
                         <div class="col-sm-2 text-right"><label class="control-label">In</label> </div>
                         <div class="col-sm-3 md-hour">
-                            @Html.vTimePickerFor(m => m.Intime, showTitle: false);
+                            @(
+                                Html.vDateTimePickerFor(m => m.Intime)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Time)
+                                    .HiddenLabel()
+                                    .ToHtml()
+                            )
                         </div>
                         <div class="col-sm-2 text-right"><label class="control-label">Out</label> </div>
                         <div class="col-sm-3 md-hour">
-                            @Html.vTimePickerFor(m => m.OutTime, showTitle: false);
+                            @(
+                                Html.vDateTimePickerFor(m => m.OutTime)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Time)
+                                    .HiddenLabel()
+                                    .ToHtml()
+                            )
                         </div>
                     </div>
                     <div class="row">
                         @Html.vTextAreaFor(m => m.Reason);
                     </div>
                 </div>
-            }
+                                }
         </div>
     </div>
 </div>
-
-

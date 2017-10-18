@@ -12,8 +12,9 @@
         <div class="row">
             @Html.HiddenFor(m => m.Uid)
             <div class="col-sm-12">
-                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
+
+                @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
                 @**chen them cai text box o day*@
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
@@ -46,7 +47,7 @@
 
 
 <div class="modal fade" id="modalRegisterLeave" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Register leave</h2>
@@ -74,11 +75,17 @@
         });
         
         var validRow = function (col, row) {
-            return row[col.id];
+            if (row[col.id] == null) return "";
+            var text = row[col.id];;
+            if (!row.IsValid) text = "<span class='text-danger'>" + row[col.id] + "</span>";
+            return text;
         };
 
         var validRowDate = function (col, row) {
-            return dateConvert(row[col.id]);
+            if (row[col.id] == null) return "";
+            var text = dateConvert(row[col.id]);
+            if (!row.IsValid) text = "<span class='text-danger'>" + dateConvert(row[col.id]) + "</span>";           
+            return text;
         }
 
         $("#modalRegisterLeave").on('show.bs.modal', function () {
@@ -93,7 +100,7 @@
 
         var setupModalBodyFrom = function (data) {
             $(".modal-body").html(data);
-            registerBootstrapControl();
+            //registerBootstrapControl();
         }
 
         var registerBootstrapControl = function () {

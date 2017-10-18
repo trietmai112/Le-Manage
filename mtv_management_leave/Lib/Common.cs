@@ -7,6 +7,16 @@ namespace mtv_management_leave.Lib
 {
     public static class Common
     {
+        public enum DateTimePickerViewMode
+        {
+            Full,
+            Date,
+            Time,
+            Year,
+            Month,
+            Day
+        }
+
         public enum TypeLeave
         {
             E_AnnualLeave = 1,

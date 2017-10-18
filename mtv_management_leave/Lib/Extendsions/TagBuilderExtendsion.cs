@@ -38,25 +38,29 @@ namespace mtv_management_leave.Lib.Extendsions
 
         public static TagBuilder vSetInnerText(this TagBuilder tag, string text)
         {
-            tag.SetInnerText(text);
+            if(text != null)
+                tag.SetInnerText(text);
             return tag;
         }
 
         public static TagBuilder vSetInnerText(this TagBuilder tag, TagBuilder control)
         {
-            tag.SetInnerText(control.ToString());
+            if(control != null)
+                tag.SetInnerText(control.ToString());
             return tag;
         }
 
         public static TagBuilder vAppendText(this TagBuilder tag, TagBuilder control)
         {
-            tag.InnerHtml += control.ToString();
+            if(control != null)
+                tag.InnerHtml += control.ToString();
             return tag;
         }
 
         public static TagBuilder vAppendText(this TagBuilder tag, string text)
         {
-            tag.InnerHtml += text;
+            if(text != null)
+                tag.InnerHtml += text;
             return tag;
         }
     }

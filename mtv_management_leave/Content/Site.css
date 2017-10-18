@@ -14352,9 +14352,6 @@ html.ie9 .mCS-minimal-dark.mCSB_scrollTools_onDrag .mCSB_dragger .mCSB_dragger_b
 .validation-summary-errors ul {
   list-style: none;
 }
-.dtp-container {
-  margin-top: -5px;
-}
 label.col-sm-4 {
   padding: 0px !important;
   padding-right: 5px;

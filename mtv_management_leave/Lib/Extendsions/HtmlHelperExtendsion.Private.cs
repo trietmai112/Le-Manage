@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.WebPages.Html;
 
 namespace mtv_management_leave.Lib.Extendsions
 {
@@ -115,6 +116,7 @@ namespace mtv_management_leave.Lib.Extendsions
             var placeHolderText = string.IsNullOrEmpty(placeHolder) ? metadata.GetPlaceHolder() : placeHolder;
 
             var dic = new Dictionary<string, object>();
+            if (attributes != null) dic =  attributes.vGetDictionary() as Dictionary<string, object>;
             dic.Add("class", inputClass);
             dic.Add("placeholder", placeHolderText);
 

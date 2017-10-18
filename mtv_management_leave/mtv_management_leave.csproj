@@ -258,6 +258,7 @@
     <Compile Include="Lib\Common.cs" />
     <Compile Include="Lib\Controls\CardControl.cs" />
     <Compile Include="Lib\Controls\ContainerBaseControl.cs" />
+    <Compile Include="Lib\Controls\DateTimePickerControl.cs" />
     <Compile Include="Lib\Controls\TableHeaderControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
     <Compile Include="Lib\Extendsions\MvcHtmlStringExtendsion.cs" />
     <Compile Include="Lib\Extendsions\ObjectExtentsion.cs" />
+    <Compile Include="Lib\Extendsions\StringExtendsion.cs" />
     <Compile Include="Lib\Extendsions\TagBuilderExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />

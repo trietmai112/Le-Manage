@@ -17,8 +17,8 @@
                     @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                 </div>
                 <div class="col-sm-12">
-                    @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-2" })
-                    @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-2" })
+                    @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
+                    @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
                     <div class="col-sm-6">
                         <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                         <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
@@ -27,6 +27,8 @@
                     </div>
                 </div>
             </form>
+
+
 
         </div>
     </div>
@@ -64,11 +66,19 @@
             $("#InValidData").val(true);
             $("#inout-table").bootgrid("reload");
         });
+
         var validRow = function (col, row) {
-            return row[col.id];
+            if (row[col.id] == null) return "";
+            var text = row[col.id];;
+            if (!row.IsValid) text = "<span class='text-danger'>" + row[col.id] + "</span>";
+            return text;
         };
+
         var validRowDate = function (col, row) {
-            return dateConvert(row[col.id]);
+            if (row[col.id] == null) return "";
+            var text = dateConvert(row[col.id]);
+            if (!row.IsValid) text = "<span class='text-danger'>" + dateConvert(row[col.id]) + "</span>";
+            return text;
         }
 
         $("#btn-fpData").click(function (e) {
