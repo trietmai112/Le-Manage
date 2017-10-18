@@ -24,12 +24,18 @@ namespace mtv_management_leave.Controllers
         }
         public ActionResult Index()
         {
+            var now = DateTime.Now;
             return View(new Models.RegisterLeave.SearchRequest());
         }
 
         public PartialViewResult RegisterLeave(int? userId)
         {
-            return PartialView(new Models.RegisterLeave.RegisterLeaveRequest { Uid = userId ?? User.Identity.GetUserId<int>() });
+            var now = DateTime.Now;
+            return PartialView(new Models.RegisterLeave.RegisterLeaveRequest {
+                Uid = userId ?? User.Identity.GetUserId<int>(),
+                DateStart = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0),
+                DateEnd = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0)
+            });
         }
 
         [HttpPost]

@@ -14,10 +14,10 @@
             <div class="col-sm-12">
 
                 <div class="col-sm-2">
-                    @Html.vDatePickerFor(m => m.DateStart)
+                    @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                 </div>
                 <div class="col-sm-2">
-                    @Html.vDatePickerFor(m => m.DateEnd)
+                    @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                 </div>
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>

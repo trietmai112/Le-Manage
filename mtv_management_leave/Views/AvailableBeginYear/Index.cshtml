@@ -13,7 +13,7 @@
             <div class="col-sm-12">
 
                 <div class="col-sm-2">
-                    @Html.vDatePickerFor(m => m.Year)
+                    @Html.vDateTimePickerFor(m => m.Year).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Year).ToHtml()
                 </div>
                 <div class="col-sm-6">
                     @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
