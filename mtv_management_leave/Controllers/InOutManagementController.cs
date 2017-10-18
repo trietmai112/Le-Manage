@@ -11,12 +11,12 @@ namespace mtv_management_leave.Controllers
     public class InOutManagementController : Controller
     {
         private InOutBase _inoutBase;
-        private DataRawBase _dataRawBase;
+       // private DataRawBase _dataRawBase;
 
-        public InOutManagementController(InOutBase inOutBase, DataRawBase dataRawBase)
+        public InOutManagementController(InOutBase inOutBase)
         {
             _inoutBase = inOutBase;
-            _dataRawBase = dataRawBase;
+           // _dataRawBase = new DataRawBase();
         }
         public ActionResult Index()
         {
@@ -27,7 +27,7 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
-                _dataRawBase.SaveDataRaw();
+              //  _dataRawBase.SaveDataRaw();
                 return Json(new { Status = 0, Message = "Action complete" });
             }
             catch (Exception e)

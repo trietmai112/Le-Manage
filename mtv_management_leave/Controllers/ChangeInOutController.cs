@@ -32,7 +32,7 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult RegisterChangeInout(RequestChangeInout rqChangeInout)
+        public JsonResult RegisterChangeInout(RequestChangeInout rqChangeInout)
         {
             if (ModelState.IsValid)
             {
@@ -47,10 +47,11 @@ namespace mtv_management_leave.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Error", ex.Message);
+                    Response.StatusCode = 400;
+                    return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
                 }
             }
-            return PartialView(rqChangeInout);
+            return Json(new { Status = 0, Message = "Action complete" });
         }
 
         [HttpPost]

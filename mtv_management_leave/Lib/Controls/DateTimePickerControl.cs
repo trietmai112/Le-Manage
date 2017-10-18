@@ -130,7 +130,7 @@ namespace mtv_management_leave.Lib.Controls
                         _dateFormat = "YYYY";
                         break;
                     case DateTimePickerViewMode.Month:
-                        _dateFormat = "MM";
+                        _dateFormat = "MM/YYYY";
                         break;
                     case DateTimePickerViewMode.Day:
                         _dateFormat = "DD";
