@@ -262,6 +262,7 @@
     <Compile Include="Lib\Controls\TableHeaderControl.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
+    <Compile Include="Lib\Extendsions\HttpContextExtendsion.cs" />
     <Compile Include="Lib\Extendsions\IListExtendsion.cs" />
     <Compile Include="Lib\Extendsions\IPrincipalExtendsion.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
@@ -374,12 +375,15 @@
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\RegisterLeave\RegisterLeaveRequest.cs" />
     <Compile Include="Models\RegisterLeave\SearchRequest.cs" />
+    <Compile Include="Models\Request\BootGridRequest.cs" />
+    <Compile Include="Models\Request\RequestUserManagement.cs" />
     <Compile Include="Models\Request\RequestUserSeniority.cs" />
     <Compile Include="Models\Request\RequestMasterDayOff.cs" />
     <Compile Include="Models\Request\ToogleApprove.cs" />
     <Compile Include="Models\Response\ResponseAvailableBeginYear.cs" />
     <Compile Include="Models\Response\ResponseChangeInout.cs" />
     <Compile Include="Models\Response\ResponseLeaveBonus.cs" />
+    <Compile Include="Models\Response\ResponseUserManagement.cs" />
     <Compile Include="Models\Response\ResponseUserSeniority.cs" />
     <Compile Include="Models\Response\ResponseMasterDayOff.cs" />
     <Compile Include="Models\Response\ResponseLeave.cs" />
@@ -751,6 +755,8 @@
     <Content Include="Views\ChangeInOutManagement\Index.cshtml" />
     <Content Include="Views\SummaryLeaveAnnual\Index.cshtml" />
     <Content Include="Views\SummaryLeaveAnnualManagement\Index.cshtml" />
+    <Content Include="Views\Employee\Index.cshtml" />
+    <Content Include="Views\Employee\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

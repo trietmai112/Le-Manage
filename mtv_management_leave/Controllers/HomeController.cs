@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using mtv_management_leave.Lib.Repository;
+using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
 {

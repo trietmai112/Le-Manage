@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
+using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Account;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.Request;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,17 +17,15 @@ namespace mtv_management_leave.Controllers
 {
     public class EmployeeController : Controller
     {
-        private ApplicationUserManager _userManager;
-        private ApplicationSignInManager _signInManager;
         private LeaveManagementContext _context;
+        private AccountBase _accountBase;
 
-        public EmployeeController(ApplicationUserManager userManager,
-            ApplicationSignInManager signInManager,
+        public EmployeeController(AccountBase accountBase,
             LeaveManagementContext context)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
+            _accountBase = accountBase;
             _context = context;
+           
         }
         private void AddErrors(IdentityResult result)
         {
@@ -35,10 +35,50 @@ namespace mtv_management_leave.Controllers
             }
         }
 
+        public ActionResult Index()
+        {            
+            return View();
+        }
+
+        [Authorize(Roles = "Super admin, Admin")]
+        public ActionResult Update(int id)
+        {
+            if (id == 0)
+                return RedirectToAction("Register");
+            var model = _accountBase.GetById(id);
+            return View("Register", model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            if (_context.Users.Count(m => m.Email.Equals(model.Email, StringComparison.CurrentCultureIgnoreCase)
+                                 && m.Id != model.Id) > 0)
+            {
+                ModelState.AddModelError("Email", "Email ready used by another user");
+                return View(model);
+            }
+            var transaction = _context.Database.BeginTransaction();
+
+            var result = await _accountBase.Register(model);
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                transaction.Rollback();
+                return View(model);
+            }
+            transaction.Commit();
+            return RedirectToAction("Index");
+        }
+
+        [Authorize(Roles = "Super admin, Admin")]
         public ActionResult Register()
         {
             return View();
         }
+
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -53,7 +93,7 @@ namespace mtv_management_leave.Controllers
             }
             var transaction = _context.Database.BeginTransaction();
 
-            var result = await RegisterFunction(model);
+            var result = await _accountBase.Register(model);
             if (!result.Succeeded)
             {
                 AddErrors(result);
@@ -62,58 +102,12 @@ namespace mtv_management_leave.Controllers
             }
             transaction.Commit();
             return RedirectToAction("Register");
-        }
-
-        private async Task<IdentityResult> RegisterFunction(RegisterViewModel model)
+        }     
+        
+        [HttpPost]
+        public JsonResult ToList(RequestUserManagement condition)
         {
-            var user = Mapper.Map<UserInfo>(model);
-            IdentityResult identityResult = null;
-
-            if (user.Id > 0) identityResult = await _userManager.UpdateAsync(user);
-            
-            else identityResult = await _userManager.CreateAsync(user, model.Password);
-
-            if (!identityResult.Succeeded) return identityResult;
-
-            var roles = await _context.Roles.Where(m => model.RoleIds.Contains(m.Id)).ToListAsync();
-            var userInRoles = await _context.Set<UserRole>().Where(m => m.UserId == user.Id).Select(m=> m.RoleId).ToListAsync();
-            if (userInRoles.Count > 0)
-                identityResult = _userManager.RemoveFromRoles(user.Id, 
-                    _context.Roles.Where(m => userInRoles.Contains(m.Id)).Select(m=> m.Name).ToArray());
-
-            if (!identityResult.Succeeded) return identityResult;
-
-            if (roles.Count > 0)
-            {
-                identityResult = _userManager.AddToRoles(user.Id, roles.Select(m => m.Name).ToArray());
-            }
-
-            if (!identityResult.Succeeded) return identityResult;
-
-            try
-            {
-                if (model.FPId.HasValue)
-                {
-                    _context.EmployeeInfos.RemoveRange(_context.EmployeeInfos.Where(m => m.Id == user.Id));
-                    var result = await _context.SaveChangesAsync();
-
-                    _context.EmployeeInfos.Add(new EmployeeInfo { Id = user.Id, FPId = model.FPId.Value });
-                    result = await _context.SaveChangesAsync();
-                }
-            }catch(Exception ex)
-            {
-                return IdentityResult.Failed(ex.Message);
-            }
-            return IdentityResult.Success;
-            // await _signInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-            // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-            // Send an email with this link
-            //string code = await _userManager.GenerateEmailConfirmationTokenAsync(user.Id);
-            //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-            //await _userManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-            // If we got this far, something failed, redisplay form
-        }
+            return Json(_accountBase.ToList(condition));
+        }   
     }
 }

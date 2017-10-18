@@ -1,0 +1,97 @@
+﻿@using mtv_management_leave.Models.Request
+@model RequestUserManagement
+@{
+    ViewBag.Title = "List users";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can register leave at here</small></h2>
+        <ul class="actions">
+            <li>
+                <a href="/employee/register" data-ma-action="clear-notification">
+                    <i class="zmdi zmdi-account-add"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                @Html.vTextBoxFor(m => m.SearchString).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDropDownListFor(m => m.Roles, Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist"), true, true).Wrap("div", new { @class = "col-sm-4" })
+                @**chen them cai text box o day*@
+                <div class="col-sm-4">
+                    <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Register</button>
+                    <button class="btn btn-danger" id="btn-delete"><i class="zmdi zmdi-delete"></i> Delete</button>
+                </div>
+            </div>
+        </div>
+        @(Html.vBootGridFor()
+        .SetName("usermanagement-table")
+        .SetAjaxUrl("/employee/tolist")
+        .AddAjaxParameter(typeof(RequestUserManagement))
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = true, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
+            new BootGridColumnOption { Sortable = true, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = true, ColumnHeaderName = "Email", FormatJqueryHandler = "validRow", MappingFrom = "Email" },
+            new BootGridColumnOption { Sortable = true, ColumnHeaderName = "Phone", FormatJqueryHandler = "validRow", MappingFrom = "PhoneNumber" },
+            new BootGridColumnOption { Sortable = true, ColumnHeaderName = "Role", FormatJqueryHandler = "validRow", MappingFrom = "RoleName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Birth date", FormatJqueryHandler = "validRowDate", MappingFrom = "DateOfBirth" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Begin Work", FormatJqueryHandler = "validRowDate", MappingFrom = "DateBeginWork" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Probation", FormatJqueryHandler = "validRowDate", MappingFrom = "DateBeginProbation" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Resign", FormatJqueryHandler = "validRowDate", MappingFrom = "DateResign" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "DeviceId", FormatJqueryHandler = "validRow", MappingFrom = "FPId" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "", FormatJqueryHandler = "actionOfRow", MappingFrom = "" }
+        )
+        .ToHtml()
+        )
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#btn-search").click(function (e) {
+            $("#usermanagement-table").bootgrid("reload");
+        });
+
+        $("#btn-register").click(function (e) {
+            $("#modalRegisterLeave").modal("show");
+        });
+
+        var actionOfRow = function (col, row) {
+            return "<button data-row-id='"+ row.Id+"' class='btn btn-primary action-edit' onclick='redirectToUpdateLink()' data-ma-action='clear-notification'><i class='zmdi zmdi-edit'></i></button>";
+        }
+
+        var validRow = function (col, row) {
+            if (row[col.id] == null) return "";
+            var text = row[col.id];;
+            if (row.FPId == null || row.FPId == 0) text = "<span class='text-danger'>" + row[col.id] + "</span>";
+            return text;
+        };
+
+        var validRowDate = function (col, row) {
+            if (row[col.id] == null) return "";
+            var text = dateConvert(row[col.id]);
+            if (row.FPId == null || row.FPId == 0) text = "<span class='text-danger'>" + dateConvert(row[col.id]) + "</span>";
+            return text;
+        }
+
+        var redirectToUpdateLink = function(){
+            console.log("alert");
+        }
+
+        $("body").on("click", "#btn-register", function (e) {
+            location.assign("/employee/register");
+        });
+
+        $("body").on("click", ".action-edit", function (e) {
+            var id = $(this).data("row-id");
+            location.assign("/employee/update?id=" + id);
+        });
+
+    </script>
+}
+
+
