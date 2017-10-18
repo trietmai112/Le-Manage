@@ -314,10 +314,6 @@
     <Compile Include="Migrations\201710020706225_AddNewTableEmployeeInfo.Designer.cs">
       <DependentUpon>201710020706225_AddNewTableEmployeeInfo.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201710130230133_InsertDefaultRoles.cs" />
-    <Compile Include="Migrations\201710130230133_InsertDefaultRoles.Designer.cs">
-      <DependentUpon>201710130230133_InsertDefaultRoles.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201710081536331_UserSeniority_changeColumnType.cs" />
     <Compile Include="Migrations\201710081536331_UserSeniority_changeColumnType.Designer.cs">
       <DependentUpon>201710081536331_UserSeniority_changeColumnType.cs</DependentUpon>
@@ -337,6 +333,10 @@
     <Compile Include="Migrations\201710111102567_TurnbackColumnNameRawData.cs" />
     <Compile Include="Migrations\201710111102567_TurnbackColumnNameRawData.Designer.cs">
       <DependentUpon>201710111102567_TurnbackColumnNameRawData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710180331010_AddDefaultRoles.cs" />
+    <Compile Include="Migrations\201710180331010_AddDefaultRoles.Designer.cs">
+      <DependentUpon>201710180331010_AddDefaultRoles.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\DateTimeBinder.cs" />
@@ -775,9 +775,6 @@
     <EmbeddedResource Include="Migrations\201710020706225_AddNewTableEmployeeInfo.resx">
       <DependentUpon>201710020706225_AddNewTableEmployeeInfo.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710130230133_InsertDefaultRoles.resx">
-      <DependentUpon>201710130230133_InsertDefaultRoles.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710081536331_UserSeniority_changeColumnType.resx">
       <DependentUpon>201710081536331_UserSeniority_changeColumnType.cs</DependentUpon>
     </EmbeddedResource>
@@ -792,6 +789,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710111102567_TurnbackColumnNameRawData.resx">
       <DependentUpon>201710111102567_TurnbackColumnNameRawData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710180331010_AddDefaultRoles.resx">
+      <DependentUpon>201710180331010_AddDefaultRoles.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
