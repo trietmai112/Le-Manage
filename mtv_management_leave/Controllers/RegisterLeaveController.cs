@@ -34,26 +34,32 @@ namespace mtv_management_leave.Controllers
             return PartialView(new Models.RegisterLeave.RegisterLeaveRequest {
                 Uid = userId ?? User.Identity.GetUserId<int>(),
                 DateStart = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0),
-                DateEnd = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0)
+                DateStart_Time = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0),
+                DateEnd = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0),
+                DateEnd_Time = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0)
+                
             });
         }
 
         [HttpPost]
-        public PartialViewResult RegisterLeave(RegisterLeaveRequest registerLeaveRequest)
+        public JsonResult RegisterLeave(RegisterLeaveRequest registerLeaveRequest)
         {
             Models.Entity.RegisterLeave registerLeave = Mapper.Map<RegisterLeave>(registerLeaveRequest);
             if (ModelState.IsValid)
             {
                 try
                 {
+                    registerLeave.DateStart = registerLeave.DateStart.Date.AddHours(registerLeaveRequest.DateStart_Time.Hour).AddMinutes(registerLeaveRequest.DateStart_Time.Minute);
+                    registerLeave.DateEnd = registerLeave.DateEnd.Date.AddHours(registerLeaveRequest.DateEnd_Time.Hour).AddMinutes(registerLeaveRequest.DateEnd_Time.Minute);
                     _leaveBase.RegisterLeave(registerLeave);
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Error", ex.Message);
+                    Response.StatusCode = 400;
+                    return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
                 }
             }
-            return PartialView(registerLeaveRequest);
+            return Json(new { Status = 0, Message = "Action complete" });
         }
 
         [HttpPost]
