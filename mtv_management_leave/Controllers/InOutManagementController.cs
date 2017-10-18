@@ -1,26 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
-using mtv_management_leave.Lib.Extendsions;
-using mtv_management_leave.Lib.Repository;
-using mtv_management_leave.Models.InOut;
-using mtv_management_leave.Models.Response;
 using System.Linq;
-using mtv_management_leave.Models.Request;
 using System.Net;
+using System.Web.Mvc;
+using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
+using mtv_management_leave.Models.InOut;
 
 namespace mtv_management_leave.Controllers
 {
     public class InOutManagementController : Controller
     {
         private InOutBase _inoutBase;
-       // private DataRawBase _dataRawBase;
+        private DataRawBase _dataRawBase;
 
-        public InOutManagementController(InOutBase inOutBase)
+        public InOutManagementController(InOutBase inOutBase, DataRawBase dataRawBase)
         {
             _inoutBase = inOutBase;
-            //_dataRawBase = dataRawBase;
+            _dataRawBase = dataRawBase;
         }
         public ActionResult Index()
         {
@@ -31,7 +27,7 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
-               // _dataRawBase.SaveDataRaw();
+                _dataRawBase.SaveDataRaw();
                 return Json(new { Status = 0, Message = "Action complete" });
             }
             catch (Exception e)
@@ -61,7 +57,7 @@ namespace mtv_management_leave.Controllers
         }
 
 
-        
+
 
         [HttpPost]
         public JsonResult ToList(SearchRequest model)

@@ -1,9 +1,8 @@
 ﻿
-using mtv_management_leave.Lib.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 
@@ -30,6 +29,15 @@ namespace mtv_management_leave.Lib.Repository
         {
             InitContext(out context);
             var lstDelete = context.MasterLeaveDayCompanies.Where(m => m.Id == id).ToList();
+            context.MasterLeaveDayCompanies.RemoveRange(lstDelete);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
+        public void DeleteLeaveDayCompany(List<int> ids)
+        {
+            InitContext(out context);
+            var lstDelete = context.MasterLeaveDayCompanies.Where(m => ids.Contains(m.Id)).ToList();
             context.MasterLeaveDayCompanies.RemoveRange(lstDelete);
             context.SaveChanges();
             DisposeContext(context);

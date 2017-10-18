@@ -14,7 +14,6 @@
                 @Html.HiddenFor(m => m.Uid)
                 @Html.HiddenFor(m => m.InValidData);
                 <div class="col-sm-6">
-                    @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                 </div>
                 <div class="col-sm-12">
                     @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })

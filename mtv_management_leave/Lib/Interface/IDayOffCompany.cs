@@ -1,10 +1,6 @@
-﻿using mtv_management_leave.Models;
-using mtv_management_leave.Models.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using mtv_management_leave.Models.Entity;
 
 namespace mtv_management_leave.Lib.Interface
 {
@@ -14,8 +10,9 @@ namespace mtv_management_leave.Lib.Interface
         List<MasterLeaveDayCompany> GetLeaveDayCompany(DateTime dateStart, DateTime DateEnd);
         void SaveLeaveDayCompany(MasterLeaveDayCompany InputLeaveDayCompany);
         void DeleteLeaveDayCompany(int id);
+        void DeleteLeaveDayCompany(List<int> ids);
         void DeleteLeaveDayCompany(DateTime date);
-        void DeleteLeaveDayCompany(DateTime dateStart,DateTime dateEnd);
+        void DeleteLeaveDayCompany(DateTime dateStart, DateTime dateEnd);
 
     }
 }
