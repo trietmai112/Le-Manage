@@ -11,11 +11,13 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-2" })
+                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-2" })
+                <div class="col-sm-4"></div>
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Create New</button>
+                    <button class="btn btn-danger" id="btn-delete"><i class="zmdi zmdi-delete"></i> Delete</button>
                 </div>
             </div>
         </div>
@@ -24,8 +26,9 @@
         .SetAjaxUrl("/MasterDayOffCompany/tolist")
         .AddAjaxParameter(typeof(RequestMasterDayOff))
         .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, Identify = true, ColumnHeaderName = "Id", MappingFrom = "Id" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Day Off", FormatJqueryHandler = "validRowDate", MappingFrom = "DateLeave" },
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Description",  MappingFrom = "Reason" }
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Description", MappingFrom = "Reason" }
         )
         .ToHtml()
         )
@@ -68,6 +71,11 @@
             return dateConvert(row[col.id]);
         }
 
+        $("#btn-delete").click(function (e) {
+            e.preventDefault();
+            toogle("/MasterDayOffCompany/delete");
+        })
+
         $("#modalRegisterDayOffCompany").on('show.bs.modal', function () {
             var option = {
                 url: "/MasterDayOffCompany/RegisterDayOffCompany",
@@ -107,5 +115,38 @@
                 $("#btn-search").click();
             });
         })
+        var toogle = function (urlCallback) {
+            var selectedIds = $("#DayOffCompany-Table").bootgrid("getSelectedRows");
+            if (selectedIds.length == 0) return;
+            swal({
+                title: "Confirm!",
+                type: "info",
+                text: "Do you want continue?",
+                showCloseButton: true,
+                showCancelButton: true,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+                showLoaderOnConfirm: true
+            }).then(
+                function () {
+
+                    var option = {
+                        url: urlCallback,
+                        data: { Ids: selectedIds },
+                        type: "POST"
+                    };
+                    $.ajax(option)
+                        .done(function (data) {
+                            console.log(data);
+                        })
+                        .error(function (jhx) {
+                            showAjaxError(jhx);
+                        })
+                },
+                // handling the promise rejection
+                function (dismiss) {
+                    console.log("swal confirm closed");
+                });
+        }
     </script>
 }

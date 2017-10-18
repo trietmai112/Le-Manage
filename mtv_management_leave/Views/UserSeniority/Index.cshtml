@@ -11,8 +11,12 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                @Html.vDatePickerFor(m => m.DateYear).Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
+                <div class="col-sm-2">
+                    @Html.vDatePickerFor(m => m.DateYear)
+                </div>
+                <div class="col-sm-6">
+                    @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
+                </div>
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-generate"><i class="zmdi zmdi-plus"></i> Generate</button>
