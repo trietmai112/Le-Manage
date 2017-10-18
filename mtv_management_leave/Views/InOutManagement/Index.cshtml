@@ -91,9 +91,9 @@
         })
 
         var toogle = function (urlCallback) {
-            var start = $("#DateStart").val();
-            var end = $("#DateEnd").val();
-            var lstUids = $("#Uids").val();
+            var start = $("[name=DateStart]").val();
+            var end = $("[name=DateEnd]").val();
+            var lstUids = $("[name=Uids]").val();
             swal({
                 title: "Confirm!",
                 type: "info",
