@@ -1,13 +1,13 @@
 ﻿@using mtv_management_leave.Models.Account
 @model RegisterViewModel
 @{
-    ViewBag.Title = "Register User";
-    var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
+            ViewBag.Title = "Register User";
+            var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist", Model?.RoleIds );
     if(Model != null)
     {
         var selectItems = roles.Where(m => Model.RoleIds.Contains(int.Parse(m.Value)));
         foreach (var item in selectItems) { item.Selected = true; }
-    }
+}
 }
 <div class="card">
     <div class="card-header">

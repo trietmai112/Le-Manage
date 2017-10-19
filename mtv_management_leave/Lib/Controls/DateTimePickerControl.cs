@@ -212,7 +212,7 @@ namespace mtv_management_leave.Lib.Controls
                     _onChangeHandler.vReplace("", "(", ")");
                 script += $"{_onChangeHandler}($(this));";
             }
-            if(!_controlIds.vEmpty())
+            if(!_controlIds.vIsEmpty())
             {
                 foreach (var id in _controlIds)
                 {
@@ -246,7 +246,7 @@ namespace mtv_management_leave.Lib.Controls
             var script = @"<script>";
             script += "$(document).ready(function(e){";
             script += ScriptRender();            
-            if (!string.IsNullOrEmpty(_onChangeHandler) || !_controlIds.vEmpty())
+            if (!string.IsNullOrEmpty(_onChangeHandler) || !_controlIds.vIsEmpty())
                 script += ScriptOnChangeEvent();
             if (!string.IsNullOrEmpty(_onShowHandler))
                 script += ScriptOnShowEvent();

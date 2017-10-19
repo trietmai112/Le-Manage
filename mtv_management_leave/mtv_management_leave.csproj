@@ -346,6 +346,7 @@
     <Compile Include="Models\Account\RegisterViewModel.cs" />
     <Compile Include="Models\Account\ResetPasswordViewModel.cs" />
     <Compile Include="Lib\Controls\TableControl.cs" />
+    <Compile Include="Models\Account\UpdatedViewModel.cs" />
     <Compile Include="Models\AvailableLeave\SearchRequest.cs" />
     <Compile Include="Models\BootGridTableOption.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
@@ -687,6 +688,7 @@
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.ttf" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff" />
     <Content Include="Content\vendors\bower_components\material-design-iconic-font\dist\fonts\Material-Design-Iconic-Fontd1f1.woff2" />
+    <None Include="Properties\PublishProfiles\Publish.pubxml" />
     <None Include="Scripts\jquery-1.11.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.11.1.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />

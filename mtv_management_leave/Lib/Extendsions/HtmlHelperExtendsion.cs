@@ -2,10 +2,12 @@
 using mtv_management_leave.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
+using System.Web.Routing;
 
 namespace mtv_management_leave.Lib.Extendsions
 {
@@ -221,10 +223,50 @@ namespace mtv_management_leave.Lib.Extendsions
         {
             DefaultControllerFactory factory = new DefaultControllerFactory();
             var icontroller = factory.CreateController(HttpContext.Current.Request.RequestContext, controller);
+            //icontroller.Execute(HttpContext.Current.Request.RequestContext);
             var type = icontroller.GetType();
-            var method = type.GetMethod(action, System.Reflection.BindingFlags.IgnoreCase | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
-            if (method == null) throw new NullReferenceException($"Can not find any action with name '{action}'"); 
-            var result = method.Invoke(icontroller, parameters);
+
+            var initilizingMethod = type.GetMethod("Initializing");
+            if(initilizingMethod != null)
+            {
+                initilizingMethod.Invoke(icontroller,new[] { HttpContext.Current.Request.RequestContext });
+            }            
+
+            var method = type.GetMethod(action, System.Reflection.BindingFlags.IgnoreCase 
+                | System.Reflection.BindingFlags.Instance 
+                | System.Reflection.BindingFlags.Public);
+
+            if (method == null) throw new NullReferenceException($"Can not find any action with name '{action}'");
+
+            var list = new List<object>();
+            var functionParams = method.GetParameters();
+
+            if (parameters.Length < functionParams.Length)
+            {
+                for (int pIndex = 0; pIndex < functionParams.Length; pIndex++)
+                {
+                    if (parameters.Length <= pIndex) {
+                        try
+                        {
+                            list.Add(Activator.CreateInstance(functionParams[pIndex].ParameterType));
+                        }
+                        catch
+                        {
+                            list.Add(null);
+                        }
+                    }
+                    else
+                    {
+                        list.Add(parameters[pIndex]);
+                    }
+                }
+            }
+            else
+            {
+                list.AddRange(parameters);
+            }            
+
+            var result = method.Invoke(icontroller, list.ToArray());
             factory.ReleaseController(icontroller);
             return (T)result;
         }

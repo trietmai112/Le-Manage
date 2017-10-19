@@ -73,7 +73,7 @@ namespace mtv_management_leave
                     
                 ));
 
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = false;
         }
     }
 }

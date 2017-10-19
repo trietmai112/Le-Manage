@@ -1,5 +1,5 @@
 ﻿@using mtv_management_leave.Models.Account
-@model RegisterViewModel
+@model UpdatedViewModel
 @{
     ViewBag.Title = "Register User";
     var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
@@ -19,6 +19,9 @@
 
                 <div class="row">
                     <div class="col-sm-4">
+                        <div class="col-sm-12">
+                            <label class="control-label col-sm-12"></label>
+                        </div>
                         @Html.vTextBoxFor(m => m.Email)
 
                         @Html.vTextBoxFor(m => m.FullName)
@@ -30,9 +33,7 @@
                     <div class="col-sm-4">
                         @Html.vTextBoxFor(m => m.FPId)
 
-                        @Html.vPasswordFor(m => m.Password)
-
-                        @Html.vPasswordFor(m => m.ConfirmPassword)
+                        
 
                         @Html.vDropDownListFor(m => m.RoleIds, roles)
                     </div>
