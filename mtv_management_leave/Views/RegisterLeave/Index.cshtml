@@ -42,8 +42,8 @@
 </div>
 
 
-<div class="modal fade" id="modalRegisterLeave" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="modalRegisterLeave" tabindex="-1"role="dialog" aria-hidden="true">
+    <div class="modal-dialog" style="width:800px">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Register leave</h2>
@@ -120,6 +120,8 @@
             $.ajax(option).done(function (data) {
                 setupModalBodyFrom(data);
                 $("#modal-close").click();
+            }).error(function (jhx) {
+                showAjaxError(jhx);
             });
         })
         var toogleApprove = function (urlCallback) {
@@ -145,6 +147,7 @@
                     $.ajax(option)
                         .done(function (data) {
                             console.log(data);
+                            alert("Done!");
                         })
                         .error(function (jhx) {
                             showAjaxError(jhx);

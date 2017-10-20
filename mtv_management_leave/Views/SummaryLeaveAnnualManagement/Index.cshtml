@@ -15,15 +15,15 @@
             <div class="col-sm-12">
 
                 <div class="col-sm-2">
-                    @Html.vDatePickerFor(m => m.DateStart)
+                    @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Month).ToHtml()
                 </div>
                 <div class="col-sm-4">
                     @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                 </div>
                 <div class="col-sm-6">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
-                    <button class="btn btn-default" id="btn-generatemonth"><i class="zmdi zmdi-search"></i> Generate Month</button>
-                    <button class="btn btn-default" id="btn-generateyear"><i class="zmdi zmdi-search"></i> Generate Year</button>
+                    <button class="btn btn-primary" id="btn-generatemonth"><i class="zmdi zmdi-search"></i> Generate Month</button>
+                    <button class="btn btn-success" id="btn-generateyear"><i class="zmdi zmdi-search"></i> Generate Year</button>
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
         })
 
         var toogle = function (urlCallback) {
-            var start = $("#DateStart").val();
+            var start = $("[name=DateStart]").val();
             var lstUids = $("#Uids").val();
             swal({
                 title: "Confirm!",
@@ -90,6 +90,7 @@
                     $.ajax(option)
                         .done(function (data) {
                             console.log(data);
+                            alert("Done!");
                         })
                         .error(function (jhx) {
                             showAjaxError(jhx);

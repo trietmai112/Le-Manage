@@ -34,11 +34,11 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-3">
-                            @Html.vRadio("Today", "leaveType", Model.IsToday, new { dataType = "md-hour" })
+                            @Html.vRadio("One day", "leaveType", Model.IsToday, new { dataType = "md-hour" })
                         </div>
                         <div class="col-sm-9 leave-type" style="padding-top: 5px;">
-                            <div class="col-sm-2 text-right"><label class="control-label">From</label> </div>
-                            <div class="col-sm-5 md-date md-date-from">
+                            <div class="col-sm-1 text-right"><label class="control-label">From</label> </div>
+                            <div class="col-sm-6 md-date md-date-from">
                                 @(
                                     Html.vDateTimePickerFor(m => m.DateStart)
                                     .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date)
@@ -47,9 +47,9 @@
                                     .ToHtml()
                                 )
                             </div>
-                            <div class="col-sm-5 md-hour md-hour-from" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>
+                            <div class="col-sm-4 md-hour md-hour-from" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>
                                 @(
-                                    Html.vDateTimePickerFor(m => m.DateStart)
+                                    Html.vDateTimePickerFor(m => m.DateStart_Time)
                                     .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Time)
                                     .HiddenLabel()
                                     .ToHtml()
@@ -62,18 +62,18 @@
                             @Html.vRadio("Several days", "leaveType", !Model.IsToday, new { dataType = "md-date" })
                         </div>
                         <div class="col-sm-9 leave-type" style="padding-top: 5px;">
-                            <div class="col-sm-2 text-right">To</div>
-                            <div class="col-sm-5 md-date md-date-to">
+                            <div class="col-sm-1 text-right">To</div>
+                            <div class="col-sm-6 md-date md-date-to">
                                 @(
-                                    Html.vDateTimePickerFor(m => m.DateEnd, new { disabled = true, @class="date-from" })
+                                    Html.vDateTimePickerFor(m => m.DateEnd, new { attReadonly = true, @class="date-from" })
                                     .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date)
                                     .HiddenLabel()
                                     .ToHtml()
                                 )
                             </div>
-                            <div class="col-sm-5 md-hour md-hour-to" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>
+                            <div class="col-sm-4 md-hour md-hour-to" @Html.Raw(!Model.IsToday ? "style='display: none;'" : "")>
                                 @(
-                                    Html.vDateTimePickerFor(m=> m.DateEnd)
+                                    Html.vDateTimePickerFor(m=> m.DateEnd_Time)
                                     .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Time)
                                     .HiddenLabel()
                                     .ToHtml()
@@ -95,8 +95,9 @@
 
 <script type="text/javascript">
     var dateFromChange = function (e) {
-        if ($("#IsToday").val() == "True") {
-            $(".leave-type:last .date-picker").data("DateTimePicker").date(e.val());
+        if ($("[name=IsToday]").val() == "True") {
+            $("#modalRegisterLeave [name=DateEnd]").data("DateTimePicker").date(e.val());
+            //$("#modalRegisterLeave [name=DateEnd]").val(e.val());
         }
     };
 
@@ -113,27 +114,37 @@
 
 
     var setDefaultDateTime = function () {
-        $(".md-hour-from .time-picker").data("DateTimePicker").date('@Model.DateStart.ToString("HH:mm:ss")');
+        $("#modalRegisterLeave [name=DateStart_Time]").data("DateTimePicker").date('@Model.DateStart_Time.ToString("HH:mm:ss")');
+        $("#modalRegisterLeave [name=DateStart]").data("DateTimePicker").date(new Date('@Model.DateStart.ToString("MM-dd-yyyy")'));
+
+        $("#modalRegisterLeave [name=DateEnd_Time]").data("DateTimePicker").date('@Model.DateEnd_Time.ToString("HH:mm:ss")');
+        $("#modalRegisterLeave [name=DateEnd]").data("DateTimePicker").date(new Date('@Model.DateEnd.ToString("MM-dd-yyyy")'));
+
+        @*$(".md-hour-from .time-picker").data("DateTimePicker").date('@Model.DateStart.ToString("HH:mm:ss")');
         $(".md-date-from .date-picker").data("DateTimePicker").date(new Date('@Model.DateStart.ToString("MM-dd-yyyy")'));
 
         $(".md-hour-to .time-picker").data("DateTimePicker").date('@Model.DateEnd.ToString("HH:mm:ss")');
-        $(".md-date-to .date-picker").data("DateTimePicker").date(new Date('@Model.DateEnd.ToString("MM-dd-yyyy")'));
+        $(".md-date-to .date-picker").data("DateTimePicker").date(new Date('@Model.DateEnd.ToString("MM-dd-yyyy")'));*@
     }
     $(document).ready(function () {
-        //setDefaultDateTime();
+        setDefaultDateTime();
         $("body").on("change", ".register-leave-handle input[type=radio]", function (e) {
             e.preventDefault();
+            debugger;
             var type = $(this).attr("datatype");
+            if ($("[name=IsToday]").val() == "False") {
+                $("#modalRegisterLeave [name=DateEnd]").data("DateTimePicker").date($("#modalRegisterLeave [name=DateStart]").val());
+            }
             if (type == "md-hour") {
                 $(".leave-type .md-hour").css({ "display": "block" });
                 $(".leave-type .md-date").css({ "display": "block" });
-                $(".md-date-to .date-picker").attr("disabled", "true");
+                $("#modalRegisterLeave [name=DateEnd]").attr("readonly", "true");
                 $("#IsToday").val("True");
             }
             else if (type == "md-date") {
                 $(".leave-type .md-hour").css({ "display": "none" });
                 $(".leave-type .md-date").css({ "display": "block" });
-                $(".md-date-to .date-picker").removeAttr("disabled");
+                $("#modalRegisterLeave [name=DateEnd]").removeAttr("readonly");
                 $("#IsToday").val("False");
             }
             //setDefaultDateTime();

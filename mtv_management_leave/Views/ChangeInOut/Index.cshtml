@@ -127,6 +127,8 @@
             $.ajax(option).done(function (data) {
                 setupModalBodyFrom(data);
                 $("#modal-close").click();
+            }).error(function (jhx) {
+                showAjaxError(jhx);
             });
         })
         var toogle = function (urlCallback) {
@@ -152,6 +154,7 @@
                     $.ajax(option)
                         .done(function (data) {
                             console.log(data);
+                            alert("Done")
                         })
                         .error(function (jhx) {
                             showAjaxError(jhx);

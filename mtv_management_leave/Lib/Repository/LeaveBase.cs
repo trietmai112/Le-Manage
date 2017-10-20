@@ -45,6 +45,13 @@ namespace mtv_management_leave.Lib.Repository
 
             #endregion
             leave.DateRegister = DateTime.Today;
+            if (leave.DateStart>=leave.DateEnd)
+            {
+                throw new Exception("End Time must be after Start Time!");
+
+            }
+
+
             InitContext(out context);
             if (context.RegisterLeaves.Any(m => m.Status != Common.StatusLeave.E_Reject && m.Uid == leave.Uid && m.DateStart < leave.DateEnd && m.DateEnd >= leave.DateStart))
             {

@@ -92,7 +92,13 @@ namespace mtv_management_leave.Lib.Controls
                 dic.Remove("class");
             dic.Add("class", "form-control input-sm" + (string.IsNullOrEmpty(attrClass.vToString()) ? "" : " "+ attrClass ));
             dic.Add(_flagAttribute, "true");
-            dic.Add("id", _name);            
+            dic.Add("id", _name);
+            if(dic.ContainsKey("attReadonly"))
+            {
+                dic.Add("readonly", dic["attReadonly"]);
+                dic.Remove("attReadonly");
+            }
+                        
             _textBox = (_htmlHelper as HtmlHelper<TModel>).TextBoxFor(expression, dic);
             
             return this;
@@ -124,7 +130,7 @@ namespace mtv_management_leave.Lib.Controls
                         _dateFormat = "YYYY";
                         break;
                     case DateTimePickerViewMode.Month:
-                        _dateFormat = "MM";
+                        _dateFormat = "MM/YYYY";
                         break;
                     case DateTimePickerViewMode.Day:
                         _dateFormat = "DD";
