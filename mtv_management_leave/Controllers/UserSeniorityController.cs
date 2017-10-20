@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
-using mtv_management_leave.Lib.Extendsions;
 using mtv_management_leave.Lib.Repository;
-using mtv_management_leave.Models.RegisterLeave;
-using mtv_management_leave.Models.Response;
 using mtv_management_leave.Models.Request;
-using System.Linq;
-using AutoMapper;
-using mtv_management_leave.Models.Entity;
-using mtv_management_leave.Models.Register;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
@@ -29,15 +22,15 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult ToList(RequestUserSeniority modelRequest)
         {
-            int year = modelRequest.DateYear.Year;
+            int year = modelRequest.Year;
             var resultApi = new List<ResponseUserSeniority>();
-            if (year!= 1)
+            if (year != 1 && year != 0)
             {
-                if(modelRequest.Uids!= null && modelRequest.Uids.Count==1 && modelRequest.Uids[0]==0)
+                if (modelRequest.Uids != null && modelRequest.Uids.Count == 1 && modelRequest.Uids[0] == 0)
                 {
                     modelRequest.Uids = null;
                 }
-                 resultApi = _userSeniorityBase.GetUserSeniority(year,modelRequest.Uids);
+                resultApi = _userSeniorityBase.GetUserSeniority(year, modelRequest.Uids);
             }
             return Json(new BootGridReponse<ResponseUserSeniority>
             {
@@ -51,8 +44,11 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult Generate(RequestUserSeniority modelRequest)
         {
-            int year = modelRequest.DateYear.Year;
-            _userSeniorityBase.GenerateUserSeniority(year);
+            if (modelRequest.Year != 0)
+            {
+                int year = modelRequest.Year;
+                _userSeniorityBase.GenerateUserSeniority(year);
+            }
             return Json(string.Empty);
         }
     }

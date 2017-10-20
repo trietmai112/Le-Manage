@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using AutoMapper;
-using Microsoft.AspNet.Identity;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models.Entity;
-using mtv_management_leave.Models.RegisterLeave;
-using System.Linq;
 using mtv_management_leave.Models.Request;
 using mtv_management_leave.Models.Response;
 
@@ -73,13 +69,13 @@ namespace mtv_management_leave.Controllers
                 List<ResponseAvailableBeginYear> result = new List<ResponseAvailableBeginYear>();
                 if (model.Year != null)
                 {
-                    if (model.Year.Value.Year != 1)
+                    if (model.Year != 1 && model.Year != 0)
                     {
                         if (model.Uids != null && model.Uids.Count == 1 && model.Uids[0] == 0)
                         {
                             model.Uids = null;
                         }
-                        result = _dataBeginYearBase.GetDataBeginYear(model.Year.Value.Year, model.Uids);
+                        result = _dataBeginYearBase.GetDataBeginYear(model.Year.Value, model.Uids);
                     }
                 }
                 var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseAvailableBeginYear>

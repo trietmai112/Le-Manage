@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.ModelBinding;
+﻿using System.Collections.Generic;
 
 namespace mtv_management_leave.Models.AvailableLeave
 {
     public class SearchRequest
     {
-        public DateTime? Year { get; set; } 
+        public int? Year { get; set; }
         public List<int> Uids { get; set; }
     }
 }
