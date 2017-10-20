@@ -188,7 +188,7 @@ namespace mtv_management_leave.Lib.Repository
             return IdentityResult.Success;
         }
 
-        public RegisterViewModel GetById(int id)
+        public UpdatedViewModel GetById(int id)
         {
             InitContext(out context);
             var iquery = from user in context.Users
@@ -199,7 +199,7 @@ namespace mtv_management_leave.Lib.Repository
                          join employee in context.EmployeeInfos on user.Id equals employee.Id into gEmployee
                          from ge in gEmployee.DefaultIfEmpty()
                          where user.Id == id
-                         select new RegisterViewModel
+                         select new UpdatedViewModel
                          {
                              DateBeginProbation = user.DateBeginProbation,
                              DateBeginWork = user.DateBeginWork,
@@ -210,8 +210,6 @@ namespace mtv_management_leave.Lib.Repository
                              FullName = user.FullName,
                              Id = user.Id,
                              PhoneNumber = user.PhoneNumber,
-                             ConfirmPassword = null,
-                             Password = null,
                              RoleIds = gUserRole.Select(x=> x.RoleId).ToList()                       
                          };
             var result =  iquery.FirstOrDefault();

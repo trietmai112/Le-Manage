@@ -201,21 +201,27 @@ namespace mtv_management_leave.Lib.Extendsions
             bool liveSearch = false,
             bool multiSelect = false)
         {
-            var dic = new Dictionary<string, object>();
-            dic.Add("class", "selectpicker");
-            if (liveSearch) dic.Add("data-live-search", "true");
-            if (multiSelect) dic.Add("multiple", "true");
+            var controlId = "";
+            var metaData = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
-            var selectHtmlString = htmlHelper.DropDownListFor(expression, selectList, dic);
+            var selectHtmlString = RenderSelect(metaData.PropertyName, selectList, liveSearch, multiSelect, out controlId);
             var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
             var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
 
+            var script =
+                $@"<script>
+$(document).ready(function(e){{
+    $('[mti-select-id={controlId}]').selectpicker('refresh');
+}});    
+</script>";
+
             var dictionary = new Dictionary<string, string>();
             dictionary.Add("{label}",labelHtmlString.ToHtmlString());
-            dictionary.Add("{select}", selectHtmlString.ToHtmlString());
+            dictionary.Add("{select}", selectHtmlString);
             dictionary.Add("{validate-message}", validateMessageHtmlString.ToHtmlString());
-
-            return new MvcHtmlString(CombineVaribleToLayout(_selectTemplate, dictionary));
+            dictionary.Add("{script}", script);
+            var control = new MvcHtmlString(CombineVaribleToLayout(_selectTemplate, dictionary));
+            return control;
         }
 
         public static T GetT<T>(this HtmlHelper htmlHelper, 

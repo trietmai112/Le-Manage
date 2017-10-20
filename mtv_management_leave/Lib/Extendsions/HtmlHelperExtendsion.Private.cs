@@ -45,6 +45,7 @@ namespace mtv_management_leave.Lib.Extendsions
                     </div>  
                     {{validate-message}}
                 </div>
+                {{script}}
             </div>";       
 
         private readonly static string _checkBoxTemplate =
@@ -98,6 +99,28 @@ namespace mtv_management_leave.Lib.Extendsions
                 htmlString = Regex.Replace(htmlString, item.Key, item.Value);
             }
             return htmlString;
+        }
+
+        private static string RenderSelect(string name, IEnumerable<System.Web.Mvc.SelectListItem> model,bool liveSearch, bool multiSelect, out string controlRef)
+        {
+            controlRef = DateTime.Now.Ticks.ToString();
+            TagBuilder tag = new TagBuilder("select")
+                .vMergeAttribute("mti-data-select", "true")
+                .vMergeAttribute("name", name)
+                .vMergeAttribute("id", name)
+                .vMergeAttribute("mti-select-id", controlRef);
+            if (liveSearch) tag.vMergeAttribute("data-live-search", "true");
+            if (multiSelect) tag.vMergeAttribute("multiple", "true");
+            foreach (var item in model)
+            {
+                var tagOption = new TagBuilder("option")
+                    .vSetInnerText(item.Text)
+                    .vMergeAttribute("value", item.Value);
+                if (item.Selected)
+                    tagOption.vMergeAttribute("selected", "selected");
+                tag.vAppendText(tagOption);
+            }
+            return tag.ToString();
         }
 
         private static MvcHtmlString CreateLabelMvcString<TModel, TProperty>(HtmlHelper<TModel> htmlHelper,

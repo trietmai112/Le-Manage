@@ -46,7 +46,7 @@ namespace mtv_management_leave.Controllers
             if (id == 0)
                 return RedirectToAction("Register");
             var model = _accountBase.GetById(id);
-            return View("Register", model);
+            return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]

@@ -1,7 +1,7 @@
 ﻿@using mtv_management_leave.Models.Account
 @model UpdatedViewModel
 @{
-    ViewBag.Title = "Register User";
+    ViewBag.Title = "Update User";
     var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
 }
 <div class="card">
@@ -9,7 +9,7 @@
         <h2>@ViewBag.Title<small>You can register an user at here</small></h2>
     </div>
     <div class="card-body card-padding">
-        @using (Html.BeginForm("Register", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        @using (Html.BeginForm("Update", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
             <div class="col-sm-12">
                 @Html.AntiForgeryToken()
@@ -33,7 +33,7 @@
                     <div class="col-sm-4">
                         @Html.vTextBoxFor(m => m.FPId)
 
-                        
+                        <a href="#" class="btn btn-link">Change password</a>
 
                         @Html.vDropDownListFor(m => m.RoleIds, roles)
                     </div>

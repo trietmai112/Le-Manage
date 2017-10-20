@@ -15,6 +15,6 @@ namespace mtv_management_leave.Lib.Interface
         void UpdateUserInfo(RepoUserUpdateInfo UserInfo);
         BootGridReponse<ResponseUserManagement> ToList(RequestUserManagement contrain);
         Task<IdentityResult> Register(RegisterViewModel model);
-        RegisterViewModel GetById(int id);
+        UpdatedViewModel GetById(int id);
     }
 }
