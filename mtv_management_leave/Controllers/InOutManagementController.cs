@@ -32,7 +32,7 @@ namespace mtv_management_leave.Controllers
             {
                 var pipeClient = new NamedPipeClientStream(".",
                      ConfigurationManager.AppSettings["PipleName"], PipeDirection.InOut, PipeOptions.None);
-
+                
                 if (pipeClient.IsConnected != true) { pipeClient.Connect(); }
 
                 StreamReader sr = new StreamReader(pipeClient);
