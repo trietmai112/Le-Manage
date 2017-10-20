@@ -5,6 +5,9 @@ using System.Web.Mvc;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.InOut;
+using System.IO;
+using System.IO.Pipes;
+using System.Configuration;
 
 namespace mtv_management_leave.Controllers
 {
@@ -27,7 +30,31 @@ namespace mtv_management_leave.Controllers
         {
             try
             {
-              //  _dataRawBase.SaveDataRaw();
+                var pipeClient = new NamedPipeClientStream(".",
+                     ConfigurationManager.AppSettings["PipleName"], PipeDirection.InOut, PipeOptions.None);
+
+                if (pipeClient.IsConnected != true) { pipeClient.Connect(); }
+
+                StreamReader sr = new StreamReader(pipeClient);
+                StreamWriter sw = new StreamWriter(pipeClient);
+
+                string temp;
+                temp = sr.ReadLine();
+
+                if (temp == "Waiting")
+                {
+                    try
+                    {
+                        sw.WriteLine("getdata");
+                        sw.Flush();
+                        string severResponse = sr.ReadLine();
+                        if(!string.IsNullOrEmpty(severResponse)) { 
+                            ///TODO
+                        }
+                        pipeClient.Close();
+                    }
+                    catch (Exception ex) { throw ex; }
+                }
                 return Json(new { Status = 0, Message = "Action complete" });
             }
             catch (Exception e)
