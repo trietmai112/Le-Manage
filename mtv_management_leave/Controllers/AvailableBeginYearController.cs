@@ -24,7 +24,9 @@ namespace mtv_management_leave.Controllers
 
         public PartialViewResult RegisterAvailableBeginYear()
         {
-            return PartialView();
+            var defaultData = new DataBeginYear();
+            defaultData.DateBegin = new DateTime(DateTime.Today.Year, 1, 1);
+            return PartialView(defaultData);
         }
 
         [HttpPost]

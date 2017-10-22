@@ -185,7 +185,7 @@ namespace mtv_management_leave.Lib.Repository
                 }
                 var Annual_Add_ByUser = lstLeaveAdd.Where(m => m.Uid == uid).ToList().Sum(m => m.AddLeaveHour);
                 LeaveMonthly leaveMon = new LeaveMonthly();
-                leaveMon.LeaveAvailable = Annual_Available_BeginYear - AnnualLeave_LastMonth_ByUser + Seniority_ByUser + Annual_Add_ByUser;
+                leaveMon.LeaveAvailable = (8 * Annual_Available_BeginYear) - AnnualLeave_LastMonth_ByUser + (8 * Seniority_ByUser) + Annual_Add_ByUser;
                 leaveMon.LeaveUsed = AnnualLeave_ThisMonth_ByUser;
                 leaveMon.LeaveRemain = leaveMon.LeaveAvailable - leaveMon.LeaveUsed;
                 leaveMon.Month = monthTo;
