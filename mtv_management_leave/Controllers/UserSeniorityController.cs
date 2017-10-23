@@ -49,6 +49,11 @@ namespace mtv_management_leave.Controllers
                 int year = modelRequest.Year;
                 _userSeniorityBase.GenerateUserSeniority(year);
             }
+            else
+            {
+                Response.StatusCode = 400;
+                return Json(new { status = 400, message = "Please select year!"}, JsonRequestBehavior.AllowGet);
+            }
             return Json(string.Empty);
         }
     }

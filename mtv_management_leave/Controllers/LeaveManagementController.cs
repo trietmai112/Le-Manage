@@ -21,10 +21,7 @@ namespace mtv_management_leave.Controllers
         }
         public ActionResult Index(int? uid)
         {
-            return View(new mtv_management_leave.Models.RegisterLeave.SearchRequest
-            {
-                Uid = uid
-            });
+            return View();
         }
 
         [HttpPost]

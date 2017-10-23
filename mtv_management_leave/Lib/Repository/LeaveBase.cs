@@ -137,10 +137,10 @@ namespace mtv_management_leave.Lib.Repository
         {
             InitContext(out context);
             var lstLeave = context.RegisterLeaves.Where(m => lstLeaveId.Contains(m.Id)).ToList();
-            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register))
+            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register && m.Status != Common.StatusLeave.E_Reject))
             {
                 DisposeContext(context);
-                throw new Exception("Please delete only value register status!");
+                throw new Exception("Please delete only value register or disapprove status!");
             }
             context.RegisterLeaves.RemoveRange(lstLeave);
             context.SaveChanges();
@@ -272,10 +272,10 @@ namespace mtv_management_leave.Lib.Repository
                 query = query.Where(m => lstUid.Contains(m.Uid));
             }
             var lstLeave = query.ToList();
-            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register) && IsValidate == true)
+            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register && m.Status != Common.StatusLeave.E_Reject) && IsValidate == true)
             {
                 DisposeContext(context);
-                throw new Exception("Please delete only value register status!");
+                throw new Exception("Please delete only value register and disapprove status!");
             }
             context.RegisterLeaves.RemoveRange(lstLeave);
             context.SaveChanges();
@@ -288,10 +288,10 @@ namespace mtv_management_leave.Lib.Repository
                 return;
             InitContext(out context);
             var lstLeave = context.RegisterLeaves.Where(m => lstIds.Contains(m.Id)).ToList();
-            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register))
+            if (lstLeave.Any(m => m.Status != Common.StatusLeave.E_Register && m.Status != Common.StatusLeave.E_Reject))
             {
                 DisposeContext(context);
-                throw new Exception("Please delete only value register status!");
+                throw new Exception("Please delete only value register and disapprove status!");
             }
             context.RegisterLeaves.RemoveRange(lstLeave);
             context.SaveChanges();

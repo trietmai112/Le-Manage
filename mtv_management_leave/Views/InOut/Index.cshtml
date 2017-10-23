@@ -27,7 +27,7 @@
         .SetAjaxUrl("/inout/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow",  MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },

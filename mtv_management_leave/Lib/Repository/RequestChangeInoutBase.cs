@@ -163,10 +163,10 @@ namespace mtv_management_leave.Lib.Repository
 
             InitContext(out context);
             var lstdelete = context.RequestChangeInouts.Where(m => lstIdRequest.Contains(m.Id)).ToList();
-            if (lstdelete.Any(m => m.status != Common.StatusLeave.E_Register))
+            if (lstdelete.Any(m => m.status != Common.StatusLeave.E_Register && m.status!= Common.StatusLeave.E_Reject))
             {
                 DisposeContext(context);
-                throw new Exception("Please select only value register!");
+                throw new Exception("Please select only value register or disapprove!");
             }
             context.RequestChangeInouts.RemoveRange(lstdelete);
             context.SaveChanges();

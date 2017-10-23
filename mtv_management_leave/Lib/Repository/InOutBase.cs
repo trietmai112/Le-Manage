@@ -138,7 +138,8 @@ namespace mtv_management_leave.Lib.Repository
                 LeaveCode = m.MasterLeaveType.LeaveCode,
                 leaveName = m.MasterLeaveType.Name,
                 RegisterHour = m.RegisterHour,
-                leaveStatus = m.Status
+                leaveStatus = m.Status,
+                DateUpdate = m.DateUpdated
             }).ToList();
 
             for (DateTime date = DateStart; date <= DateEnd; date = date.AddDays(1))
@@ -175,21 +176,28 @@ namespace mtv_management_leave.Lib.Repository
                         mapping.LeaveEnd1 = string.Empty;
                         mapping.LeaveType1 = string.Empty;
                     }
-                    else if (lstleaveInDay.Count > 0)
+                    else if (lstleaveInDay.Count == 1)
                     {
                         var firstLeave = lstleaveInDay.FirstOrDefault();
                         mapping.LeaveStart1 = firstLeave.DateStart.ToString("HH:mm");
                         mapping.LeaveEnd1 = firstLeave.DateEnd.ToString("HH:mm");
                         mapping.LeaveType1 = firstLeave.leaveName;
                         mapping.LeaveStatus1 = Common.ConvertLeaveStatusToString((int)firstLeave.leaveStatus);
-                        if (lstleaveInDay.Count > 1)
-                        {
-                            var lastLeave = lstleaveInDay.LastOrDefault();
-                            mapping.LeaveStart2 = lastLeave.DateStart.ToString("HH:mm");
-                            mapping.LeaveEnd2 = lastLeave.DateEnd.ToString("HH:mm");
-                            mapping.LeaveType2 = lastLeave.leaveName;
-                            mapping.LeaveStatus2 = Common.ConvertLeaveStatusToString((int)lastLeave.leaveStatus);
-                        }
+
+                    }
+                    else
+                    {
+                        lstleaveInDay = lstleaveInDay.OrderByDescending(m => m.DateUpdate).Take(2).ToList();
+                        lstleaveInDay = lstleaveInDay.OrderBy(m => m.DateStart).ToList();
+                        mapping.LeaveStart1 = lstleaveInDay[0].DateStart.ToString("HH:mm");
+                        mapping.LeaveEnd1 = lstleaveInDay[0].DateEnd.ToString("HH:mm");
+                        mapping.LeaveType1 = lstleaveInDay[0].leaveName;
+                        mapping.LeaveStatus1 = Common.ConvertLeaveStatusToString((int)lstleaveInDay[0].leaveStatus);
+
+                        mapping.LeaveStart2 = lstleaveInDay[1].DateStart.ToString("HH:mm");
+                        mapping.LeaveEnd2 = lstleaveInDay[1].DateEnd.ToString("HH:mm");
+                        mapping.LeaveType2 = lstleaveInDay[1].leaveName;
+                        mapping.LeaveStatus2 = Common.ConvertLeaveStatusToString((int)lstleaveInDay[1].leaveStatus);
                     }
 
 
@@ -381,6 +389,7 @@ namespace mtv_management_leave.Lib.Repository
             public string leaveName { get; set; }
             public double? RegisterHour { get; set; }
             public Common.StatusLeave leaveStatus { get; set; }
+            public DateTime DateUpdate { get; set; }
         }
         #endregion
 

@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "UserSeniority";
 }
-
 <div class="card">
     <div class="card-header">
         <h2>@ViewBag.Title<small>You can check list of user seniority</small></h2>
@@ -43,9 +42,7 @@
         .ToHtml()
         )
     </div>
-
 </div>
-
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
@@ -68,7 +65,9 @@
             $.ajax(option).done(function (data) {
                 alert("Done!");
                 $("#btn-search").click();
-            });;
+            }).error(function (jhx) {
+                showAjaxError(jhx);
+            });
         });
 
     </script>
