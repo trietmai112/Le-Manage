@@ -13199,7 +13199,7 @@ hr.fc-divider {
 }
 #calendar .fc-day-number {
   padding-left: 10px;
-  color: #ccc;
+  color: #000;
   text-align: left;
   float: left;
 }

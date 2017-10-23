@@ -136,3 +136,14 @@ $("body").on("click", ".date-time-picker-clear", function (e) {
     $(this).parent().find("input").val("")
 });
 
+$(document).ready(function (e) {
+    $(document).ajaxComplete(function () {
+        mySwal("Ajax complete", "System reponse completed.", "success", 700);
+    });
+
+
+    $(document).ajaxStart(function () {
+        mySwal("Ajax sending..", "Request sending...", "info", -1);
+    });
+});
+
