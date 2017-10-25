@@ -17,7 +17,8 @@ namespace mtv_management_leave.Lib.Extendsions
             Expression<Func<TModel, TProperty>> expression, 
             string placeHolder = null, 
             string dataMask = null,
-            string tooltip = null)
+            string tooltip = null,
+            object htmlAttributes = null)
         {
             ModelMetadata metadata = ModelMetadata.FromLambdaExpression(expression, htmlHelper.ViewData);
 
@@ -34,8 +35,10 @@ namespace mtv_management_leave.Lib.Extendsions
                 dic.Add("title", tooltip);
             }
             if (!string.IsNullOrEmpty(dataMask)) dic.Add("data-mask", dataMask);
+           
+            var textAttributes = dic.vMerge(htmlAttributes);
 
-            var inputHtmlString = htmlHelper.TextBoxFor(expression, dic);
+            var inputHtmlString = htmlHelper.TextBoxFor(expression, textAttributes);
             var labelHtmlString = CreateLabelMvcString(htmlHelper, expression);
             var validateMessageHtmlString = htmlHelper.ValidationMessageFor(expression);
 

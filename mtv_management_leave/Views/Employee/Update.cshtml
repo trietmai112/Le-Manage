@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Update User";
     var roles = Html.GetT<IEnumerable<SelectListItem>>("roles", "rolestolist");
+    var viewModel = new RegisterViewModel();
 }
 <div class="card">
     <div class="card-header">
@@ -10,51 +11,83 @@
     </div>
     <div class="card-body card-padding">
         @using (Html.BeginForm("Update", "Employee", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-            <div class="col-sm-12">
+        {
+            <div class="row">
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(m => m.Id)
             </div>
 
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="col-sm-12">
-                            <label class="control-label col-sm-12"></label>
-                        </div>
-                        @Html.vTextBoxFor(m => m.Email)
+            <div class="row">
+                <div class="col-sm-4">
+                    @Html.vTextBoxFor(m => m.Email, htmlAttributes: new { disabled = true })
 
-                        @Html.vTextBoxFor(m => m.FullName)
+                    @Html.vTextBoxFor(m => m.FullName)
 
-                        @Html.vTextBoxFor(m => m.PhoneNumber)
+                    @Html.vTextBoxFor(m => m.PhoneNumber)
 
-                        @Html.vDateTimePickerFor(m => m.DateOfBirth).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
-                    </div>
-                    <div class="col-sm-4">
-                        @Html.vTextBoxFor(m => m.FPId)
-
-                        <a href="#" class="btn btn-link">Change password</a>
-
-                        @Html.vDropDownListFor(m => m.RoleIds, roles)
-                    </div>
-                    <div class="col-sm-4">
-                        @Html.vDateTimePickerFor(m => m.DateBeginWork).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
-
-                        @Html.vDateTimePickerFor(m => m.DateBeginProbation).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
-
-                        @Html.vDateTimePickerFor(m => m.DateResign).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
-                    </div>
-
-                    <div class="col-sm-12">
-                        <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-plus"></i> Save change</button>
-                    </div>
+                    @Html.vDateTimePickerFor(m => m.DateOfBirth).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                 </div>
+                <div class="col-sm-4">
+                    @Html.vTextBoxFor(m => m.FPId)
 
+                    @Html.vDropDownListFor(m => m.RoleIds, roles)
+                    @Html.vDateTimePickerFor(m => m.DateBeginWork).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
+
+                    @Html.vDateTimePickerFor(m => m.DateBeginProbation).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
+
+                    @Html.vDateTimePickerFor(m => m.DateResign).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
+                </div>
+                <div class="col-sm-4">
+                    <a href="#" class="btn" id="btn-change-password">Change password</a>
+                </div>
+            </div>
+            <div class="row">
+
+                <button type="submit" class="btn btn-primary"><i class="zmdi zmdi-plus"></i> Save change</button>
+
+            </div>
         }
     </div>
 </div>
 
+<div class="modal fade" id="modalUpdatePassword" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Register leave</h2>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @{Html.RenderPartial("_ChangePassword", new ChangePasswordViewModel());}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <button type="button" class="btn btn-primary" id="modal-save"><i class="zmdi zmdi-save"></i> Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="modal-close">
+                    Close
+                </button>
+            </div>            
+        </div>
+    </div>
+</div>
+
 @section Scripts{
+    <script type="text/javascript">
+
+        $("#btn-change-password").click(function (e) {
+            debugger;
+            e.preventDefault();
+            $("#modalUpdatePassword").modal("show");
+        });
+
+        $("#modal-save").click(function (e) {
+            if (!$("#changePassword").validate().form()) return;
+            $("#modalUpdatePassword").modal("hide");
+        });
+    </script>
     @Scripts.Render("~/bundles/jqueryval")
 }
 

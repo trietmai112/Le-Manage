@@ -59,6 +59,7 @@ namespace mtv_management_leave.Lib.Repository
         public BootGridReponse<ResponseUserManagement> ToList(RequestUserManagement condition)
         {
             InitContext(out context);
+            var roleName = HttpContext.Current.User.GetRoleName();
             var iquery = from user in context.Users
                          join userRole in context.Set<UserRole>() on user.Id equals userRole.UserId into gUserRole
                          from gur in gUserRole.DefaultIfEmpty()

@@ -263,6 +263,7 @@
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
     <Compile Include="Lib\Extendsions\HttpContextExtendsion.cs" />
+    <Compile Include="Lib\Extendsions\IDictionaryExtendsion.cs" />
     <Compile Include="Lib\Extendsions\IListExtendsion.cs" />
     <Compile Include="Lib\Extendsions\IPrincipalExtendsion.cs" />
     <Compile Include="Lib\Extendsions\ModelMetadataExtendsion.cs" />
@@ -341,6 +342,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\DateTimeBinder.cs" />
+    <Compile Include="Models\Account\ChangePasswordViewModel.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="ModelBinder\NullableDateTimeBinder.cs" />
     <Compile Include="Models\Account\RegisterViewModel.cs" />
@@ -759,6 +761,7 @@
     <Content Include="Views\SummaryLeaveAnnualManagement\Index.cshtml" />
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\Update.cshtml" />
+    <Content Include="Views\Employee\_ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
