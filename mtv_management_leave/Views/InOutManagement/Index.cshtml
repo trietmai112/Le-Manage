@@ -33,10 +33,10 @@
     </div>
     @(Html.vBootGridFor()
         .SetName("inout-table")
-        .SetAjaxUrl("/inoutmanagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-          new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "GuiId", Identify = true, MappingFrom = "GuiId", IsHidden = true },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
@@ -54,15 +54,30 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
+        var reloadGrid = function () {
+            var option = {
+                url: '/inoutmanagement/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                if ($.isArray(data.rows)) {
+                    $("#inout-table").bootgrid("append", data.rows);
+                }                
+            });
+        }
+
         $("#btn-search").click(function (e) {
             e.preventDefault();
             $("#InValidData").val(false);
-            $("#inout-table").bootgrid("reload");
+            //$("#inout-table").bootgrid("reload");
+            reloadGrid();
         });
         $("#btn-invalid").click(function (e) {
             e.preventDefault();
             $("#InValidData").val(true);
-            $("#inout-table").bootgrid("reload");
+            reloadGrid();
+            //$("#inout-table").bootgrid("reload");
         });
 
         var validRow = function (col, row) {

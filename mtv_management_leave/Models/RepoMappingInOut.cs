@@ -8,6 +8,7 @@ namespace mtv_management_leave.Models
 {
     public class RepoMappingInOut
     {
+        public string GuiId { get; set; } = Guid.NewGuid().ToString("N");
         public int Uid { get; set; }
         public string FullName { get; set; }
         public bool IsValid { get; set; }

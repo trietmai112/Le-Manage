@@ -138,7 +138,7 @@ $("body").on("click", ".date-time-picker-clear", function (e) {
 
 $(document).ready(function (e) {
     $(document).ajaxComplete(function () {
-        mySwal("Ajax complete", "System reponse completed.", "success", 700);
+        mySwal("Ajax complete", "System reponse completed.", "success", 1000);
     });
 
 

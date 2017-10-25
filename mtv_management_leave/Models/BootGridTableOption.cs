@@ -8,6 +8,7 @@ namespace mtv_management_leave.Models
 {   
     public class BootGridColumnOption
     {
+        public bool IsHidden { get; set; }
         public string FormatJqueryHandler { get; set; }
         public string ColumnHeaderName { get; set; }
         public string MappingFrom { get; set; }
@@ -19,6 +20,6 @@ namespace mtv_management_leave.Models
     public class AjaxSetting
     {
         public string RequestType { get; set; } = "POST";
-        public bool Cache { get; set; } = false;
+        public bool Cache { get; set; } = true;
     }
 }
