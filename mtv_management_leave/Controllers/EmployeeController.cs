@@ -50,7 +50,7 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<ActionResult> Update(RegisterViewModel model)
+        public async Task<ActionResult> Update(UpdatedViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
@@ -62,7 +62,7 @@ namespace mtv_management_leave.Controllers
             }
             var transaction = _context.Database.BeginTransaction();
 
-            var result = await _accountBase.Register(model);
+            var result = await _accountBase.Update(model);
             if (!result.Succeeded)
             {
                 AddErrors(result);
@@ -71,6 +71,15 @@ namespace mtv_management_leave.Controllers
             }
             transaction.Commit();
             return RedirectToAction("Index");
+        }
+        
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            var result = _accountBase.ChangePassword(model);
+            if(result.Succeeded)
+                return Json(new { Result = result.Succeeded });
+            return Json(new { Result = result.Succeeded, Message = result.Errors.FirstOrDefault() });
         }
 
         [Authorize(Roles = "Super admin, Admin")]

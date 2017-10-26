@@ -16,6 +16,7 @@
                 @Html.AntiForgeryToken()
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m=> m.Email)
             </div>
 
             <div class="row">
@@ -39,7 +40,7 @@
                     @Html.vDateTimePickerFor(m => m.DateResign).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml()
                 </div>
                 <div class="col-sm-4">
-                    <a href="#" class="btn" id="btn-change-password">Change password</a>
+                    <a href="#" class="btn btn-info" id="btn-change-password">Change password</a>
                 </div>
             </div>
             <div class="row">
@@ -59,7 +60,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    @{Html.RenderPartial("_ChangePassword", new ChangePasswordViewModel());}
+                    @{Html.RenderPartial("_ChangePassword", new ChangePasswordViewModel { Id = Model.Id });}
                 </div>
             </div>
         </div>
@@ -84,8 +85,25 @@
         });
 
         $("#modal-save").click(function (e) {
-            if (!$("#changePassword").validate().form()) return;
-            $("#modalUpdatePassword").modal("hide");
+            var form = $("#changePassword");
+            if (!form.validate().form()) return;
+            var url = form.attr("action");
+            if (url == null || url == '') return;
+            var data = form.serialize();
+            var option = {
+                url: url,
+                type: 'POST',
+                data: data
+            };
+            $.ajax(option).done(function (data) {
+                if (data.Result) {
+                    $("#modalUpdatePassword").modal("hide");
+                    $("#modalUpdatePassword input[type='password']").val('');
+                }
+                else
+                    mySwal("Error", data.Message, "error", 1000);
+            });
+            
         });
     </script>
     @Scripts.Render("~/bundles/jqueryval")

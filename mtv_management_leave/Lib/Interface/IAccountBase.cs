@@ -16,5 +16,7 @@ namespace mtv_management_leave.Lib.Interface
         BootGridReponse<ResponseUserManagement> ToList(RequestUserManagement contrain);
         Task<IdentityResult> Register(RegisterViewModel model);
         UpdatedViewModel GetById(int id);
+        IdentityResult ChangePassword(ChangePasswordViewModel model);
+        Task<IdentityResult> Update(UpdatedViewModel model);
     }
 }

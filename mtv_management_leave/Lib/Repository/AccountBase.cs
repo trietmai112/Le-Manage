@@ -57,16 +57,19 @@ namespace mtv_management_leave.Lib.Repository
         }
 
         public BootGridReponse<ResponseUserManagement> ToList(RequestUserManagement condition)
-        {
+        {            
+            var loginRole = HttpContext.Current.User.GetRoleName();
+            var loginRoleId = GetRoleByName(loginRole);
             InitContext(out context);
-            var roleName = HttpContext.Current.User.GetRoleName();
+
             var iquery = from user in context.Users
                          join userRole in context.Set<UserRole>() on user.Id equals userRole.UserId into gUserRole
                          from gur in gUserRole.DefaultIfEmpty()
                          join role in context.Roles on gur.RoleId equals role.Id into gRole
                          from gr in gRole.DefaultIfEmpty()
                          join employee in context.EmployeeInfos on user.Id equals employee.Id into gEmployee
-                         from ge in gEmployee.DefaultIfEmpty()                        
+                         from ge in gEmployee.DefaultIfEmpty()  
+                         where gr.Id >= loginRoleId || gr == null                     
                          select new ResponseUserManagement
                          {
                              DateBeginProbation = user.DateBeginProbation,
@@ -216,6 +219,67 @@ namespace mtv_management_leave.Lib.Repository
             var result =  iquery.FirstOrDefault();
             DisposeContext(context);
             return result;
+        }
+
+        public IdentityResult ChangePassword(ChangePasswordViewModel model)
+        {
+            var result = _userManager.ChangePassword(model.Id.GetValueOrDefault(), model.Password, model.NewPassword);
+            return result;
+        }
+
+        public async Task<IdentityResult> Update(UpdatedViewModel model)
+        {
+            InitContext(out context);
+            var userInfo = _userManager.FindById(model.Id);
+            userInfo.DateBeginProbation = model.DateBeginProbation;
+            userInfo.DateBeginWork = model.DateBeginWork;
+            userInfo.DateOfBirth = model.DateOfBirth;
+            userInfo.DateResign = model.DateResign;
+            userInfo.FullName = model.FullName;
+            userInfo.PhoneNumber = model.PhoneNumber;
+            var updateUserResult = _userManager.Update(userInfo);
+            if (updateUserResult.Succeeded == false) return updateUserResult;
+
+            var transaction = context.Database.BeginTransaction();
+            var employeeInfo = await context.EmployeeInfos.FirstOrDefaultAsync(m => m.Id == userInfo.Id);
+            if(employeeInfo == null)
+            {
+                employeeInfo = new EmployeeInfo { Id = userInfo.Id, FPId = model.FPId.GetValueOrDefault() };
+                context.EmployeeInfos.Add(employeeInfo);
+            }
+            else
+            {
+                employeeInfo.FPId = model.FPId.GetValueOrDefault();
+                context.EmployeeInfos.Attach(employeeInfo);        
+                context.Entry<EmployeeInfo>(employeeInfo).State = EntityState.Modified;
+            }
+            
+
+            var result = await context.SaveChangesAsync();
+
+            var roles = await context.Roles.Where(m => model.RoleIds.Contains(m.Id)).ToListAsync();
+            var userInRoles = await context.Set<UserRole>().Where(m => m.UserId == userInfo.Id).Select(m => m.RoleId).ToListAsync();
+            if (userInRoles.Count > 0)
+                updateUserResult = _userManager.RemoveFromRoles(userInfo.Id,
+                    context.Roles.Where(m => userInRoles.Contains(m.Id)).Select(m => m.Name).ToArray());
+
+            if (!updateUserResult.Succeeded) {
+                transaction.Rollback();
+                return updateUserResult;
+            }
+
+            if (roles.Count > 0)
+            {
+                updateUserResult = _userManager.AddToRoles(userInfo.Id, roles.Select(m => m.Name).ToArray());
+            }
+            if (!updateUserResult.Succeeded)
+            {
+                transaction.Rollback();
+                return updateUserResult;
+            }
+            transaction.Commit();
+            return updateUserResult;
+
         }
     }
 }
