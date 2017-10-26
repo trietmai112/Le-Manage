@@ -11,8 +11,8 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                @Html.vDatePickerFor(m => m.DateStart).Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDatePickerFor(m => m.DateEnd).Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Create New</button>

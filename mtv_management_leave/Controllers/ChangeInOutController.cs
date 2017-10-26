@@ -81,6 +81,7 @@ namespace mtv_management_leave.Controllers
                 {
                     var uid = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
                     result = _inout.GetRequestChangeInout(model.DateStart.Value, model.DateEnd.Value, new List<int>() { uid });
+                    result = result.OrderBy(m => m.Date).ToList();
                 }
                 var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseChangeInout>
                 {

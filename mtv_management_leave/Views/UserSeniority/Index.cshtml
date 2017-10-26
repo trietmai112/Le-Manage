@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "UserSeniority";
 }
-
 <div class="card">
     <div class="card-header">
         <h2>@ViewBag.Title<small>You can check list of user seniority</small></h2>
@@ -11,8 +10,8 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                @Html.vDateTimePickerFor(m => m.DateYear).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
+                @Html.vDateTimePickerFor(m => m.Year).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Year).ToHtml().Wrap("div", new { @class = "col-sm-2" })
+                @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true).Wrap("div", new { @class = "col-sm-6" })
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-generate"><i class="zmdi zmdi-plus"></i> Generate</button>
@@ -43,13 +42,10 @@
         .ToHtml()
         )
     </div>
-
 </div>
-
 @section Scripts{
     <script type="text/javascript">
         $(document).ready(function () {
-            console.log("111");
             $(".card-body .date-picker").datetimepicker({ format: "MM/DD/YYYY" });
             $('.card-body .selectpicker').selectpicker('render');
         });
@@ -60,16 +56,18 @@
 
         $("#btn-generate").click(function (e) {
             e.preventDefault();
-            var dateY = $("#DateYear").val();
-
+            var dateY = $("[name=Year]").val();
             var option = {
                 url: "/UserSeniority/Generate",
                 type: "POST",
-                data: { DateYear: dateY }
+                data: { year: dateY }
             };
             $.ajax(option).done(function (data) {
+                alert("Done!");
                 $("#btn-search").click();
-            });;
+            }).error(function (jhx) {
+                showAjaxError(jhx);
+            });
         });
 
     </script>

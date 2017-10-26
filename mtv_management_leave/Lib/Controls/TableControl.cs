@@ -19,6 +19,8 @@ namespace mtv_management_leave.Lib.Controls
             RequestType = "POST"
         };
         private string ClassName { get; set; }
+        private bool UseAjaxWhenCall { get; set; }
+
         private Dictionary<string, string> AjaxParameters { get; set; } = new Dictionary<string, string>();
 
         private List<BootGridColumnOption> Rows = new List<BootGridColumnOption>();
@@ -81,26 +83,33 @@ namespace mtv_management_leave.Lib.Controls
             var scriptHtml = $"<script type='text/javascript'>";
             scriptHtml += "     $(document).ready(function() {";
             scriptHtml += $"        var grid = $('#{this.Name}').bootgrid({"{"}";
-            scriptHtml += $"                ajax: true,";
-            if (this.AjaxParameters != null && this.AjaxParameters.Count > 0)
+            if (!string.IsNullOrEmpty(AjaxUrl))
             {
-                scriptHtml += "             post: function() {";
-                scriptHtml += "                     return {";
-                int j = 0;
-                foreach (var item in this.AjaxParameters)
+                scriptHtml += $"                ajax: true,";
+                if (this.AjaxParameters != null && this.AjaxParameters.Count > 0)
                 {
-                    scriptHtml += $"{item.Value}: $('[name={item.Value}]').val()" + (j < this.AjaxParameters.Count - 1 ? "," : "");
-                    j++;
+                    scriptHtml += "             post: function() {";
+                    scriptHtml += "                     return {";
+                    int j = 0;
+                    foreach (var item in this.AjaxParameters)
+                    {
+                        scriptHtml += $"{item.Value}: $('[name={item.Value}]').val()" + (j < this.AjaxParameters.Count - 1 ? "," : "");
+                        j++;
+                    }
+                    scriptHtml += "                             };";
+                    scriptHtml += "             },";
                 }
-                scriptHtml += "                             };";
-                scriptHtml += "             },";
+                scriptHtml += "                 ajaxSettings:{";
+                scriptHtml += $"                        method: '{this.AjaxSetting.RequestType}',";
+                scriptHtml += $"                        cache: {this.AjaxSetting.Cache.ToString().ToLower()}";
+                scriptHtml += "                 },";
+                scriptHtml += $"                url: '{this.AjaxUrl}',";
             }
-            scriptHtml += "                 templates: { header: '' },";
-            scriptHtml += "                 ajaxSettings:{";
-            scriptHtml += $"                        method: '{this.AjaxSetting.RequestType}',";
-            scriptHtml += $"                        cache: {this.AjaxSetting.Cache.ToString().ToLower()}";
-            scriptHtml += "                 },";
-            scriptHtml += $"                url: '{this.AjaxUrl}',";
+            else
+            {
+                scriptHtml += $"rowCount: [20],";
+            }
+            scriptHtml += "                 templates: { header: '' },";            
             scriptHtml += $"                selection: true,";
             scriptHtml += $"                rowSelect: true,";
             scriptHtml += $"                keepSelection: true,";
@@ -141,6 +150,10 @@ namespace mtv_management_leave.Lib.Controls
                 {
                     thTag.Attributes.Add("data-type", "numeric");
                     thTag.Attributes.Add("data-identifier", row.Identify.vToString().ToLower());
+                }
+                if (row.IsHidden)
+                {
+                    thTag.Attributes.Add("data-visible", "false");
                 }
                 if (!string.IsNullOrEmpty(row.OrderBy)) thTag.Attributes.Add("data-order", row.OrderBy);
                 thTag.SetInnerText(row.ColumnHeaderName);

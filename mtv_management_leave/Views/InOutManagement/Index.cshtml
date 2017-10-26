@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Inout management";
 }
-
 <div class="card">
     <div class="card-header">
         <h2>@ViewBag.Title<small>List in out of all users</small></h2>
@@ -18,27 +17,26 @@
                 <div class="col-sm-12">
                     @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
                     @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
-                    <div class="col-sm-4"> 
+                    <div class="col-sm-4">
+                        @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                     </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
-                            <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
-                            <button class="btn btn-success" id="btn-fpData"><i class="zmdi zmdi-star"></i>FP Device Data</button>
-                            <button class="btn btn-danger" id="btn-sumaryinout"><i class="zmdi zmdi-star"></i>Sumary Inout</button>
-                        </div>
+                    <div class="col-sm-4">
+                        <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                        <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
+                        <button class="btn btn-success" id="btn-fpData"><i class="zmdi zmdi-star"></i>FP Device Data</button>
+                        <button class="btn btn-danger" id="btn-sumaryinout"><i class="zmdi zmdi-star"></i>Sumary Inout</button>
                     </div>
+                </div>
             </form>
-
-
 
         </div>
     </div>
     @(Html.vBootGridFor()
         .SetName("inout-table")
-        .SetAjaxUrl("/inoutmanagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-          new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "GuiId", Identify = true, MappingFrom = "GuiId", IsHidden = true },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
@@ -54,18 +52,32 @@
         .ToHtml()
     )
 </div>
-
 @section Scripts{
     <script type="text/javascript">
+        var reloadGrid = function () {
+            var option = {
+                url: '/inoutmanagement/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                if ($.isArray(data.rows)) {
+                    $("#inout-table").bootgrid("append", data.rows);
+                }                
+            });
+        }
+
         $("#btn-search").click(function (e) {
             e.preventDefault();
             $("#InValidData").val(false);
-            $("#inout-table").bootgrid("reload");
+            //$("#inout-table").bootgrid("reload");
+            reloadGrid();
         });
         $("#btn-invalid").click(function (e) {
             e.preventDefault();
             $("#InValidData").val(true);
-            $("#inout-table").bootgrid("reload");
+            reloadGrid();
+            //$("#inout-table").bootgrid("reload");
         });
 
         var validRow = function (col, row) {

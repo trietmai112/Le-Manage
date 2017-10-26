@@ -11,9 +11,9 @@ namespace mtv_management_leave.Models.RegisterLeave
     public class SearchRequest
     {
         [Display(Name = "Date start:")]
-        public DateTime DateStart { get; set; } = DateTime.Now;
+        public DateTime DateStart { get; set; }
         [Display(Name = "Date end:")]
-        public DateTime DateEnd { get; set; } = DateTime.Now;
+        public DateTime DateEnd { get; set; }
         public List<int> Uids { get; set; }
         public int? Uid { get; set; }
     }

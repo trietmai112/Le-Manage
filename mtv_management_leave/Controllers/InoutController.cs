@@ -25,7 +25,7 @@ namespace mtv_management_leave.Controllers
         }
         public ActionResult Index()
         {
-            return View(new Models.RegisterLeave.SearchRequest());
+            return View();
         }
 
         public PartialViewResult RegisterLeave(int? userId)

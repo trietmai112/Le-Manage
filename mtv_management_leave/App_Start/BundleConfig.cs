@@ -32,6 +32,7 @@ namespace mtv_management_leave
                     "~/Content/vendors/bower_components/animate.css/animate.min.css",
                     "~/Content/vendors/bower_components/sweetalert2/dist/sweetalert2.min.css",
                     "~/Content/vendors/bower_components/material-design-iconic-font/dist/css/material-design-iconic-font.min.css",
+                    "~/Content/vendors/bower_components/fullcalendar/dist/fullcalendar.min.css",
                     "~/Content/vendors/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css",
                     "~/Content/vendors/bower_components/bootstrap-select/dist/css/bootstrap-select.css",
                     "~/Content/vendors/bower_components/nouislider/distribute/nouislider.min.css",
@@ -63,6 +64,9 @@ namespace mtv_management_leave
                     "~/Content/vendors/bower_components/jquery-placeholder/jquery.placeholder.min.js",
                     "~/Content/vendors/bower_components/chosen/chosen.jquery.js",
                     "~/Content/vendors/bower_components/jquery-mask-plugin/dist/jquery.mask.min.js",
+                    "~/Content/vendors/bower_components/fullcalendar/dist/fullcalendar.min.js",
+                    "~/Content/vendors/bower_components/autosize/dist/autosize.min.js",
+
                     "~/Content/vendors/fileinput/fileinput.min.js",
                     "~/Content/vendors/farbtastic/farbtastic.min.js",                    
                     "~/Scripts/jquery.bootgrid.js",
