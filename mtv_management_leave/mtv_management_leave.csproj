@@ -378,6 +378,7 @@
     <Compile Include="Models\RepoDataBeginYear.cs" />
     <Compile Include="Models\RepoAddLeave.cs" />
     <Compile Include="Models\RepoLeaveType.cs" />
+    <Compile Include="Models\RepoExportWorkingTime.cs" />
     <Compile Include="Models\RepoUserUpdateInfo.cs" />
     <Compile Include="Models\RepoRegisterLeave.cs" />
     <Compile Include="Models\RepoMappingInOut.cs" />

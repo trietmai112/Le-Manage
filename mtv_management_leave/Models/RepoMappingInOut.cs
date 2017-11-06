@@ -28,5 +28,9 @@ namespace mtv_management_leave.Models
         public string LeaveStatus2 { get; set; }
         public string LeaveType2 { get; set; }
 
+        public double TimeShift { get; set; }
+        public double TimeWork { get; set; }
+        public double TimeLeave { get; set; }
+
     }
 }

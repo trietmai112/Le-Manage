@@ -33,6 +33,32 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
+        public List<RepoExportWorkingTime> ExportWorkingTime(DateTime DateStart, DateTime DateEnd, List<int> lstUid)
+        {
+            if (DateStart == DateTime.MinValue || DateEnd == DateTime.MinValue)
+            {
+                throw new Exception("Please select start and end!!");
+            }
+            var lstMappingInout = CalculateMappingInoutLeave(DateStart, DateEnd, lstUid);
+            var lstUser = lstMappingInout.Select(m => m.Uid).Distinct().ToList();
+            List<RepoExportWorkingTime> lstResult = new List<RepoExportWorkingTime>();
+            foreach (var uid in lstUser)
+            {
+                var lstData = lstMappingInout.Where(m => m.Uid == uid).ToList();
+                RepoExportWorkingTime workingTime = new RepoExportWorkingTime();
+                workingTime.Uid = uid;
+                workingTime.FullName = lstData.FirstOrDefault().FullName;
+                workingTime.DateStart = DateStart;
+                workingTime.DateEnd = DateEnd;
+                workingTime.TotalTimeShift = lstData.Sum(m => m.TimeShift);
+                workingTime.TotalTimeWork = lstData.Sum(m => m.TimeWork);
+                workingTime.TotalTimeLeave = lstData.Sum(m => m.TimeLeave);
+                workingTime.TotalTimeLateEarly = lstData.Sum(m => m.TimeDiff);
+                lstResult.Add(workingTime);
+            }
+            return lstResult;
+        }
+
         /// <summary>
         /// only error data
         /// </summary>
@@ -74,7 +100,7 @@ namespace mtv_management_leave.Lib.Repository
         {
             SaveDataGenerateInout(dateFrom, DateTo, null);
         }
-        public void SaveGenerateInout( DateTime dateFrom, DateTime? DateTo, List<int> lstUid)
+        public void SaveGenerateInout(DateTime dateFrom, DateTime? DateTo, List<int> lstUid)
         {
             SaveDataGenerateInout(dateFrom, DateTo, lstUid);
         }
@@ -203,9 +229,21 @@ namespace mtv_management_leave.Lib.Repository
 
                     bool isValid = true;
                     double timeDiff = 0;
-                    CalculateValid(inout, lstleaveInDay, beginShiftLate, beginShift, endShift, endShiftEarly, out isValid, out timeDiff);
+                    double timeWork = 0;
+                    double timeLeave = 0;
+
+                    CalculateValid(inout, lstleaveInDay, beginShiftLate, beginShift, endShift, endShiftEarly, out isValid, out timeDiff, out timeWork, out timeLeave);
                     mapping.IsValid = isValid;
                     mapping.TimeDiff = timeDiff;
+                    mapping.TimeShift = 8;
+
+
+                    mapping.TimeWork = timeWork;
+                    mapping.TimeLeave = timeLeave;
+
+
+
+
                     lstResult.Add(mapping);
                 }
             }
@@ -214,10 +252,12 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
             return lstResult;
         }
-        private void CalculateValid(RepoInOut inout, List<RepoLeave> lstleave, DateTime beginShiftLate, DateTime beginShift, DateTime endShift, DateTime endShiftEarly, out bool isValid, out double timeDiff)
+        private void CalculateValid(RepoInOut inout, List<RepoLeave> lstleave, DateTime beginShiftLate, DateTime beginShift, DateTime endShift, DateTime endShiftEarly, out bool isValid, out double timeDiff, out double timeWork, out double timeLeave)
         {
             isValid = true;
             timeDiff = 0;
+            timeWork = 0;
+            timeLeave = 0;
             var lstleaveApprove = lstleave.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList();
 
             //ko co in out
@@ -226,13 +266,9 @@ namespace mtv_management_leave.Lib.Repository
                 if (lstleaveApprove == null || lstleaveApprove.Count == 0) //ko co leave
                 {
                     isValid = false;
-                    timeDiff = 8;
+                    timeDiff = 8 * 60;
                 }
-                else if (!lstleaveApprove.Any(m => m.leaveStatus == Common.StatusLeave.E_Approve && m.RegisterHour >= 8)) // leave chua duyet
-                {
-                    isValid = false;
-                    timeDiff = 8;
-                }
+
                 else if (lstleaveApprove.Any(m => m.LeaveCode == Common.TypeLeave.E_Materity.ToString())) // loaij thai san
                 {
                     isValid = true;
@@ -241,7 +277,7 @@ namespace mtv_management_leave.Lib.Repository
                 else if (lstleaveApprove.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0) < 8) // dang ky leave duoi 8 tieng
                 {
                     isValid = false;
-                    timeDiff = (8 - lstleaveApprove.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0)) * 60;
+                    timeLeave = lstleaveApprove.Where(m => m.leaveStatus == Common.StatusLeave.E_Approve).ToList().Sum(m => m.RegisterHour ?? 0) * 60;
                 }
             }
             else // co in out
@@ -261,7 +297,6 @@ namespace mtv_management_leave.Lib.Repository
                     //leave chua duyet
                     else if (lstleaveApprove.Any(m => m.LeaveCode == Common.TypeLeave.E_Materity.ToString()))
                     {
-
                     }
                     else
                     {
@@ -282,6 +317,7 @@ namespace mtv_management_leave.Lib.Repository
                                 timeDiff += (firstLeave.DateStart - beginShift).TotalMinutes < 0 ? 0 : (firstLeave.DateStart - beginShift).TotalMinutes;
                                 timeDiff += (inout.Intime - firstLeave.DateEnd).TotalMinutes < 0 ? 0 : (inout.Intime - firstLeave.DateEnd).TotalMinutes;
                             }
+
                         }
                         // ve som
                         if (inout.OutTime < endShiftEarly)
@@ -302,9 +338,11 @@ namespace mtv_management_leave.Lib.Repository
                     }
                 }
             }
-        }
 
-        private void SaveDataGenerateInout( DateTime dateFrom, DateTime? DateTo, List<int> lstUidInput)
+            timeLeave = lstleaveApprove.Sum(m => m.RegisterHour ?? 0) * 60;
+            timeWork = 8 * 60 - timeLeave - timeDiff;
+        }
+        private void SaveDataGenerateInout(DateTime dateFrom, DateTime? DateTo, List<int> lstUidInput)
         {
             InitContext(out context);
             if (DateTo == null)
@@ -315,9 +353,9 @@ namespace mtv_management_leave.Lib.Repository
             //del old data
             var lstInoutInDB_Query = context.InOuts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
             var lstInoutRaw_Query = context.DataInOutRaws.Where(m => m.Time >= dateFrom && m.Time <= DateTo).Select(m => new { m.Uid, m.Time });
-            if (lstUidInput != null && lstUidInput.Count >0)
+            if (lstUidInput != null && lstUidInput.Count > 0)
             {
-                lstInoutInDB_Query = lstInoutInDB_Query.Where(m =>  lstUidInput.Contains(m.Uid));
+                lstInoutInDB_Query = lstInoutInDB_Query.Where(m => lstUidInput.Contains(m.Uid));
                 lstInoutRaw_Query = lstInoutRaw_Query.Where(m => lstUidInput.Contains(m.Uid));
             }
 
@@ -371,7 +409,6 @@ namespace mtv_management_leave.Lib.Repository
             context.SaveChanges();
             DisposeContext(context);
         }
-
         private class RepoInOut
         {
             public int Uid { get; set; }
