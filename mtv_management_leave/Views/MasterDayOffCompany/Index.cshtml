@@ -136,8 +136,7 @@
                     };
                     $.ajax(option)
                         .done(function (data) {
-                            console.log(data);
-                            alert("Done!");
+                            notify("Your request has complete.", "success");
                         })
                         .error(function (jhx) {
                             showAjaxError(jhx);

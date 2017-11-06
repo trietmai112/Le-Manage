@@ -83,7 +83,7 @@ namespace mtv_management_leave.Controllers
         }
 
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Super admin, Admin")]
         public ActionResult Register()
         {
             return View();

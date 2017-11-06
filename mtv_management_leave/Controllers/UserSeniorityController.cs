@@ -14,6 +14,7 @@ namespace mtv_management_leave.Controllers
         {
             _userSeniorityBase = userSeniorityBase;
         }
+        [Authorize (Roles = "Super admin, Admin")]
         public ActionResult Index()
         {
             return View();

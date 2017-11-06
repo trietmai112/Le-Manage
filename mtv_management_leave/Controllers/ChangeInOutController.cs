@@ -21,6 +21,7 @@ namespace mtv_management_leave.Controllers
         {
             _inout = inout;
         }
+
         public ActionResult Index()
         {
             return View(new Models.LeaveBonus.SearchRequest());

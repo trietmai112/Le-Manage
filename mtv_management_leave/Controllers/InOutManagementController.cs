@@ -11,6 +11,7 @@ using System.Configuration;
 
 namespace mtv_management_leave.Controllers
 {
+    [Authorize(Roles = "Super admin, Admin")]
     public class InOutManagementController : Controller
     {
         private InOutBase _inoutBase;

@@ -12,7 +12,7 @@ using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
-
+    
     public class LeaveBonusController : Controller
     {
         private AddLeaveBase _leaveBase;
@@ -21,6 +21,7 @@ namespace mtv_management_leave.Controllers
         {
             _leaveBase = leaveBase;
         }
+        [Authorize(Roles= "Super admin, Admin")]
         public ActionResult Index()
         {
             return View(new Models.LeaveBonus.SearchRequest());

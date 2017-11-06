@@ -8,7 +8,7 @@ using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
-
+    
     public class AvailableBeginYearController : Controller
     {
         private DataBeginYearBase _dataBeginYearBase;
@@ -17,6 +17,8 @@ namespace mtv_management_leave.Controllers
         {
             _dataBeginYearBase = dataBeginYearBase;
         }
+
+        [Authorize(Roles = "Super admin, Admin")]
         public ActionResult Index()
         {
             return View(new Models.AvailableLeave.SearchRequest());
