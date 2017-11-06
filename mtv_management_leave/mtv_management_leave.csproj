@@ -85,6 +85,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
     </Reference>
@@ -260,6 +265,7 @@
     <Compile Include="Lib\Controls\ContainerBaseControl.cs" />
     <Compile Include="Lib\Controls\DateTimePickerControl.cs" />
     <Compile Include="Lib\Controls\TableHeaderControl.cs" />
+    <Compile Include="Lib\ExcelCommon.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.cs" />
     <Compile Include="Lib\Extendsions\HtmlHelperExtendsion.Private.cs" />
     <Compile Include="Lib\Extendsions\HttpContextExtendsion.cs" />
