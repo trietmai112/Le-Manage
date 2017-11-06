@@ -1,22 +1,17 @@
-﻿using System.Linq;
+﻿using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web;
+using AutoMapper;
+using Microsoft.AspNet.Identity;
+using mtv_management_leave.Lib.Extendsions;
 using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
-using System.Collections.Generic;
-using mtv_management_leave.Models.Response;
-using mtv_management_leave.Models.Request;
-using Microsoft.AspNet.Identity;
 using mtv_management_leave.Models.Account;
-using System;
-using System.Threading.Tasks;
 using mtv_management_leave.Models.Entity;
-using AutoMapper;
-using System.Data.Entity;
-using System.Web;
-using Ninject.Activation;
-using System.Web.Http;
-using Ninject;
-using System.Diagnostics;
-using mtv_management_leave.Lib.Extendsions;
+using mtv_management_leave.Models.Request;
+using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -57,7 +52,7 @@ namespace mtv_management_leave.Lib.Repository
         }
 
         public BootGridReponse<ResponseUserManagement> ToList(RequestUserManagement condition)
-        {            
+        {
             var loginRole = HttpContext.Current.User.GetRoleName();
             var loginRoleId = GetRoleByName(loginRole);
             InitContext(out context);
@@ -68,8 +63,8 @@ namespace mtv_management_leave.Lib.Repository
                          join role in context.Roles on gur.RoleId equals role.Id into gRole
                          from gr in gRole.DefaultIfEmpty()
                          join employee in context.EmployeeInfos on user.Id equals employee.Id into gEmployee
-                         from ge in gEmployee.DefaultIfEmpty()  
-                         where gr.Id >= loginRoleId || gr == null                     
+                         from ge in gEmployee.DefaultIfEmpty()
+                         where gr.Id >= loginRoleId || gr == null
                          select new ResponseUserManagement
                          {
                              DateBeginProbation = user.DateBeginProbation,
@@ -77,7 +72,7 @@ namespace mtv_management_leave.Lib.Repository
                              DateOfBirth = user.DateOfBirth,
                              DateResign = user.DateResign,
                              Email = user.Email,
-                             FPId = ge == null? (int?)null : ge.FPId,
+                             FPId = ge == null ? (int?)null : ge.FPId,
                              FullName = user.FullName,
                              Id = user.Id,
                              PhoneNumber = user.PhoneNumber,
@@ -94,10 +89,10 @@ namespace mtv_management_leave.Lib.Repository
                                             || m.PhoneNumber.ToLower().Contains(searchLower)
                                             || m.RoleName.ToLower().Contains(searchLower));
             }
-            if(condition.Roles != null)
+            if (condition.Roles != null)
             {
                 var roleList = condition.Roles.Where(m => m > 0);
-                if(roleList.Count() > 0)
+                if (roleList.Count() > 0)
                     iquery = iquery.Where(m => roleList.Contains(m.RoleId));
             }
             if (condition.sort != null && condition.sort.Count > 0)
@@ -149,7 +144,7 @@ namespace mtv_management_leave.Lib.Repository
 
         private async Task<IdentityResult> RegisterFunction(RegisterViewModel model)
         {
-            
+
             var user = Mapper.Map<UserInfo>(model);
             IdentityResult identityResult = null;
 
@@ -214,9 +209,9 @@ namespace mtv_management_leave.Lib.Repository
                              FullName = user.FullName,
                              Id = user.Id,
                              PhoneNumber = user.PhoneNumber,
-                             RoleIds = gUserRole.Select(x=> x.RoleId).ToList()                       
+                             RoleIds = gUserRole.Select(x => x.RoleId).ToList()
                          };
-            var result =  iquery.FirstOrDefault();
+            var result = iquery.FirstOrDefault();
             DisposeContext(context);
             return result;
         }
@@ -237,12 +232,13 @@ namespace mtv_management_leave.Lib.Repository
             userInfo.DateResign = model.DateResign;
             userInfo.FullName = model.FullName;
             userInfo.PhoneNumber = model.PhoneNumber;
+            _userManager.UserValidator = new UserValidator<UserInfo, int>(_userManager) { AllowOnlyAlphanumericUserNames = false };
             var updateUserResult = _userManager.Update(userInfo);
             if (updateUserResult.Succeeded == false) return updateUserResult;
 
             var transaction = context.Database.BeginTransaction();
             var employeeInfo = await context.EmployeeInfos.FirstOrDefaultAsync(m => m.Id == userInfo.Id);
-            if(employeeInfo == null)
+            if (employeeInfo == null)
             {
                 employeeInfo = new EmployeeInfo { Id = userInfo.Id, FPId = model.FPId.GetValueOrDefault() };
                 context.EmployeeInfos.Add(employeeInfo);
@@ -250,10 +246,10 @@ namespace mtv_management_leave.Lib.Repository
             else
             {
                 employeeInfo.FPId = model.FPId.GetValueOrDefault();
-                context.EmployeeInfos.Attach(employeeInfo);        
+                context.EmployeeInfos.Attach(employeeInfo);
                 context.Entry<EmployeeInfo>(employeeInfo).State = EntityState.Modified;
             }
-            
+
 
             var result = await context.SaveChangesAsync();
 
@@ -263,7 +259,8 @@ namespace mtv_management_leave.Lib.Repository
                 updateUserResult = _userManager.RemoveFromRoles(userInfo.Id,
                     context.Roles.Where(m => userInRoles.Contains(m.Id)).Select(m => m.Name).ToArray());
 
-            if (!updateUserResult.Succeeded) {
+            if (!updateUserResult.Succeeded)
+            {
                 transaction.Rollback();
                 return updateUserResult;
             }

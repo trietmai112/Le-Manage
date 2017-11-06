@@ -58,9 +58,10 @@
             var option = {
                 url: '/inoutmanagement/tolist',
                 type: 'POST',
-                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val() }
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val(), Uids: $("[name=Uids]").val() }
             };
             $.ajax(option).done(function (data) {
+                $("#inout-table").bootgrid("clear");
                 if ($.isArray(data.rows)) {
                     $("#inout-table").bootgrid("append", data.rows);
                 }                
