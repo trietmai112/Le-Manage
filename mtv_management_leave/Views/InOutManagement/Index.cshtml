@@ -17,11 +17,14 @@
                 <div class="col-sm-12">
                     @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
                     @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
-                    <div class="col-sm-4">
+                    <div class="col-sm-8">
                         @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                     </div>
-                    <div class="col-sm-4">
-                        <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+                    
+                </div>
+                <div class="col-sm-12"  >
+                    <div style="float:right; padding-right:30px">
+                        <button class="btn btn-default " id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                         <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
                         <button class="btn btn-success" id="btn-fpData"><i class="zmdi zmdi-star"></i>FP Device Data</button>
                         <button class="btn btn-danger" id="btn-sumaryinout"><i class="zmdi zmdi-star"></i>Sumary Inout</button>
