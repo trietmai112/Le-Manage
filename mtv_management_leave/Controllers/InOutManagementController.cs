@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using mtv_management_leave.Lib;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.InOut;
-using System.IO;
-using System.IO.Pipes;
-using System.Configuration;
 
 namespace mtv_management_leave.Controllers
 {
@@ -15,12 +17,12 @@ namespace mtv_management_leave.Controllers
     public class InOutManagementController : Controller
     {
         private InOutBase _inoutBase;
-       // private DataRawBase _dataRawBase;
+        // private DataRawBase _dataRawBase;
 
         public InOutManagementController(InOutBase inOutBase)
         {
             _inoutBase = inOutBase;
-           // _dataRawBase = new DataRawBase();
+            // _dataRawBase = new DataRawBase();
         }
         public ActionResult Index()
         {
@@ -33,7 +35,7 @@ namespace mtv_management_leave.Controllers
             {
                 var pipeClient = new NamedPipeClientStream(".",
                      ConfigurationManager.AppSettings["PipleName"], PipeDirection.InOut, PipeOptions.None);
-                
+
                 if (pipeClient.IsConnected != true) { pipeClient.Connect(); }
 
                 StreamReader sr = new StreamReader(pipeClient);
@@ -49,7 +51,8 @@ namespace mtv_management_leave.Controllers
                         sw.WriteLine("getdata");
                         sw.Flush();
                         string severResponse = sr.ReadLine();
-                        if(!string.IsNullOrEmpty(severResponse)) { 
+                        if (!string.IsNullOrEmpty(severResponse))
+                        {
                             ///TODO
                         }
                         pipeClient.Close();
@@ -84,7 +87,71 @@ namespace mtv_management_leave.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult ReportLateEarly(SearchRequest model)
+        {
 
+
+            try
+            {
+                if (model.DateStart == DateTime.MinValue || model.DateEnd == DateTime.MinValue)
+                {
+                    throw new Exception("Please input Start and End!");
+                }
+                if(model.DateStart.Year != model.DateEnd.Year || model.DateStart.Month!= model.DateEnd.Month)
+                {
+                    throw new Exception("Please export in month!");
+                }
+
+                if(model.Uids!= null && model.Uids.Count== 1 && model.Uids[0] == 0)
+                {
+                    model.Uids = null;
+                }
+
+                var path = Excel(model.DateStart, model.DateEnd, model.Uids);
+                return Content(path);
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 400;
+                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        private string Excel(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
+        {
+            string path = Path.Combine(Server.MapPath("~/ReportFiles/"), $@"{DateTime.Now.Ticks}.xlsx");
+            var result = _inoutBase.ExportWorkingTime(dateStart, dateEnd, lstUid);
+            ExcelCommon common = new ExcelCommon();
+            common.CreateNewShet("WorkingTime");
+            common.AddHeader<RepoExportWorkingTime>();
+
+            common.AddRecords(result);
+            common.Save(path);
+            //var memory = new MemoryStream(System.IO.File.ReadAllBytes(path));
+            //return File(memory, "Application/x-msexcel", DateTime.Now.Ticks + ".xlsx");
+
+            return path;
+
+            //var historyList = historyLogic.CsvOutput(param);
+            //Response.ContentEncoding = System.Text.Encoding.GetEncoding("shift-jis");
+            //Response.Clear();
+            //Response.Write("記事ID,タイトル,日付,IOS,Android,PC,妊娠したくない,妊娠したい,月経期,卵胞期,黄体期,黄体期後期,わからん");
+            //Response.Write(Environment.NewLine);
+
+            //foreach (var history in historyList)
+            //{
+            //    Response.Write(history.ToString());
+            //    Response.Write(Environment.NewLine);
+            //}
+            //Response.AddHeader("content-disposition", "attachment; filename*=utf-8''" + HttpUtility.UrlEncode("記事広告アクセス履歴.csv", System.Text.Encoding.UTF8));
+            //Response.ContentType = "text/csv";
+            //Response.AddHeader("Pragma", "public");
+            //Response.Flush();
+            //Response.End();
+            //return View();
+
+        }
 
 
         [HttpPost]
@@ -115,5 +182,8 @@ namespace mtv_management_leave.Controllers
                 return Json(new { Status = (int)HttpStatusCode.BadRequest, Message = e.Message });
             }
         }
+
+
+
     }
 }

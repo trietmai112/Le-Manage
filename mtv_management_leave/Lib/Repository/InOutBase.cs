@@ -235,7 +235,7 @@ namespace mtv_management_leave.Lib.Repository
                     CalculateValid(inout, lstleaveInDay, beginShiftLate, beginShift, endShift, endShiftEarly, out isValid, out timeDiff, out timeWork, out timeLeave);
                     mapping.IsValid = isValid;
                     mapping.TimeDiff = timeDiff;
-                    mapping.TimeShift = 8;
+                    mapping.TimeShift = 8 * 60;
 
 
                     mapping.TimeWork = timeWork;

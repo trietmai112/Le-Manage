@@ -25,6 +25,7 @@
                         <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
                         <button class="btn btn-success" id="btn-fpData"><i class="zmdi zmdi-star"></i>FP Device Data</button>
                         <button class="btn btn-danger" id="btn-sumaryinout"><i class="zmdi zmdi-star"></i>Sumary Inout</button>
+                        <button class="btn btn-report" id="btn-report"><i class="zmdi zmdi-star"></i>Export Report</button>
                     </div>
                 </div>
             </form>
@@ -100,6 +101,11 @@
             toogle("inoutmanagement/getfpData");
         })
 
+        $("#btn-report").click(function (e) {
+            e.preventDefault();
+            toogleReport("inoutmanagement/reportLateEarly");
+        })
+
         $("#btn-sumaryinout").click(function (e) {
             e.preventDefault();
             toogle("inOutManagement/sumaryInout");
@@ -131,8 +137,42 @@
                             notify("Your request has complete.", "success");
                         })
                         .error(function (jhx) {
+                            console.log(jhx.responseText)
                             showAjaxError(jhx);
                         })
+                },
+                // handling the promise rejection
+                function (dismiss) {
+                    console.log("swal confirm closed");
+                });
+        }
+
+        var toogleReport = function (urlCallback) {
+            var start = $("[name=DateStart]").val();
+            var end = $("[name=DateEnd]").val();
+            var lstUids = $("[name=Uids]").val();
+            swal({
+                title: "Confirm!",
+                type: "info",
+                text: "Do you want continue?",
+                showCloseButton: true,
+                showCancelButton: true,
+                showConfirmButton: true,
+                allowOutsideClick: true,
+                showLoaderOnConfirm: true
+            }).then(
+                function () {
+
+                    var option = {
+                        url: urlCallback,
+                        type: "POST",
+                        data: { DateStart: start, DateEnd: end, Uids: lstUids }
+                        
+                    };
+                    $.ajax(option).success(function (returnValue) {
+                        console.log("triet tesst" + returnValue);
+                        window.location = '/Report/Download?file=' + returnValue;
+                    });
                 },
                 // handling the promise rejection
                 function (dismiss) {
