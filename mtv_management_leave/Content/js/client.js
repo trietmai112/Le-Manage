@@ -89,7 +89,10 @@ var showAjaxError = function (jqXHR) {
     } else {
         msg = 'Uncaught Error.\n' + jqXHR.responseText;
     }
-    swal("Xẩy ra lỗi", msg, "error");
+    setTimeout(function () {
+        swal("Xẩy ra lỗi", msg, "error");
+    }, 200);
+    
 }
 
 
@@ -138,7 +141,8 @@ $("body").on("click", ".date-time-picker-clear", function (e) {
 
 $(document).ready(function (e) {
     $(document).ajaxComplete(function () {
-        mySwal("Ajax complete", "System reponse completed.", "success", 1000);
+        swal.close();
+        //mySwal("Ajax complete", "System reponse completed.", "success", 1000);
     });
 
 
