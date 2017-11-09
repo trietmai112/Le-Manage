@@ -10,6 +10,7 @@ using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
+    [Authorize(Roles = "Super admin, Admin")]
     public class MasterDayOffCompanyController : Controller
     {
         private DayOffCompanyBase _dayOffCompanyBase;

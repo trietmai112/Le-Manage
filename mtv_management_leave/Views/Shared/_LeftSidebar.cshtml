@@ -12,13 +12,13 @@
         if (isAdmin)
         {
             <li><a href="/employee/register"><i class="zmdi zmdi-account-add"></i> Register User</a></li>
+            <li><a href="/employee"><i class="zmdi zmdi-accounts"></i> Employee Information</a></li>
         }
     }
-    <li><a href="/employee"><i class="zmdi zmdi-accounts"></i> Employee Information</a></li>
     <li class="sub-menu">
         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-assignment-return"></i>Leave</a>
         <ul>
-            <li><a href="/registerleave">Register Leave</a></li>            
+            <li><a href="/registerleave">Register Leave</a></li>
             @{
                 if (isAdmin)
                 {
@@ -44,7 +44,7 @@
     <li class="sub-menu">
         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-functions"></i> Summary Annual leave</a>
         <ul>
-            <li><a href="/summaryLeaveAnnual">Summary Annual Leave</a></li>            
+            <li><a href="/summaryLeaveAnnual">Summary Annual Leave</a></li>
             @{
                 if (isAdmin)
                 {
@@ -56,7 +56,7 @@
     <li class="sub-menu">
         <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-refresh-sync-alert"></i>Request Change In-Out</a>
         <ul>
-            <li><a href="/changeinout">Change In-out</a></li>            
+            <li><a href="/changeinout">Change In-out</a></li>
             @{
                 if (isAdmin)
                 {
@@ -65,13 +65,14 @@
             }
         </ul>
     </li>
-    <li><a href="/leavebonus"><i class="zmdi zmdi-collection-plus"></i> Add Leave Bonus</a></li>    
     @if (isAdmin)
     {
+        <li><a href="/leavebonus"><i class="zmdi zmdi-collection-plus"></i> Add Leave Bonus</a></li>
         <li><a href="/availablebeginyear"><i class="zmdi zmdi-star-circle"></i> Available Begin Year</a></li>
         <li><a href="/userseniority"><i class="zmdi zmdi-iridescent"></i> User seniority </a></li>
-    }    
-    <li><a href="/masterdayoffcompany"><i class="zmdi zmdi-city-alt"></i> Dayoff company</a></li>
+        <li><a href="/masterdayoffcompany"><i class="zmdi zmdi-city-alt"></i> Dayoff company</a></li>
+
+    }
     <li><a href="/account/logout"><i class="zmdi zmdi-sign-in"></i> Logout</a></li>
 </ul>
 

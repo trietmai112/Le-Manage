@@ -93,8 +93,8 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Error", ex.Message);
-                return null;
+                Response.StatusCode = 400;
+                return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

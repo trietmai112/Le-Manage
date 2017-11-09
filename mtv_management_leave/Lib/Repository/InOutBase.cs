@@ -155,7 +155,7 @@ namespace mtv_management_leave.Lib.Repository
             // khong du gio out
             var lstdayoff = context.MasterLeaveDayCompanies.Where(m => m.Date >= DateStart && m.Date <= DateEnd).Select(m => m.Date).ToList();
             var lstInout = context.InOuts.Where(m => m.Date >= DateStart && m.Date <= DateEnd && lstUserId.Contains(m.Uid)).Select(m => new RepoInOut { Uid = m.Uid, Date = m.Date, Intime = m.Intime, OutTime = m.OutTime }).ToList();
-            var lstLeave = context.RegisterLeaves.Where(m => m.DateStart <= DateEnd && m.DateEnd >= DateStart && lstUserId.Contains(m.Uid)).Select(m => new RepoLeave()
+            var lstLeave = context.RegisterLeaves.Where(m => m.DateStart <= DateEnd && m.DateEnd >= DateStart && lstUserId.Contains(m.Uid) && m.Status != Common.StatusLeave.E_Reject).Select(m => new RepoLeave()
             {
                 Uid = m.Uid,
                 DateRegister = m.DateRegister,

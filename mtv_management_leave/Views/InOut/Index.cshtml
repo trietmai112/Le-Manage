@@ -24,10 +24,9 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("inout-table")
-        .SetAjaxUrl("/inout/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
-            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow",  MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", MappingFrom = "Uid" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
@@ -66,14 +65,34 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
+
+       
         $("#btn-search").click(function (e) {
-            $("#inout-table").bootgrid("reload");
+            reloadGrid()
         });
+
+        var reloadGrid = function () {
+            var option = {
+                url: '/inout/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#inout-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#inout-table").bootgrid("append", data.rows);
+                }
+            }).error(function (jhx) {
+                console.log(jhx.responseText)
+                showAjaxError(jhx);
+            });
+        }
 
         $("#btn-register").click(function (e) {
             $("#modalRegisterLeave").modal("show");
+            swal.close();
         });
-        
+
         var validRow = function (col, row) {
             if (row[col.id] == null) return "";
             var text = row[col.id];;
@@ -84,7 +103,7 @@
         var validRowDate = function (col, row) {
             if (row[col.id] == null) return "";
             var text = dateConvert(row[col.id]);
-            if (!row.IsValid) text = "<span class='text-danger'>" + dateConvert(row[col.id]) + "</span>";           
+            if (!row.IsValid) text = "<span class='text-danger'>" + dateConvert(row[col.id]) + "</span>";
             return text;
         }
 
@@ -105,7 +124,8 @@
 
         var registerBootstrapControl = function () {
             $(".modal-body .time-picker").datetimepicker({
-                format: "LT", stepping: 15});
+                format: "LT", stepping: 15
+            });
             $(".modal-body .date-picker").datetimepicker({ format: "MM/DD/YYYY", showTodayButton: true });
             $('.modal-body .selectpicker').selectpicker('render');
         }
@@ -122,7 +142,7 @@
             var option = {
                 url: url,
                 type: "POST",
-                data : data
+                data: data
             }
             $.ajax(option).done(function (data) {
                 setupModalBodyFrom(data);
