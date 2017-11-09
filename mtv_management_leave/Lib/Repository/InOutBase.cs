@@ -288,9 +288,9 @@ namespace mtv_management_leave.Lib.Repository
                     if (lstleaveApprove == null || lstleaveApprove.Count == 0)
                     {
                         isValid = false;
-                        int diffBegin = (inout.Intime - beginShiftLate).Minutes;
+                        int diffBegin = (int) (inout.Intime - beginShift).TotalMinutes;
                         diffBegin = diffBegin < 0 ? 0 : diffBegin;
-                        int diffEnd = (endShift - inout.OutTime.Value).Minutes;
+                        int diffEnd = (int)(endShift - inout.OutTime.Value).TotalMinutes;
                         diffEnd = diffEnd < 0 ? 0 : diffEnd;
                         timeDiff = diffBegin + diffEnd;
                     }

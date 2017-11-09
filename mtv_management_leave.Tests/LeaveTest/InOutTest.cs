@@ -388,7 +388,18 @@ namespace mtv_management_leave.Tests.LeaveTest
 
         }
 
-
+        [TestMethod]
+        public void ExportWorkingTime_NormalCase()
+        {
+            InOutBase inoutBase = new InOutBase();
+            DateTime dateStart = new DateTime(2017, 11, 09);
+            DateTime dateEnd = dateStart;
+            for (DateTime date = dateStart; date <= dateEnd; date = date.AddDays(1))
+            {
+                inoutBase.UpdateOrCreateInout(new InOut() { Uid = 1, Intime = date.AddHours(9), OutTime = date.AddHours(18), Date = date });
+            }
+            var data = inoutBase.ExportWorkingTime(dateStart,dateEnd, new List<int>() { 1 });
+        }
 
 
         private void UpdateUserResign(DateTime? dateResign)
