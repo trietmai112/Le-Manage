@@ -38,6 +38,19 @@ namespace mtv_management_leave.Controllers
             }
         }
 
+        public ActionResult ViewInfoBasic()
+        {
+            var model = _accountBase.GetById(HttpContext.User.Identity.GetUserId<int>());
+            return PartialView("_ViewInfoBasic",model);
+        }
+
+        public ActionResult Profile()
+        {
+            return View(new mtv_management_leave.Models.Account.RegisterViewModel {
+                DateBeginWork = DateTime.Now
+            });
+        }
+
         public void Excel()
         {
             string path = Path.Combine(Server.MapPath("~/"), $"{DateTime.Now.Ticks}.xlsx");

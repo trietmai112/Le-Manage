@@ -14367,3 +14367,6 @@ textarea {
   margin-top: 0px;
   margin-right: 10px;
 }
+.tab {
+  padding: 0px 20px !important;
+}

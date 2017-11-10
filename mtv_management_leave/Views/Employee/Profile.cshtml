@@ -1,0 +1,51 @@
+﻿@model mtv_management_leave.Models.Account.RegisterViewModel
+@{
+    ViewBag.Title = "User Profile";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h2>@ViewBag.Title<small>You can see all your information at here</small></h2>        
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div role="tabpanel" class="tab">
+                    <ul class="tab-nav" role="tablist">
+                        <li class="active">
+                            <a href="#home9" aria-controls="home9" role="tab"
+                               data-toggle="tab">Basic Infomation</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#profile9" aria-controls="profile9"
+                               role="tab" data-toggle="tab">View Leave Time</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#messages9" aria-controls="messages9"
+                               role="tab" data-toggle="tab">View Time In-Out of Month</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active"
+                             id="home9">
+                            @{Html.RenderAction("ViewInfoBasic", "Employee");}
+
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile9">
+                            <p>
+                                Function will implement in the feature
+                            </p>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="messages9">
+                            <p>
+                                Function will implement in the feature
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+
