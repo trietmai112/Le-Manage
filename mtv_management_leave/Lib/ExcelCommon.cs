@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace mtv_management_leave.Lib
 {
-    [SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
+    //[SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
     public class ExcelCommon
     {
         Application excelApp = new Application();
