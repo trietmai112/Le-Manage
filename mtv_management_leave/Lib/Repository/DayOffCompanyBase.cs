@@ -64,6 +64,10 @@ namespace mtv_management_leave.Lib.Repository
 
         public List<MasterLeaveDayCompany> GetLeaveDayCompany(DateTime dateStart, DateTime DateEnd)
         {
+            if (dateStart > DateEnd)
+            {
+                throw new Exception("Please select Date Start less or equal with Date End!");
+            }
             InitContext(out context);
             var lstResult = context.MasterLeaveDayCompanies.Where(m => m.Date >= dateStart && m.Date <= DateEnd).ToList();
             DisposeContext(context);
@@ -81,7 +85,7 @@ namespace mtv_management_leave.Lib.Repository
             }
             else
             {
-                lstResult.Description = InputLeaveDayCompany.Description;
+                throw new Exception("Data Duplicate!");
             }
             context.SaveChanges();
             DisposeContext(context);

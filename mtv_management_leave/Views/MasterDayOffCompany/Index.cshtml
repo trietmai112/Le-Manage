@@ -11,8 +11,10 @@
     <div class="card-body">
         <div class="row">
             <div class="col-sm-12">
-                @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
-                @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-4" })
+                @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
+                @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
+                <div class="col-sm-4">
+                </div>
                 <div class="col-sm-4">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-register"><i class="zmdi zmdi-plus"></i> Create New</button>
@@ -22,7 +24,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("DayOffCompany-Table")
-        .SetAjaxUrl("/MasterDayOffCompany/tolist")
         .AddAjaxParameter(typeof(RequestMasterDayOff))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, Identify = true, ColumnHeaderName = "Id", MappingFrom = "Id" },
@@ -55,9 +56,27 @@
 
 @section Scripts{
     <script type="text/javascript">
+
         $("#btn-search").click(function (e) {
-            $("#DayOffCompany-Table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
+
+        var reloadGrid = function () {
+            var option = {
+                url: '/masterDayOffCompany/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#DayOffCompany-Table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#DayOffCompany-Table").bootgrid("append", data.rows);
+                }
+            }).error(function (jhx) {
+                showAjaxError(jhx);
+            });
+        }
 
         $("#btn-register").click(function (e) {
             $("#modalRegisterDayOffCompany").modal("show");
@@ -114,6 +133,8 @@
             $.ajax(option).done(function (data) {
                 $("#modal-close").click();
                 $("#btn-search").click();
+            }).error(function (jhx) {
+                showAjaxError(jhx);
             });
         })
         var toogle = function (urlCallback) {
