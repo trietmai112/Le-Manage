@@ -239,6 +239,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\PlaceHolderAttribute.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CompensatingBonusController.cs" />
+    <Compile Include="Controllers\CompensatingManagementController.cs" />
     <Compile Include="Controllers\SummaryLeaveAnnualManagementController.cs" />
     <Compile Include="Controllers\SummaryLeaveAnnualController.cs" />
     <Compile Include="Controllers\ChangeInOutManagementController.cs" />
@@ -346,6 +348,10 @@
     <Compile Include="Migrations\201710180331010_AddDefaultRoles.cs" />
     <Compile Include="Migrations\201710180331010_AddDefaultRoles.Designer.cs">
       <DependentUpon>201710180331010_AddDefaultRoles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711110036042_TypeAndStatusAddLeave.cs" />
+    <Compile Include="Migrations\201711110036042_TypeAndStatusAddLeave.Designer.cs">
+      <DependentUpon>201711110036042_TypeAndStatusAddLeave.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelBinder\DateTimeBinder.cs" />
@@ -770,6 +776,9 @@
     <Content Include="Views\Employee\Index.cshtml" />
     <Content Include="Views\Employee\Update.cshtml" />
     <Content Include="Views\Employee\_ChangePassword.cshtml" />
+    <Content Include="Views\CompensatingManagement\Index.cshtml" />
+    <Content Include="Views\CompensatingBonus\Index.cshtml" />
+    <Content Include="Views\CompensatingBonus\RegisterCompensatingBonus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -811,6 +820,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710180331010_AddDefaultRoles.resx">
       <DependentUpon>201710180331010_AddDefaultRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711110036042_TypeAndStatusAddLeave.resx">
+      <DependentUpon>201711110036042_TypeAndStatusAddLeave.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

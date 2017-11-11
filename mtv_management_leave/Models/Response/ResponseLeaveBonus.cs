@@ -14,5 +14,7 @@ namespace mtv_management_leave.Models.Response
         public double? AddLeaveHour { get; set; }
         public DateTime? DateAdd { get; set; }
         public string Reason { get; set; }
+        public string Type { get; set; }
+        public string Status { get; set; }
     }
 }
