@@ -18,7 +18,9 @@ namespace mtv_management_leave.Models
         public double TimeDiff { get; set; }
         public DateTime Date { get; set; }
         public string Intime { get; set; }
+        public DateTime? IntimeByDateTime { get; set; }
         public string Outtime { get; set; }
+        public DateTime? OuttimeByDateTime { get; set; }
         public string LeaveStart1 { get; set; }
         public string LeaveEnd1 { get; set; }
         public string LeaveStatus1 { get; set; }

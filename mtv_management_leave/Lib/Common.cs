@@ -40,8 +40,10 @@ namespace mtv_management_leave.Lib
             E_Compensating = 4
         }
 
-        public static int minuteLatePermit = 45;
+        public static int minuteLatePermit = 30;
         public static int minuteEarlyPermit = 15;
+        public static double BeginShift = 8;
+        public static double EndShift = 17.5;
 
         public static string ConvertLeaveStatusToString(int leaveStatus)
         {

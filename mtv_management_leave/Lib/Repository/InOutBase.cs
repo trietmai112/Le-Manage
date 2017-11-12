@@ -194,7 +194,9 @@ namespace mtv_management_leave.Lib.Repository
                     mapping.FullName = user.FullName;
                     mapping.Date = date;
                     mapping.Intime = inout != null ? inout.Intime.ToString("HH:mm") : string.Empty;
+                    mapping.IntimeByDateTime = inout?.Intime;
                     mapping.Outtime = inout != null ? (inout.OutTime != null ? inout.OutTime.Value.ToString("HH:mm") : string.Empty) : string.Empty;
+                    mapping.OuttimeByDateTime = inout != null ? inout.OutTime : null;
 
                     if (lstleaveInDay.Count == 0)
                     {
@@ -288,7 +290,7 @@ namespace mtv_management_leave.Lib.Repository
                     if (lstleaveApprove == null || lstleaveApprove.Count == 0)
                     {
                         isValid = false;
-                        int diffBegin = (int) (inout.Intime - beginShift).TotalMinutes;
+                        int diffBegin = (int)(inout.Intime - beginShift).TotalMinutes;
                         diffBegin = diffBegin < 0 ? 0 : diffBegin;
                         int diffEnd = (int)(endShift - inout.OutTime.Value).TotalMinutes;
                         diffEnd = diffEnd < 0 ? 0 : diffEnd;

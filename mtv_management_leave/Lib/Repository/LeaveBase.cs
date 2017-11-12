@@ -6,6 +6,7 @@ using System.Web;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.Response;
+using Microsoft.AspNet.Identity;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -45,7 +46,7 @@ namespace mtv_management_leave.Lib.Repository
 
             #endregion
             leave.DateRegister = DateTime.Today;
-            if (leave.DateStart>=leave.DateEnd)
+            if (leave.DateStart >= leave.DateEnd)
             {
                 throw new Exception("End Time must be after Start Time!");
 
@@ -156,6 +157,111 @@ namespace mtv_management_leave.Lib.Repository
         {
             PrivateDeleteLeave(dateStart, dateEnd, lstUid, true);
         }
+
+        public void AutoCreateLeave(List<RepoMappingInOut> lstInoutInvalid)
+        {
+            if (lstInoutInvalid == null || lstInoutInvalid.Count == 0)
+                return;
+            // Nếu như ngày hôm đó nhân viên đã đăng ký hoặc duyệt rồi thì ko tự động đăng ký nữa
+            // Suy nghĩ đến trường hợp nhân viên đã đăng ký nhưng không đủ  (ví dụ đi trễ 1.5 tiếng nhưng mới chỉ đăng ký 1 tiếng?)
+            InitContext(out context);
+            List<RegisterLeave> lstLeaveResult = new List<Models.Entity.RegisterLeave>();
+
+            DateTime dateMin = lstInoutInvalid.Min(m => m.Date);
+            DateTime dateMax = lstInoutInvalid.Max(m => m.Date);
+            dateMax = dateMax.Date.AddDays(1).AddMinutes(-1);
+            List<int> lstUids = lstInoutInvalid.Select(m => m.Uid).Distinct().ToList();
+            var e_reject = Common.StatusLeave.E_Reject;
+            var e_approved = Common.StatusLeave.E_Approve;
+
+            var lstLeaveAlready = context.RegisterLeaves.Where(m => m.Status != e_reject
+                                    && m.DateStart <= dateMax
+                                    && m.DateEnd >= dateMin
+                                    && lstUids.Contains(m.Uid)).Select(m => new { m.Uid, m.DateStart, m.DateEnd }).ToList();
+            string E_AnnualLeave = Common.TypeLeave.E_AnnualLeave.ToString();
+            var leaveTypeAnnualId = context.MasterLeaveTypes.Where(m => m.LeaveCode == E_AnnualLeave).Select(m => m.Id).FirstOrDefault();
+            if (leaveTypeAnnualId == null || leaveTypeAnnualId == 0)
+            {
+                DisposeContext(context);
+                throw new Exception("miss data master annual leave!");
+            }
+
+
+            foreach (var inoutInValid in lstInoutInvalid)
+            {
+                if (lstLeaveAlready.Any(m => m.Uid == inoutInValid.Uid && m.DateStart.Date <= inoutInValid.Date && m.DateEnd.Date >= inoutInValid.Date))
+                {
+                    continue;
+                }
+                DateTime date = inoutInValid.Date;
+
+                //Thiếu in- out
+                if (string.IsNullOrEmpty(inoutInValid.Intime) || string.IsNullOrEmpty(inoutInValid.Outtime))
+                {
+                    RegisterLeave leaveRegister = new Models.Entity.RegisterLeave();
+                    leaveRegister.DateRegister = DateTime.Today;
+                    leaveRegister.DateApprove = DateTime.Today;
+                    leaveRegister.DateStart = date.AddHours(Common.BeginShift);
+                    leaveRegister.DateEnd = date.AddHours(Common.EndShift);
+                    leaveRegister.LeaveTypeId = leaveTypeAnnualId;
+                    leaveRegister.Reason = "Auto created by miss inout";
+                    leaveRegister.RegisterHour = 8;
+                    leaveRegister.Status = e_approved;
+                    leaveRegister.Uid = inoutInValid.Uid;
+                    leaveRegister.UserApprove = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                    lstLeaveResult.Add(leaveRegister);
+                }
+                //Trễ
+                if (inoutInValid.IntimeByDateTime > date.AddHours(Common.BeginShift).AddMinutes(Common.minuteLatePermit))
+                {
+                    RegisterLeave leaveRegister = new Models.Entity.RegisterLeave();
+                    leaveRegister.DateRegister = DateTime.Today;
+                    leaveRegister.DateApprove = DateTime.Today;
+                    leaveRegister.DateStart = date.AddHours(Common.BeginShift);
+
+                    DateTime dateEnd = date.AddHours(Common.EndShift);
+                    double registerHours = 0;
+                    RoundLate(inoutInValid.IntimeByDateTime.Value, out dateEnd, out registerHours);
+
+                    leaveRegister.DateEnd = dateEnd;
+                    leaveRegister.LeaveTypeId = leaveTypeAnnualId;
+                    leaveRegister.Reason = "Auto created by late";
+                    leaveRegister.RegisterHour = registerHours;
+                    leaveRegister.Status = e_approved;
+                    leaveRegister.Uid = inoutInValid.Uid;
+                    leaveRegister.UserApprove = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                    lstLeaveResult.Add(leaveRegister);
+                }
+                //Sớm
+                if (inoutInValid.OuttimeByDateTime < date.AddHours(Common.EndShift).AddMinutes(-Common.minuteEarlyPermit))
+                {
+                    RegisterLeave leaveRegister = new Models.Entity.RegisterLeave();
+                    leaveRegister.DateRegister = DateTime.Today;
+                    leaveRegister.DateApprove = DateTime.Today;
+
+                    DateTime dateStart = date.AddHours(Common.BeginShift);
+                    double registerHours = 0;
+                    RoundEarly(inoutInValid.OuttimeByDateTime.Value, out dateStart, out registerHours);
+
+                    leaveRegister.DateStart = dateStart;
+                    leaveRegister.DateEnd = date.AddHours(Common.EndShift); ;
+                    leaveRegister.LeaveTypeId = leaveTypeAnnualId;
+                    leaveRegister.Reason = "Auto created by Early";
+                    leaveRegister.RegisterHour = registerHours;
+                    leaveRegister.Status = e_approved;
+                    leaveRegister.Uid = inoutInValid.Uid;
+                    leaveRegister.UserApprove = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
+                    lstLeaveResult.Add(leaveRegister);
+                }
+            }
+            if(lstLeaveResult.Count>0)
+            {
+                context.RegisterLeaves.AddRange(lstLeaveResult);
+                context.SaveChanges();
+            }
+            DisposeContext(context);
+        }
+
         #region Private Method
 
         /// <summary>
@@ -324,6 +430,58 @@ namespace mtv_management_leave.Lib.Repository
         public void DeleteLeaveWithoutValidate(DateTime dateStart, DateTime dateEnd, List<int> lstUid)
         {
             PrivateDeleteLeave(dateStart, dateEnd, lstUid, false);
+        }
+
+        public void RoundLate(DateTime inTime, out DateTime registerLate, out double HourRegister)
+        {
+            DateTime beginShift = inTime.Date.AddHours(Common.BeginShift);
+
+            if (inTime.Minute >= 0 && inTime.Minute < 15)
+            {
+                registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(15);
+                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+            }
+            else if (inTime.Minute >= 15 && inTime.Minute < 30)
+            {
+                registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(30);
+                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+            }
+            else if (inTime.Minute >= 30 && inTime.Minute < 45)
+            {
+                registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(45);
+                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+            }
+            else
+            {
+                registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(60);
+                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+            }
+        }
+
+        public void RoundEarly(DateTime outTime, out DateTime registerEarly, out double HourRegister)
+        {
+            DateTime endShift = outTime.Date.AddHours(Common.EndShift);
+
+            if (outTime.Minute >= 0 && outTime.Minute < 15)
+            {
+                registerEarly = outTime.Date.AddHours(outTime.Hour).AddMinutes(0);
+                HourRegister = (endShift - registerEarly.AddMinutes(15)).Hours;
+            }
+            else if (outTime.Minute >= 15 && outTime.Minute < 30)
+            {
+                registerEarly = outTime.Date.AddHours(outTime.Hour).AddMinutes(15);
+                HourRegister = (endShift - registerEarly.AddMinutes(15)).Hours;
+            }
+            else if (outTime.Minute >= 30 && outTime.Minute < 45)
+            {
+                registerEarly = outTime.Date.AddHours(outTime.Hour).AddMinutes(30);
+                HourRegister = (endShift - registerEarly.AddMinutes(15)).Hours;
+            }
+            else
+            {
+                registerEarly = outTime.Date.AddHours(outTime.Hour).AddMinutes(45);
+                HourRegister = (endShift - registerEarly.AddMinutes(15)).Hours;
+            }
         }
         #endregion
     }
