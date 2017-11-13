@@ -17,10 +17,26 @@ namespace mtv_management_leave.Lib.Repository
         {
         }
 
+        public void ApproveAddLeaveBonus(List<int> lstIds)
+        {
+            InitContext(out context);
+            var addLeavesApprove = context.AddLeaves.Where(m => lstIds.Contains(m.Id)).ToList();
+            string E_Approve = Common.StatusLeave.E_Approve.ToString();
+            addLeavesApprove.ForEach(m => m.Status = E_Approve);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
         public void DeleteAddLeaveBonus(List<int> lstIds)
         {
             InitContext(out context);
             var addLeavesDelete = context.AddLeaves.Where(m => lstIds.Contains(m.Id)).ToList();
+            string E_Approve = Common.StatusLeave.E_Approve.ToString();
+            string E_Reject = Common.StatusLeave.E_Reject.ToString();
+            if (addLeavesDelete.Any(m => m.Status == E_Approve || m.Status == E_Reject))
+            {
+                throw new Exception("Please delete only data register!!");
+            }
             context.AddLeaves.RemoveRange(addLeavesDelete);
             context.SaveChanges();
             DisposeContext(context);
@@ -62,13 +78,24 @@ namespace mtv_management_leave.Lib.Repository
             return PrivateGetAddLeaveBonus(dateFrom, DateTo, lstUid);
         }
 
+        public void RejectAddLeaveBonus(List<int> lstIds)
+        {
+            InitContext(out context);
+            var addLeavesReject = context.AddLeaves.Where(m => lstIds.Contains(m.Id)).ToList();
+            string E_Reject = Common.StatusLeave.E_Reject.ToString();
+            addLeavesReject.ForEach(m => m.Status = E_Reject);
+            context.SaveChanges();
+            DisposeContext(context);
+        }
+
         public void SaveAddLeaveBonus(AddLeave addLeaveInput)
         {
             InitContext(out context);
-            var addLeaves = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd == addLeaveInput.DateAdd && m.Uid == addLeaveInput.Uid).FirstOrDefault();
+            string E_Reject = Common.StatusLeave.E_Reject.ToString();
+            var addLeaves = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd == addLeaveInput.DateAdd && m.Uid == addLeaveInput.Uid && m.Status!= E_Reject).FirstOrDefault();
             if (addLeaves != null)
             {
-                addLeaves.AddLeaveHour = addLeaveInput.AddLeaveHour;
+                throw new Exception("Data Duplicate!");
             }
             else
             {
@@ -108,12 +135,21 @@ namespace mtv_management_leave.Lib.Repository
         private List<ResponseLeaveBonus> PrivateGetAddLeaveBonus(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {
             InitContext(out context);
+            if(DateTo< dateFrom)
+            {
+                throw new Exception("Please select From less or equal with To!");
+            }
+            if(dateFrom.Year!= DateTo.Year || dateFrom.Month!= DateTo.Month)
+            {
+                throw new Exception("Please select search in month!");
+            }
             var query = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd.Value >= dateFrom && m.DateAdd.Value <= DateTo);
             if (lstUid != null && lstUid.Count > 0)
             {
                 query = query.Where(m => lstUid.Contains(m.Uid));
             }
-            var lstResult = query.Select(m => new ResponseLeaveBonus() { Id = m.Id, Uid = m.Uid, FullName = m.UserInfo.FullName, DateAdd = m.DateAdd, AddLeaveHour = m.AddLeaveHour, Reason = m.Reason }).ToList();
+            var lstResult = query.Select(m => new ResponseLeaveBonus() { Id = m.Id, Uid = m.Uid, FullName = m.UserInfo.FullName, DateAdd = m.DateAdd, AddLeaveHour = m.AddLeaveHour, Reason = m.Reason , Status= m.Status , Type= m.Type}).ToList();
+            lstResult.ForEach(m => m.Status = Common.ConvertLeaveStatusToString(m.Status));
             DisposeContext(context);
             return lstResult;
         }

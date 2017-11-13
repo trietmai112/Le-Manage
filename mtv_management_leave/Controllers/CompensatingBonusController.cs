@@ -13,42 +13,43 @@ using mtv_management_leave.Lib;
 
 namespace mtv_management_leave.Controllers
 {
-    [Authorize(Roles = "Super admin, Admin")]
-    public class LeaveBonusController : Controller
+    public class CompensatingBonusController : Controller
     {
         private AddLeaveBase _leaveBase;
 
-        public LeaveBonusController(AddLeaveBase leaveBase)
+        public CompensatingBonusController(AddLeaveBase leaveBase)
         {
             _leaveBase = leaveBase;
         }
-        [Authorize(Roles= "Super admin, Admin")]
         public ActionResult Index()
         {
             return View(new Models.LeaveBonus.SearchRequest());
         }
 
-        public PartialViewResult RegisterLeaveBonus()
+        public PartialViewResult RegisterCompensatingBonus()
         {
             return PartialView();
         }
 
         [HttpPost]
-        public PartialViewResult RegisterLeaveBonus(AddLeave registerLeaveBonusRequest)
+        public ActionResult RegisterLeaveBonus(AddLeave registerLeaveBonusRequest)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    registerLeaveBonusRequest.Status = Common.StatusLeave.E_Approve.ToString();
+                    registerLeaveBonusRequest.Status = Common.StatusLeave.E_Register.ToString();
+                    registerLeaveBonusRequest.Type = Common.AddLeaveType.E_Compensating.ToString();
+                    registerLeaveBonusRequest.Uid = int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId());
                     _leaveBase.SaveAddLeaveBonus(registerLeaveBonusRequest);
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Error", ex.Message);
+                    Response.StatusCode = 400;
+                    return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
                 }
             }
-            return PartialView(registerLeaveBonusRequest);
+            return Json(new { Status = 0, Message = "Action complete" });
         }
 
         [HttpPost]
@@ -76,11 +77,17 @@ namespace mtv_management_leave.Controllers
 
                 if (model.DateStart != null && model.DateEnd != null)
                 {
-                    if (model.Uids != null && model.Uids.Count == 1 && model.Uids[0] == 0)
+                    var lstUid = new List<int>();
+                    if (model.Uid != null)
                     {
-                        model.Uids = null;
+                        lstUid.Add(model.Uid.Value);
                     }
-                    result = _leaveBase.GetAddLeaveBonus(model.DateStart.Value, model.DateEnd.Value, model.Uids);
+                    else
+                    {
+                        lstUid.Add(int.Parse(System.Web.HttpContext.Current.User.Identity.GetUserId()));
+                    }
+                    result = _leaveBase.GetAddLeaveBonus(model.DateStart.Value, model.DateEnd.Value, lstUid);
+                    result = result.Where(m => m.Type == Common.AddLeaveType.E_Compensating.ToString()).ToList();
                 }
                 var resultJson = Json(new Lib.Repository.BootGridReponse<ResponseLeaveBonus>
                 {
@@ -93,8 +100,8 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Error", ex.Message);
-                return null;
+                Response.StatusCode = 400;
+                return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

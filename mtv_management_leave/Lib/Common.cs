@@ -32,8 +32,18 @@ namespace mtv_management_leave.Lib
             E_Reject = 3
         }
 
-        public static int minuteLatePermit = 45;
+        public enum AddLeaveType
+        {
+            E_Overtime = 1,
+            E_Pregnant = 2,
+            E_FatherBaby = 3,
+            E_Compensating = 4
+        }
+
+        public static int minuteLatePermit = 30;
         public static int minuteEarlyPermit = 15;
+        public static double BeginShift = 8;
+        public static double EndShift = 17.5;
 
         public static string ConvertLeaveStatusToString(int leaveStatus)
         {
@@ -44,6 +54,30 @@ namespace mtv_management_leave.Lib
                 case (int) StatusLeave.E_Register: result = "Register"; break;
                 case (int) StatusLeave.E_Reject: result =  "DisApproved"; break;
                 default: result = "Register"; break;
+            }
+            return result;
+        }
+
+        public static string ConvertLeaveStatusToString(string leaveStatus)
+        {
+            string result = string.Empty;
+            string E_Approve = StatusLeave.E_Approve.ToString();
+            string E_Register = StatusLeave.E_Register.ToString();
+            string E_Reject = StatusLeave.E_Reject.ToString();
+            if(leaveStatus == E_Approve)
+            {
+                result = "Approved";
+            }else if(leaveStatus == E_Register)
+            {
+                result = "Register";
+            }
+            else if(leaveStatus == E_Reject)
+            {
+                result = "DisApproved";
+            }
+            else
+            {
+                result = "Register";
             }
             return result;
         }

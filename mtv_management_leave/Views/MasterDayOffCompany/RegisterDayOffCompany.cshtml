@@ -9,13 +9,10 @@
             @using (Html.BeginForm("RegisterDayOffCompany","MasterDayOffCompany"))
             {
                 @Html.ValidationSummary(false)
-                <label class="control-label">
-                    <b>Infomation register</b>
-                </label>
                 <div class="row">
-                    <div class="col-sm-12">
-                            <div class="col-sm-2 text-right"><label class="control-label">Date</label> </div>
-                            <div class="col-sm-5 md-date">@Html.vDateTimePickerFor(m => m.Date).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).HiddenLabel().ToHtml()</div>
+                    <div class="col-sm-12 ">
+                            <div class="col-sm-2 text-left padding-top-10 padding-left-0"><label class="control-label">Date</label> </div>
+                            <div class="col-sm-4 md-date padding-left-0">@Html.vDateTimePickerFor(m => m.Date).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).HiddenLabel().ToHtml()</div>
                             
                     </div>
                 </div>

@@ -30,6 +30,14 @@ namespace mtv_management_leave.Lib.Interface
         List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd);
         List<ResponseLeave> GetLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid);
 
+        /// <summary>
+        /// Hàm tự động đăng ký leave cho nhân viên
+        /// </summary>
+        /// <param name="dateStart"></param>
+        /// <param name="dateEnd"></param>
+        /// <param name="lstUid"></param>
+        void AutoCreateLeave(List<RepoMappingInOut> lstInoutInvalid);
+
         void DeleteLeave(DateTime dateStart, DateTime dateEnd);
         void DeleteLeave(DateTime dateStart, DateTime dateEnd, List<int> lstUid);
         void DeleteLeave(List<int> lstLeaveId);

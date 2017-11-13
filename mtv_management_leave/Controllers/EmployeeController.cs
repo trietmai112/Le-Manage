@@ -38,6 +38,27 @@ namespace mtv_management_leave.Controllers
             }
         }
 
+        public void Excel()
+        {
+            string path = Path.Combine(Server.MapPath("~/"), $"{DateTime.Now.Ticks}.xlsx");
+            ExcelCommon common = new ExcelCommon();
+            var result = _accountBase.ToList(new RequestUserManagement());
+            common.AddHeader<Models.Response.ResponseUserManagement>();
+            common.AddRecords(result.rows);
+            common.Save(path);
+                 
+            
+            Response.AppendHeader("content-disposition", "attachment;filename=FileEName.xlsx");
+            Response.Charset = "";
+            Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
+            Response.ContentType = "Application/x-msexcel";
+            Response.WriteFile(path);
+            Response.Flush();
+            Response.End();
+
+            System.IO.File.Delete(path);
+        }
+
         public ActionResult Index()
         {            
             return View();

@@ -17,20 +17,31 @@
                 <div class="col-sm-12">
                     @Html.vDateTimePickerFor(m => m.DateStart).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
                     @Html.vDateTimePickerFor(m => m.DateEnd).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date).ToHtml().Wrap("div", new { @class = "col-sm-2" })
-                    <div class="col-sm-8">
+                    <div class="col-sm-4">
                         @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true)
                     </div>
-                    
-                </div>
-                <div class="col-sm-12"  >
-                    <div style="float:right; padding-right:30px">
-                        <button class="btn btn-default " id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
-                        <button class="btn btn-primary" id="btn-invalid"><i class="zmdi zmdi-star"></i>InValid Data</button>
-                        <button class="btn btn-success" id="btn-fpData"><i class="zmdi zmdi-star"></i>FP Device Data</button>
-                        <button class="btn btn-danger" id="btn-sumaryinout"><i class="zmdi zmdi-star"></i>Sumary Inout</button>
-                        <button class="btn btn-report" id="btn-report"><i class="zmdi zmdi-star"></i>Export Report</button>
+                    <div class="col-sm-4">
+                        <div style="float:right; padding-right:30px">
+                            <button class="btn btn-default " id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown">
+                                    Action
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#" id="btn-invalid"><i class="zmdi zmdi-alert-circle-o"></i> InValid Data</a></li>
+                                    <li><a href="#" id="btn-fpData"><i class="zmdi zmdi-thumb-up"></i> FP Device Data</a></li>
+                                    <li><a href="#" id="btn-sumaryinout"><i class="zmdi zmdi-check-all"></i> Sumary Inout</a></li>
+                                    <li><a href="#" id="btn-autocreateleave"><i class="zmdi zmdi-check-all"></i> Auto Create Leave</a></li>
+                                    <li><a href="#" id="btn-report"><i class="zmdi zmdi-download"></i> Export Report</a></li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                
             </form>
 
         </div>
@@ -103,6 +114,13 @@
             e.preventDefault();
             toogle("inoutmanagement/getfpData");
         })
+
+        $("#btn-autocreateleave").click(function (e) {
+            e.preventDefault();
+            toogle("inoutmanagement/autocreateleave");
+        })
+
+
 
         $("#btn-report").click(function (e) {
             e.preventDefault();

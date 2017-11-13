@@ -88,6 +88,27 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpPost]
+        public JsonResult AutoCreateLeave(SearchRequest model)
+        {
+            try
+            {
+                if (model.Uids != null && model.Uids.Count() == 1 && model.Uids[0] == 0)
+                {
+                    model.Uids = null;
+                }
+                var result = _inoutBase.MappingInoutInvalid(model.DateStart, model.DateEnd, model.Uids);
+                LeaveBase leaveBase = new LeaveBase();
+                leaveBase.AutoCreateLeave(result);
+                return Json(new { Status = 0, Message = "Action complete" });
+            }
+            catch (Exception e)
+            {
+                Response.StatusCode = 400;
+                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public ActionResult ReportLateEarly(SearchRequest model)
         {
 
@@ -152,6 +173,8 @@ namespace mtv_management_leave.Controllers
             //return View();
 
         }
+
+
 
 
         [HttpPost]
