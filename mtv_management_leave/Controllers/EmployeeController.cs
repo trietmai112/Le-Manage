@@ -17,8 +17,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
-{
-    [Authorize(Roles = "Super admin, Admin")]
+{    
     public class EmployeeController : ControllerExtendsion
     {
         private LeaveManagementContext _context;
@@ -72,7 +71,7 @@ namespace mtv_management_leave.Controllers
               DateEnd =  new DateTime(now.Year, now.Month + 1, 1).AddDays(-1),
             });
         }
-
+        [AllowAnonymous]
         public ActionResult Profile()
         {
             return View(new mtv_management_leave.Models.Account.RegisterViewModel {
@@ -80,6 +79,7 @@ namespace mtv_management_leave.Controllers
             });
         }
 
+        [Authorize(Roles = "Super admin, Admin")]
         public void Excel()
         {
             string path = Path.Combine(Server.MapPath("~/"), $"{DateTime.Now.Ticks}.xlsx");
@@ -101,6 +101,7 @@ namespace mtv_management_leave.Controllers
             System.IO.File.Delete(path);
         }
 
+        [Authorize(Roles = "Super admin, Admin")]
         public ActionResult Index()
         {            
             return View();
