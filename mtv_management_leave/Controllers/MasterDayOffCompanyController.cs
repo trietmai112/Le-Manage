@@ -11,7 +11,7 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
     [Authorize(Roles = "Super admin, Admin")]
-    public class MasterDayOffCompanyController : Controller
+    public class MasterDayOffCompanyController : ControllerExtendsion
     {
         private DayOffCompanyBase _dayOffCompanyBase;
 
@@ -34,8 +34,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
@@ -59,8 +58,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
@@ -83,8 +81,7 @@ namespace mtv_management_leave.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Response.StatusCode = 400;
-                    return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex);
                 }
             }
             return Json(new { Status = 200, Message = "Action complete" });

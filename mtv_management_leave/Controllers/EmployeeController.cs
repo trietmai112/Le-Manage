@@ -19,7 +19,7 @@ using System.Web.Mvc;
 namespace mtv_management_leave.Controllers
 {
     [Authorize(Roles = "Super admin, Admin")]
-    public class EmployeeController : Controller
+    public class EmployeeController : ControllerExtendsion
     {
         private LeaveManagementContext _context;
         private AccountBase _accountBase;

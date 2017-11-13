@@ -7,7 +7,7 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
 
-    public class SummaryLeaveAnnualManagementController : Controller
+    public class SummaryLeaveAnnualManagementController : ControllerExtendsion
     {
         private LeaveTotalMonthlyBase _leaveTotal;
 

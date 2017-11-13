@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
 {
-    public class ReportController : Controller
+    public class ReportController : ControllerExtendsion
     {
 
         [HttpGet]

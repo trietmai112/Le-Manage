@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
 {
-    public class SystemController: Controller
+    public class SystemController: ControllerExtendsion
     {
         private LeaveManagementContext _context;
 

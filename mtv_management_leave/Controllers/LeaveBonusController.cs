@@ -14,7 +14,7 @@ using mtv_management_leave.Lib;
 namespace mtv_management_leave.Controllers
 {
     [Authorize(Roles = "Super admin, Admin")]
-    public class LeaveBonusController : Controller
+    public class LeaveBonusController : ControllerExtendsion
     {
         private AddLeaveBase _leaveBase;
 
@@ -61,8 +61,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 

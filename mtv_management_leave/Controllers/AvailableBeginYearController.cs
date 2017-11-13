@@ -9,7 +9,7 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
     
-    public class AvailableBeginYearController : Controller
+    public class AvailableBeginYearController : ControllerExtendsion
     {
         private DataBeginYearBase _dataBeginYearBase;
 
@@ -59,8 +59,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
