@@ -1,12 +1,11 @@
-﻿using mtv_management_leave.Lib.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using Microsoft.AspNet.Identity;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Entity;
 using mtv_management_leave.Models.Response;
-using Microsoft.AspNet.Identity;
 
 namespace mtv_management_leave.Lib.Repository
 {
@@ -46,6 +45,7 @@ namespace mtv_management_leave.Lib.Repository
 
             #endregion
             leave.DateRegister = DateTime.Today;
+            leave.Status = Common.StatusLeave.E_Register;
             if (leave.DateStart >= leave.DateEnd)
             {
                 throw new Exception("End Time must be after Start Time!");
@@ -254,7 +254,7 @@ namespace mtv_management_leave.Lib.Repository
                     lstLeaveResult.Add(leaveRegister);
                 }
             }
-            if(lstLeaveResult.Count>0)
+            if (lstLeaveResult.Count > 0)
             {
                 context.RegisterLeaves.AddRange(lstLeaveResult);
                 context.SaveChanges();
@@ -358,7 +358,7 @@ namespace mtv_management_leave.Lib.Repository
                 resLeave.LeaveFrom = obj.DateStart.ToString("yyyy-MM-dd HH:mm");
                 resLeave.FullName = obj.FullName;
                 resLeave.LeaveStatus = Common.ConvertLeaveStatusToString((int)obj.LeaveStatus);
-                resLeave.LeaveTypeName = Common.ConvertLeaveTypeToString(obj.LeaveTypeName);
+                resLeave.LeaveTypeName = obj.LeaveTypeName;
                 resLeave.RegisterHour = obj.RegisterHour;
                 resLeave.Uid = obj.Uid;
                 lstResult.Add(resLeave);
