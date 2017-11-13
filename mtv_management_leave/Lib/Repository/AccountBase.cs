@@ -147,7 +147,7 @@ namespace mtv_management_leave.Lib.Repository
 
             var user = Mapper.Map<UserInfo>(model);
             IdentityResult identityResult = null;
-
+            _userManager.UserValidator = new UserValidator<UserInfo, int>(_userManager) { AllowOnlyAlphanumericUserNames = false };
             if (user.Id > 0) identityResult = await _userManager.UpdateAsync(user);
 
             else identityResult = await _userManager.CreateAsync(user, model.Password);
