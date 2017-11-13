@@ -12,7 +12,9 @@
             <div class="col-sm-12">
                 @Html.vDateTimePickerFor(m => m.Year).SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Year).ToHtml().Wrap("div", new { @class = "col-sm-2" })
                 @Html.vDropDownListFor(m => m.Uids, Html.GetT<List<SelectListItem>>("system", "UserToDropdown"), true, true).Wrap("div", new { @class = "col-sm-6" })
-                <div class="col-sm-4">
+                <div class="col-sm-2">
+                </div>
+                <div class="col-sm-2">
                     <button class="btn btn-default" id="btn-search"><i class="zmdi zmdi-search"></i> Search</button>
                     <button class="btn btn-primary" id="btn-generate"><i class="zmdi zmdi-plus"></i> Generate</button>
                 </div>
@@ -20,7 +22,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("UserSeniority-Table")
-        .SetAjaxUrl("/UserSeniority/tolist")
         .AddAjaxParameter(typeof(RequestUserSeniority))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", MappingFrom = "Uid" },
@@ -50,9 +51,28 @@
             $('.card-body .selectpicker').selectpicker('render');
         });
 
+
         $("#btn-search").click(function (e) {
-            $("#UserSeniority-Table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
+
+        var reloadGrid = function () {
+            var option = {
+                url: '/UserSeniority/tolist',
+                type: 'POST',
+                data: { Year: $("input[name=Year]").val(), Uids: $("[name=Uids]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#UserSeniority-Table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#UserSeniority-Table").bootgrid("append", data.rows);
+                }
+            }).error(function (jhx) {
+                showAjaxError(jhx);
+            });
+        }
+
 
         $("#btn-generate").click(function (e) {
             e.preventDefault();
@@ -63,7 +83,6 @@
                 data: { year: dateY }
             };
             $.ajax(option).done(function (data) {
-                alert("Done!");
                 $("#btn-search").click();
             }).error(function (jhx) {
                 showAjaxError(jhx);

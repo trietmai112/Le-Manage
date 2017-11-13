@@ -68,13 +68,26 @@
             }
         </ul>
     </li>
+
+    <li class="sub-menu">
+        <a href="#" data-ma-action="submenu-toggle"><i class="zmdi zmdi-accounts-add"></i>Compensating</a>
+        <ul>
+            <li><a href="/compensatingBonus">Register Compensating</a></li>
+            @{
+                if (isAdmin)
+                {
+                    <li><a href="/compensatingManagement">Management Compensating</a></li>
+                }
+            }
+        </ul>
+    </li>
+
     @if (isAdmin)
     {
         <li><a href="/leavebonus"><i class="zmdi zmdi-collection-plus"></i> Add Leave Bonus</a></li>
         <li><a href="/availablebeginyear"><i class="zmdi zmdi-star-circle"></i> Available Begin Year</a></li>
         <li><a href="/userseniority"><i class="zmdi zmdi-iridescent"></i> User seniority </a></li>
         <li><a href="/masterdayoffcompany"><i class="zmdi zmdi-city-alt"></i> Dayoff company</a></li>
-
     }
     <li><a href="/account/logout"><i class="zmdi zmdi-sign-in"></i> Logout</a></li>
 </ul>

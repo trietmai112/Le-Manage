@@ -30,7 +30,7 @@ namespace mtv_management_leave.Controllers
             try
             {
                 _dayOffCompanyBase.DeleteLeaveDayCompany(model.Ids);
-                return Json(new { Status = 0, Message = "Action complete" });
+                return Json(new { Status = 200, Message = "Action complete" });
             }
             catch (Exception e)
             {
@@ -42,18 +42,26 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult ToList(RequestMasterDayOff modelRequest)
         {
-            var resultApi = new List<ResponseMasterDayOff>();
-            if (modelRequest.DateStart != null && modelRequest.DateEnd != null)
+            try
             {
-                resultApi = _dayOffCompanyBase.GetLeaveDayCompany(modelRequest.DateStart.Value, modelRequest.DateEnd.Value).Select(m => new ResponseMasterDayOff() { Id = m.Id, DateLeave = m.Date, Reason = m.Description }).ToList();
+                var resultApi = new List<ResponseMasterDayOff>();
+                if (modelRequest.DateStart != null && modelRequest.DateEnd != null)
+                {
+                    resultApi = _dayOffCompanyBase.GetLeaveDayCompany(modelRequest.DateStart.Value, modelRequest.DateEnd.Value).Select(m => new ResponseMasterDayOff() { Id = m.Id, DateLeave = m.Date, Reason = m.Description }).ToList();
+                }
+                return Json(new BootGridReponse<ResponseMasterDayOff>
+                {
+                    current = 1,
+                    total = resultApi.Count,
+                    rowCount = 20,
+                    rows = resultApi
+                });
             }
-            return Json(new BootGridReponse<ResponseMasterDayOff>
+            catch (Exception e)
             {
-                current = 1,
-                total = resultApi.Count,
-                rowCount = 20,
-                rows = resultApi
-            });
+                Response.StatusCode = 400;
+                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public PartialViewResult RegisterDayOffCompany()
@@ -62,7 +70,7 @@ namespace mtv_management_leave.Controllers
         }
 
         [HttpPost]
-        public PartialViewResult RegisterDayOffCompany(RegisterMasterDayOff registerDayOffCompany)
+        public JsonResult RegisterDayOffCompany(RegisterMasterDayOff registerDayOffCompany)
         {
             MasterLeaveDayCompany registerDayOff = new MasterLeaveDayCompany();
             registerDayOff.Date = registerDayOffCompany.Date;
@@ -75,10 +83,11 @@ namespace mtv_management_leave.Controllers
                 }
                 catch (Exception ex)
                 {
-                    ModelState.AddModelError("Error", ex.Message);
+                    Response.StatusCode = 400;
+                    return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
                 }
             }
-            return PartialView(registerDayOffCompany);
+            return Json(new { Status = 200, Message = "Action complete" });
         }
     }
 }

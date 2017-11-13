@@ -88,7 +88,8 @@ namespace mtv_management_leave.Lib.Repository
         public double GetAnnualBonus(LeaveManagementContext context, int uid, DateTime dateTo)
         {
             DateTime BeginYear = new DateTime(dateTo.Year, 1, 1);
-            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd >= BeginYear && m.DateAdd.Value <= dateTo).ToList().Sum(m => m.AddLeaveHour ?? 0);
+            string approved = Common.StatusLeave.E_Approve.ToString();
+            double annualBonus = context.AddLeaves.Where(m => m.Uid == uid && m.DateAdd != null && m.DateAdd >= BeginYear && m.DateAdd.Value <= dateTo && m.Status== approved).ToList().Sum(m => m.AddLeaveHour ?? 0);
             return annualBonus;
         }
         public double GetHourLeaveInYear(LeaveManagementContext context, int uid, DateTime dateTo)
@@ -133,7 +134,7 @@ namespace mtv_management_leave.Lib.Repository
             // lấy số phép avalable đầu năm
             // lấy số phép thâm niên tính đến thời điểm hiện tại
             // lấy số phép cộng thêm cho nhân viên tính tới thời điểm hiện tại
-
+            string E_Approved = Common.StatusLeave.E_Approve.ToString();
             DateTime beginYear = new DateTime(monthTo.Year, 1, 1);
             DateTime endMonth = monthTo.AddMonths(1).AddHours(-1);
             DateTime lastMonth = endMonth.AddMonths(-1);
@@ -141,7 +142,7 @@ namespace mtv_management_leave.Lib.Repository
             var lstLeaveFromBeginYear_Query = context.RegisterLeaves.Where(m => m.LeaveTypeId == annualID && m.Status == Common.StatusLeave.E_Approve && m.DateStart >= beginYear && m.DateStart <= endMonth);
             var lstAvailableBeginYear_Query = context.DataBeginYears.Where(m => m.DateBegin.Year == beginYear.Year).Select(m => new RepoDataBeginYear { Uid = m.Uid, DateBegin = m.DateBegin, AnnualLeave = m.AnnualLeave });
             var lstSeniorities_Query = context.UserSeniorities.Where(m => m.Year == beginYear.Year);
-            var lstLeaveAdd_Query = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd.Value >= beginYear && m.DateAdd.Value <= endMonth).Select(m => new RepoAddLeave { Uid = m.Uid, DateAdd = m.DateAdd, AddLeaveHour = m.AddLeaveHour });
+            var lstLeaveAdd_Query = context.AddLeaves.Where(m => m.DateAdd != null && m.DateAdd.Value >= beginYear && m.DateAdd.Value <= endMonth && m.Status == E_Approved).Select(m => new RepoAddLeave { Uid = m.Uid, DateAdd = m.DateAdd, AddLeaveHour = m.AddLeaveHour });
             var lstUserId_Query = context.Users.Where(m => m.DateResign == null || (m.DateResign >= beginYear)).Select(m => m.Id);
 
             if (lstUid != null && lstUid.Count > 0)

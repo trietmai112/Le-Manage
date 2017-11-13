@@ -1,0 +1,36 @@
+﻿@model mtv_management_leave.Models.Entity.AddLeave
+
+<div class="card">
+
+    <div class="card-body register-leave-handle">
+        <div class="container-fluid">
+            @using (Html.BeginForm("registerLeaveBonus", "compensatingBonus"))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(false)
+                <label class="control-label">
+                </label>
+                <div class="row">
+                    <div style="height:10px"></div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            @(
+                                Html.vDateTimePickerFor(m => m.DateAdd)
+                                    .SetViewMode(mtv_management_leave.Lib.Common.DateTimePickerViewMode.Date)
+                                    .ToHtml()
+                            )
+                        </div>
+                        <div class="col-sm-3 md-hour">
+                            @(
+                                Html.vTextBoxFor(m => m.AddLeaveHour)
+                            )
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.vTextAreaFor(m => m.Reason);
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
