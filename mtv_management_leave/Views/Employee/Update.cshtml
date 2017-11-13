@@ -102,8 +102,11 @@
                     $("#modalUpdatePassword").modal("hide");
                     $("#modalUpdatePassword input[type='password']").val('');
                 }
-                else
-                    mySwal("Error", data.Message, "error", 1000);
+                else {
+                    setTimeout(function () {
+                        mySwal("Error", data.Message, "error", 1000);
+                    }, 200);
+                }
             });
             
         });

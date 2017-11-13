@@ -40,6 +40,11 @@ namespace mtv_management_leave
             : base(store)
         {
             this.UserTokenProvider = new UserTokenProvider();
+            this.UserValidator = new UserValidator<UserInfo, int>(this)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+                RequireUniqueEmail = false
+            };
         }        
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
@@ -49,7 +54,7 @@ namespace mtv_management_leave
             manager.UserValidator = new UserValidator<UserInfo, int>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
-                RequireUniqueEmail = true
+                RequireUniqueEmail = false
             };
 
             // Configure validation logic for passwords
