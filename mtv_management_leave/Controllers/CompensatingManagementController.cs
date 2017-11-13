@@ -13,7 +13,7 @@ using mtv_management_leave.Lib;
 namespace mtv_management_leave.Controllers
 {
     [Authorize(Roles = "Super admin, Admin")]
-    public class CompensatingManagementController : Controller
+    public class CompensatingManagementController : ControllerExtendsion
     {
         private AddLeaveBase _addLeaveBase;
 
@@ -38,8 +38,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
@@ -53,8 +52,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
@@ -80,8 +78,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
     }
