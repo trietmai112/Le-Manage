@@ -16,14 +16,10 @@
                             <a href="#home9" aria-controls="home9" role="tab"
                                data-toggle="tab">Basic Infomation</a>
                         </li>
-                        <li role="presentation">
+                        @*<li role="presentation">
                             <a href="#profile9" aria-controls="profile9"
-                               role="tab" data-toggle="tab">View Leave Time</a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#messages9" aria-controls="messages9"
-                               role="tab" data-toggle="tab">View Time In-Out of Month</a>
-                        </li>
+                               role="tab" data-toggle="tab">View In-Out</a>
+                        </li>*@
                     </ul>
 
                     <div class="tab-content">
@@ -32,16 +28,9 @@
                             @{Html.RenderAction("ViewInfoBasic", "Employee");}
 
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="profile9">
-                            <p>
-                                Function will implement in the feature
-                            </p>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="messages9">
-                            <p>
-                                Function will implement in the feature
-                            </p>
-                        </div>
+                        @*<div role="tabpanel" class="tab-pane" id="profile9">
+                            @{ Html.RenderAction("ViewInvidualInOut", "Employee");}
+                        </div>*@
                     </div>
                 </div>
             </div>
