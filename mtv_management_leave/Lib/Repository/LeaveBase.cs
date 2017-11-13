@@ -68,10 +68,10 @@ namespace mtv_management_leave.Lib.Repository
             }
             else if (leave.DateStart.Date == leave.DateEnd.Date)
             {
-                if (leave.DateStart.Hour < 8 || leave.DateEnd.Hour > 17)
+                if (leave.DateStart.Hour < 8 || leave.DateEnd > leave.DateStart.Date.AddHours(Common.EndShift))
                 {
                     DisposeContext(context);
-                    throw new Exception("Please register leave in 8:00 to 17:00!");
+                    throw new Exception("Please register leave in 8:00 to 17:30!");
                 }
                 //gọi lại 1 lần nữa tránh việc modify rồi send lên server
                 leave.RegisterHour = GetLeaveHourInDay(leave.DateStart, leave.DateEnd);
@@ -288,8 +288,8 @@ namespace mtv_management_leave.Lib.Repository
                 throw new Exception("It's a day off company");
             }
 
-            DateTime start = timeStart.Date.AddHours(8);
-            DateTime end = timeStart.Date.AddHours(17);
+            DateTime start = timeStart.Date.AddHours(Common.BeginShift);
+            DateTime end = timeStart.Date.AddHours(Common.EndShift);
             DateTime startBreak = timeStart.Date.AddHours(12);
             DateTime endBreak = timeStart.Date.AddHours(13);
             if (timeStart > start)
@@ -310,23 +310,24 @@ namespace mtv_management_leave.Lib.Repository
             //check có đi qua giờ trưa hay không
             if (end <= startBreak || start >= endBreak)
             {
-                result = Math.Round((end - start).TotalHours, 1);
+                result = Math.Round((end - start).TotalHours, 2);
             }
             //check có nằm trong khoảng giờ trưa hay không
             else if (start < endBreak && start > startBreak)
             {
                 start = endBreak;
-                result = Math.Round((end - start).TotalHours, 1);
+                result = Math.Round((end - start).TotalHours, 2);
             }
             else if (end > startBreak && end < endBreak)
             {
                 end = startBreak;
-                result = Math.Round((end - start).TotalHours, 1);
+                result = Math.Round((end - start).TotalHours, 2);
             }
             else
             {
-                result = Math.Round((end - start).TotalHours - 1, 1);
+                result = Math.Round((end - start).TotalHours - 1, 2);
             }
+            result = result - 0.25;
             return result;
         }
 
