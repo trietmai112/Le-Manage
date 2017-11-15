@@ -14,7 +14,7 @@ using mtv_management_leave.Models.InOut;
 namespace mtv_management_leave.Controllers
 {
     [Authorize(Roles = "Super admin, Admin")]
-    public class InOutManagementController : Controller
+    public class InOutManagementController : ControllerExtendsion
     {
         private InOutBase _inoutBase;
         // private DataRawBase _dataRawBase;
@@ -63,8 +63,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e); 
             }
         }
 
@@ -82,8 +81,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
@@ -103,8 +101,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 
@@ -134,8 +131,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 

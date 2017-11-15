@@ -13,7 +13,7 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
 
-    public class ChangeInOutController : Controller
+    public class ChangeInOutController : ControllerExtendsion
     {
         private RequestChangeInoutBase _inout;
 
@@ -48,8 +48,7 @@ namespace mtv_management_leave.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Response.StatusCode = 400;
-                    return Json(new { status = 400, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                    return BadRequest(ex);
                 }
             }
             return Json(new { Status = 0, Message = "Action complete" });
@@ -65,8 +64,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception e)
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = e.Message }, JsonRequestBehavior.AllowGet);
+                return BadRequest(e);
             }
         }
 

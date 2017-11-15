@@ -56,7 +56,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Register leave</h2>
+                <h2 class="modal-title">Change password</h2>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -102,8 +102,11 @@
                     $("#modalUpdatePassword").modal("hide");
                     $("#modalUpdatePassword input[type='password']").val('');
                 }
-                else
-                    mySwal("Error", data.Message, "error", 1000);
+                else {
+                    setTimeout(function () {
+                        mySwal("Error", data.Message, "error", 1000);
+                    }, 200);
+                }
             });
             
         });

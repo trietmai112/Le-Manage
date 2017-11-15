@@ -1,0 +1,71 @@
+﻿@using mtv_management_leave.Models.InOut
+@model SearchRequest
+
+<div class="row">
+    <button id="btn-refesh" class="btn btn-primary col-sm-offset-10"><i class="zmdi zmdi-refresh"></i> Refresh</button>
+    @Html.HiddenFor(m => m.DateStart)
+    @Html.HiddenFor(m => m.DateEnd)
+</div>
+
+@(Html.vBootGridFor()
+        .SetName("inout-invidual-table")
+        .AddAjaxParameter(typeof(SearchRequest))
+        .AddColumnRange(
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "GuiId", Identify = true, MappingFrom = "GuiId", IsHidden = true },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Uid", FormatJqueryHandler = "validRow", MappingFrom = "Uid" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Full name", FormatJqueryHandler = "validRow", MappingFrom = "FullName" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Date", FormatJqueryHandler = "validRowDate", MappingFrom = "Date" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "In", FormatJqueryHandler = "validRow", MappingFrom = "Intime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Out", FormatJqueryHandler = "validRow", MappingFrom = "Outtime" },
+            new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Valid", FormatJqueryHandler = "validRow", MappingFrom = "IsValid" }
+            //,
+            //new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveS", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart1" },
+            //new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveE", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd1" },
+            //new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus1" },
+            //new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveS", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStart2" },
+            //new BootGridColumnOption { Sortable = false, ColumnHeaderName = "LeaveE", FormatJqueryHandler = "validRow", MappingFrom = "LeaveEnd2" },
+            //new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Status", FormatJqueryHandler = "validRow", MappingFrom = "LeaveStatus2" }
+        )
+        .ToHtml()
+)
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        reloadGrid();
+    });
+
+    $("#btn-refesh").click(function (e) {
+        debugger;
+        //e.preventDefault();
+        reloadGrid();
+    });
+
+    var reloadGrid = function () {
+        var option = {
+            url: '/employee/InvidualInOutRefresh',
+            type: 'POST',
+            data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val() }
+        };
+        $.ajax(option).done(function (data) {
+            $("#inout-invidual-table").bootgrid("clear");
+            if ($.isArray(data.rows)) {
+                $("#inout-invidual-table").bootgrid("append", data.rows);
+            }
+        });
+    }
+
+    var validRow = function (col, row) {
+        if (row[col.id] == null) return "";
+        var text = row[col.id];;
+        if (!row.IsValid) text = "<span class='text-danger'>" + row[col.id] + "</span>";
+        return text;
+    };
+
+    var validRowDate = function (col, row) {
+        if (row[col.id] == null) return "";
+        var text = dateConvert(row[col.id]);
+        if (!row.IsValid) text = "<span class='text-danger'>" + dateConvert(row[col.id]) + "</span>";
+        return text;
+    }
+</script>
+

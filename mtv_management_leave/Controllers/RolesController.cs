@@ -8,7 +8,7 @@ using System.Web.Routing;
 
 namespace mtv_management_leave.Controllers
 {
-    public class RolesController: Controller
+    public class RolesController: ControllerExtendsion
     {
         private LeaveManagementContext _context;
         private ApplicationUserManager _userManager;

@@ -3,10 +3,11 @@ using System.Web.Mvc;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models.Request;
 using mtv_management_leave.Models.Response;
+using System;
 
 namespace mtv_management_leave.Controllers
 {
-    public class UserSeniorityController : Controller
+    public class UserSeniorityController : ControllerExtendsion
     {
         private UserSeniorityBase _userSeniorityBase;
 
@@ -52,8 +53,7 @@ namespace mtv_management_leave.Controllers
             }
             else
             {
-                Response.StatusCode = 400;
-                return Json(new { status = 400, message = "Please select year!"}, JsonRequestBehavior.AllowGet);
+                return BadRequest(new Exception("Please select year!"));
             }
             return Json(string.Empty);
         }

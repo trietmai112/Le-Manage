@@ -11,7 +11,7 @@ using System.Net;
 
 namespace mtv_management_leave.Controllers
 {
-    public class LeaveManagementController : Controller
+    public class LeaveManagementController : ControllerExtendsion
     {
         private LeaveBase _leaveBase;
 
