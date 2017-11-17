@@ -294,6 +294,7 @@
     <Compile Include="Lib\Extendsions\StringExtendsion.cs" />
     <Compile Include="Lib\Extendsions\TagBuilderExtendsion.cs" />
     <Compile Include="Lib\Interface\IAccountBase.cs" />
+    <Compile Include="Lib\Interface\ICalendarEventBase.cs" />
     <Compile Include="Lib\Interface\ICommonLeaveBase.cs" />
     <Compile Include="Lib\Interface\IContainerControl.cs" />
     <Compile Include="Lib\Interface\IControl.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Lib\Repository\Base.cs" />
     <Compile Include="Lib\Repository\AccountBase.cs" />
     <Compile Include="Lib\Repository\BootGridReponse.cs" />
+    <Compile Include="Lib\Repository\CalendarEventBase.cs" />
     <Compile Include="Lib\Repository\CommonLeaveBase.cs" />
     <Compile Include="Lib\Repository\DataBeginYearBase.cs" />
     <Compile Include="Lib\Repository\DayOffCompanyBase.cs" />
@@ -378,6 +380,7 @@
     <Compile Include="Models\Account\UpdatedViewModel.cs" />
     <Compile Include="Models\AvailableLeave\SearchRequest.cs" />
     <Compile Include="Models\BootGridTableOption.cs" />
+    <Compile Include="Models\Request\CalendarEventViewRequest.cs" />
     <Compile Include="Models\Entity\AddLeave.cs" />
     <Compile Include="Models\Entity\DataBeginYear.cs" />
     <Compile Include="Models\Entity\DataInOutRaw.cs" />
@@ -411,6 +414,7 @@
     <Compile Include="Models\Request\RequestUserSeniority.cs" />
     <Compile Include="Models\Request\RequestMasterDayOff.cs" />
     <Compile Include="Models\Request\ToogleApprove.cs" />
+    <Compile Include="Models\Response\CalendarEventViewReponse.cs" />
     <Compile Include="Models\Response\ResponseAvailableBeginYear.cs" />
     <Compile Include="Models\Response\ResponseChangeInout.cs" />
     <Compile Include="Models\Response\ResponseLeaveBonus.cs" />
