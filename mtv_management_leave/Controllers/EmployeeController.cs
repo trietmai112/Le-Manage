@@ -5,6 +5,7 @@ using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Account;
 using mtv_management_leave.Models.Entity;
+using mtv_management_leave.Models.InOut;
 using mtv_management_leave.Models.Request;
 using System;
 using System.Collections.Generic;
@@ -16,19 +17,19 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
-{
-    [Authorize(Roles = "Super admin, Admin")]
-    public class EmployeeController : Controller
+{    
+    public class EmployeeController : ControllerExtendsion
     {
         private LeaveManagementContext _context;
         private AccountBase _accountBase;
+        private InOutBase _inoutBase;
 
         public EmployeeController(AccountBase accountBase,
-            LeaveManagementContext context)
+            LeaveManagementContext context, InOutBase inoutBase)
         {
             _accountBase = accountBase;
             _context = context;
-           
+            _inoutBase = inoutBase;
         }
         private void AddErrors(IdentityResult result)
         {
@@ -38,6 +39,47 @@ namespace mtv_management_leave.Controllers
             }
         }
 
+        public PartialViewResult ViewInfoBasic()
+        {
+            var model = _accountBase.GetById(HttpContext.User.Identity.GetUserId<int>());
+            return PartialView("_ViewInfoBasic",model);
+        }
+
+
+        [HttpPost]
+        public JsonResult InvidualInOutRefresh(SearchRequest model)
+        {
+            var now = DateTime.Now;
+            var result = _inoutBase.MappingInoutLeave(
+                model.DateStart,
+                model.DateEnd,                
+                new List<int> { HttpContext.User.Identity.GetUserId<int>() }).OrderByDescending(m => m.Date).ToList();
+            return Json(new BootGridReponse<RepoMappingInOut>
+            {
+                current = 1,
+                total = result.Count,
+                rowCount = -1,
+                rows = result
+            });
+        }
+
+        public PartialViewResult ViewInvidualInOut()
+        {
+            var now = DateTime.Now;   
+            return PartialView("_ViewInvidualInOut", new SearchRequest {
+              DateStart =   new DateTime(now.Year, now.Month, 1),
+              DateEnd =  new DateTime(now.Year, now.Month + 1, 1).AddDays(-1),
+            });
+        }
+        [AllowAnonymous]
+        public ActionResult Profile()
+        {
+            return View(new mtv_management_leave.Models.Account.RegisterViewModel {
+                DateBeginWork = DateTime.Now
+            });
+        }
+
+        [Authorize(Roles = "Super admin, Admin")]
         public void Excel()
         {
             string path = Path.Combine(Server.MapPath("~/"), $"{DateTime.Now.Ticks}.xlsx");
@@ -59,6 +101,7 @@ namespace mtv_management_leave.Controllers
             System.IO.File.Delete(path);
         }
 
+        [Authorize(Roles = "Super admin, Admin")]
         public ActionResult Index()
         {            
             return View();

@@ -17347,14 +17347,9 @@ textarea {
 }
 
 .dtp-container {
-    margin-top: 0px;
-    margin-right: 10px;
+  margin-top: 0px;
+  margin-right: 10px;
 }
-
-.padding-top-10 {
-    padding-top: 10px !important;
-}
-
-.padding-left-0 {
-    padding-left: 0px !important;
+.tab {
+  padding: 0px 20px !important;
 }

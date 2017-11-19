@@ -9,7 +9,7 @@ using mtv_management_leave.Models.Response;
 namespace mtv_management_leave.Controllers
 {
     [Authorize(Roles ="Admin,Super admin")]
-    public class ChangeInOutManagementController : Controller
+    public class ChangeInOutManagementController : ControllerExtendsion
     {
         private RequestChangeInoutBase _inout;
 

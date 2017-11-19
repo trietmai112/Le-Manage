@@ -13,7 +13,7 @@ using mtv_management_leave.Models.Entity;
 
 namespace mtv_management_leave.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : ControllerExtendsion
     {
         private ApplicationSignInManager _signInManager;
         private LeaveManagementContext _context;

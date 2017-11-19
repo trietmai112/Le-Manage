@@ -4,7 +4,7 @@ using System.Web.Mvc;
 namespace mtv_management_leave.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class HomeController : ControllerExtendsion
     {
         public ActionResult Index()
         {
