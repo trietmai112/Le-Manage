@@ -390,10 +390,14 @@ namespace mtv_management_leave.Lib.Repository
                         continue;
                     }
                     InOut inOutObject = new InOut();
-                    inOutObject.Intime = lstInDayByUser.FirstOrDefault().Time;
+                    DateTime fistIntime = lstInDayByUser.FirstOrDefault().Time;
+                    fistIntime = new DateTime(fistIntime.Year, fistIntime.Month, fistIntime.Day, fistIntime.Hour, fistIntime.Minute,0);
+                    inOutObject.Intime = fistIntime;
                     if (lstInDayByUser.Count() > 1)
                     {
-                        inOutObject.OutTime = lstInDayByUser.LastOrDefault().Time;
+                        DateTime lastOutTime = lstInDayByUser.LastOrDefault().Time;
+                        lastOutTime = new DateTime(lastOutTime.Year, lastOutTime.Month, lastOutTime.Day, lastOutTime.Hour, lastOutTime.Minute, 0);
+                        inOutObject.OutTime = lastOutTime;
                     }
                     inOutObject.Uid = uid;
                     inOutObject.Date = date;
