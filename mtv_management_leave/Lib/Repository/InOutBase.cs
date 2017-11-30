@@ -408,10 +408,6 @@ namespace mtv_management_leave.Lib.Repository
             {
                 context.InOuts.AddRange(listInoutSave);
             }
-            DateTime max = listInoutSave.Max(m => m.Date);
-            DateTime min = listInoutSave.Min(m => m.Date);
-            DateTime Max1 = listInoutSave.Max(m => m.Intime);
-            DateTime Min1 = listInoutSave.Min(m => m.Intime);
             context.SaveChanges();
             DisposeContext(context);
         }

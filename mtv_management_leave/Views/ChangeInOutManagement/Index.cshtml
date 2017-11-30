@@ -31,7 +31,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("request-changeinout-table")
-        .SetAjaxUrl("/changeInOutManagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
@@ -51,11 +50,30 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
+
+        var reloadGrid = function () {
+            var option = {
+                url: '/changeInOutManagement/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val(), Uids: $("[name=Uids]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#request-changeinout-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#request-changeinout-table").bootgrid("append", data.rows);
+                }
+            }).error(function (jhx) {
+                console.log(jhx.responseText)
+                showAjaxError(jhx);
+            });
+        }
+
         $("#btn-search").click(function (e) {
-            $("#request-changeinout-table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
 
-       
+
         $("#btn-approve").click(function (e) {
             e.preventDefault();
             toogle("/changeInOutManagement/approve");
@@ -72,7 +90,7 @@
             return dateConvert(row[col.id]);
         }
 
-    
+
         var toogle = function (urlCallback) {
             var selectedIds = $("#request-changeinout-table").bootgrid("getSelectedRows");
             if (selectedIds.length == 0) return;

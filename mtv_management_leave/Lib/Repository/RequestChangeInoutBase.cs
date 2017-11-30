@@ -80,14 +80,41 @@ namespace mtv_management_leave.Lib.Repository
             #endregion
             InitContext(out context);
             var lstReject = context.RequestChangeInouts.Where(m => lstIdRequest.Contains(m.Id)).ToList();
-            if (lstReject.Any(m => m.status == Common.StatusLeave.E_Approve))
+            if(lstReject.Count== 0)
             {
                 DisposeContext(context);
-                throw new Exception("Please select value not approved!");
+                return;
+            }
+
+            //dựa theo ngày và người lấy dữ liệu lên
+            //xóa đi modify
+            //tổng hợp lại inout cho người ta
+            var lstUid = lstReject.Select(m => m.Uid).Distinct().ToList();
+            var minDate = lstReject.Select(m => m.Date).Min();
+            var MaxDate = lstReject.Select(m => m.Date).Max();
+            foreach (var dataReject in lstReject)
+            {
+                if(dataReject.status != Common.StatusLeave.E_Approve)
+                {
+                    continue;
+                }
+                var userId = dataReject.Uid;
+                DateTime date = dataReject.Date;
+                var dataInout = context.InOuts.Where(m => m.IsModify == true && m.Uid == userId && m.Date == date).FirstOrDefault();
+                if(dataInout!= null)
+                {
+                    dataInout.IsModify = false;
+                }
+                
             }
             lstReject.ForEach(m => m.status = Common.StatusLeave.E_Reject);
             context.SaveChanges();
             DisposeContext(context);
+
+
+            var ioBase = new InOutBase();
+            ioBase.SaveGenerateInout(minDate, MaxDate, lstUid);
+
         }
 
         public List<ResponseChangeInout> GetRequestChangeInout(DateTime dateFrom, DateTime DateTo)
@@ -163,7 +190,7 @@ namespace mtv_management_leave.Lib.Repository
 
             InitContext(out context);
             var lstdelete = context.RequestChangeInouts.Where(m => lstIdRequest.Contains(m.Id)).ToList();
-            if (lstdelete.Any(m => m.status != Common.StatusLeave.E_Register && m.status!= Common.StatusLeave.E_Reject))
+            if (lstdelete.Any(m => m.status != Common.StatusLeave.E_Register && m.status != Common.StatusLeave.E_Reject))
             {
                 DisposeContext(context);
                 throw new Exception("Please select only value register or disapprove!");
@@ -177,6 +204,7 @@ namespace mtv_management_leave.Lib.Repository
         #region Private method
         private List<ResponseChangeInout> getRequestChange(DateTime dateFrom, DateTime DateTo, List<int> lstUid)
         {
+            validate(dateFrom, DateTo);
             var lstResult = new List<ResponseChangeInout>();
             InitContext(out context);
             var query = context.RequestChangeInouts.Where(m => m.Date >= dateFrom && m.Date <= DateTo);
@@ -195,15 +223,15 @@ namespace mtv_management_leave.Lib.Repository
                 rp.Uid = item.Uid;
                 rp.Date = item.Date;
                 rp.FullName = item.FullName;
-                rp.IntimeRequest = item.Intime!= null? item.Intime.Value.ToString("HH:mm") : string.Empty;
-                rp.OutTimeRequest = item.OutTime != null ? item.OutTime.Value.ToString("HH:mm"): string.Empty;
+                rp.IntimeRequest = item.Intime != null ? item.Intime.Value.ToString("HH:mm") : string.Empty;
+                rp.OutTimeRequest = item.OutTime != null ? item.OutTime.Value.ToString("HH:mm") : string.Empty;
                 rp.Reason = item.Reason;
                 rp.Status = Common.ConvertLeaveStatusToString((int)item.status);
                 var inout = lstInout.Where(m => m.Uid == item.Uid && m.Date == item.Date).FirstOrDefault();
                 if (inout != null)
                 {
-                    rp.Intime = inout.Intime != null ? inout.Intime.ToString("HH:mm"): string.Empty;
-                    rp.OutTime = inout.OutTime != null ? inout.OutTime.Value.ToString("HH:mm") : string.Empty; 
+                    rp.Intime = inout.Intime != null ? inout.Intime.ToString("HH:mm") : string.Empty;
+                    rp.OutTime = inout.OutTime != null ? inout.OutTime.Value.ToString("HH:mm") : string.Empty;
                 }
                 lstResult.Add(rp);
             }

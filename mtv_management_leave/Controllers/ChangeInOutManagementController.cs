@@ -8,7 +8,7 @@ using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
-    [Authorize(Roles ="Admin,Super admin")]
+    [Authorize(Roles = "Admin,Super admin")]
     public class ChangeInOutManagementController : ControllerExtendsion
     {
         private RequestChangeInoutBase _inout;
@@ -26,14 +26,28 @@ namespace mtv_management_leave.Controllers
         [HttpPost]
         public JsonResult Approve(ToogleApprove model)
         {
-            _inout.ApproveRequestChange(model.Ids);
+            try
+            {
+                _inout.ApproveRequestChange(model.Ids);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return Json(new { Status = 0, Message = "Action complete" });
         }
 
         [HttpPost]
         public JsonResult Reject(ToogleApprove model)
         {
-            _inout.RejectRequestChange(model.Ids);
+            try
+            {
+                _inout.RejectRequestChange(model.Ids);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
             return Json(new { Status = 0, Message = "Action complete" });
         }
 
@@ -47,7 +61,7 @@ namespace mtv_management_leave.Controllers
 
                 if (model.DateStart != null && model.DateEnd != null)
                 {
-                    if(model.Uids!= null && model.Uids.Count== 1 && model.Uids[0] ==0)
+                    if (model.Uids != null && model.Uids.Count == 1 && model.Uids[0] == 0)
                     {
                         model.Uids = null;
                     }
@@ -64,8 +78,7 @@ namespace mtv_management_leave.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("Error", ex.Message);
-                return null;
+                return BadRequest(ex);
             }
         }
     }
