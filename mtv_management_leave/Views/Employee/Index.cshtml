@@ -31,7 +31,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("usermanagement-table")
-        .SetAjaxUrl("/employee/tolist")
         .AddAjaxParameter(typeof(RequestUserManagement))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = true, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
@@ -53,8 +52,25 @@
 
 @section Scripts{
     <script type="text/javascript">
+
+        var reloadGrid = function () {
+            var option = {
+                url: '/employee/tolist',
+                type: 'POST',
+                data: { SearchString: $("input[name=SearchString]").val(), Roles: $("input[name=Roles]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#usermanagement-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#usermanagement-table").bootgrid("append", data.rows);
+                }
+            });
+        }
+
+
         $("#btn-search").click(function (e) {
-            $("#usermanagement-table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
 
         $("#btn-register").click(function (e) {

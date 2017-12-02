@@ -28,7 +28,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("request-changeinout-table")
-        .SetAjaxUrl("/changeinout/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
@@ -68,8 +67,23 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
+        var reloadGrid = function () {
+            var option = {
+                url: '/changeinout/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val()}
+            };
+            $.ajax(option).done(function (data) {
+                $("#request-changeinout-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#request-changeinout-table").bootgrid("append", data.rows);
+                }
+            });
+        }
+
         $("#btn-search").click(function (e) {
-            $("#request-changeinout-table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
 
         $("#btn-register").click(function (e) {

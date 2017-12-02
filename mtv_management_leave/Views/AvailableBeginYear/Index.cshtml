@@ -28,7 +28,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("available-leave-table")
-        .SetAjaxUrl("/availablebeginyear/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
@@ -63,8 +62,22 @@
 </div>
 @section Scripts{
     <script type="text/javascript">
+        var reloadGrid = function () {
+            var option = {
+                url: '/availablebeginyear/tolist',
+                type: 'POST',
+                data: { Year: $("input[name=Year]").val(), Uids: $("[name=Uids]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#available-leave-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#available-leave-table").bootgrid("append", data.rows);
+                }
+            });
+        }
         $("#btn-search").click(function (e) {
-            $("#available-leave-table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
 
         $("#btn-register").click(function (e) {

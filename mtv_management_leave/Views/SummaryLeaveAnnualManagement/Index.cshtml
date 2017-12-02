@@ -29,7 +29,6 @@
         </div>
         @(Html.vBootGridFor()
         .SetName("summaryLeaveAnnual-table")
-        .SetAjaxUrl("/summaryLeaveAnnualManagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", FormatJqueryHandler = "validRow", Identify = true, MappingFrom = "Id" },
@@ -49,8 +48,23 @@
 
 @section Scripts{
     <script type="text/javascript">
+        var reloadGrid = function () {
+            var option = {
+                url: '/summaryLeaveAnnualManagement/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), Uids: $("[name=Uids]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#summaryLeaveAnnual-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#summaryLeaveAnnual-table").bootgrid("append", data.rows);
+                }
+            });
+        }
+
         $("#btn-search").click(function (e) {
-            $("#summaryLeaveAnnual-table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
         var validRow = function (col, row) {
             return row[col.id];

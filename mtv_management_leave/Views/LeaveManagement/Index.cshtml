@@ -30,7 +30,6 @@
     </div>
     @(Html.vBootGridFor()
         .SetName("register-leave-table")
-        .SetAjaxUrl("/leavemanagement/tolist")
         .AddAjaxParameter(typeof(SearchRequest))
         .AddColumnRange(
             new BootGridColumnOption { Sortable = false, ColumnHeaderName = "Id", Identify = true, MappingFrom = "Id" },
@@ -48,8 +47,24 @@
 
 @section Scripts{
     <script type="text/javascript">
+
+        var reloadGrid = function () {
+            var option = {
+                url: '/leavemanagement/tolist',
+                type: 'POST',
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val(), Uids: $("[name=Uids]").val() }
+            };
+            $.ajax(option).done(function (data) {
+                $("#register-leave-table").bootgrid("clear");
+                if ($.isArray(data.rows)) {
+                    $("#register-leave-table").bootgrid("append", data.rows);
+                }
+            });
+        }
+
         $("#btn-search").click(function (e) {
-            $("#register-leave-table").bootgrid("reload");
+            e.preventDefault();
+            reloadGrid();
         });
 
         $("#btn-register").click(function (e) {
