@@ -10,5 +10,6 @@ namespace MTV_WindowsService.DbContext
     {
         public int Id { get; set; }
         public int FPId { get; set; }
+        public DateTime DateUpdated { get; set; }
     }
 }

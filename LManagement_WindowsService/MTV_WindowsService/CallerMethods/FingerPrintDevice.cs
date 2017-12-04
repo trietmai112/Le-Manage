@@ -64,7 +64,7 @@ namespace MTV_WindowsService.CallerMethods
         {
             var lastTime = LastTime();
             this.ConnectToDevice();
-            var lstEmpInfor = context.ToList<EmployeeInfo>("select Id, FPId from EmployeeInfo");
+            var lstEmpInfor = context.ToList<EmployeeInfo>("select Id, FPId, DateUpdated from EmployeeInfo");
             List<DataInOutRaw> lstdataRaw = new List<DataInOutRaw>();
             try
             {
@@ -78,7 +78,7 @@ namespace MTV_WindowsService.CallerMethods
                     else
                     {
                         var fpID = int.Parse(dwEnrollNumber);
-                        var uid = lstEmpInfor.Where(t => t.FPId == fpID).Select(t => t.Id).FirstOrDefault();
+                        var uid = lstEmpInfor.Where(t => t.FPId == fpID).OrderByDescending(m => m.DateUpdated).Select(t => t.Id).FirstOrDefault();
                         DataInOutRaw dataR = new DataInOutRaw();
                         dataR.Uid = uid;
                         dataR.Time = timePrint;
