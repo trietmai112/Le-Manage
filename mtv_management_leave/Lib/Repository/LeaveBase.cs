@@ -327,7 +327,18 @@ namespace mtv_management_leave.Lib.Repository
             {
                 result = Math.Round((end - start).TotalHours - 1, 2);
             }
+            double timeminus = 0;
+            if (timeStart.Hour <= 8 && timeEnd.Hour >= 17)
+            {
+                timeminus = 0;
+            }
+            else
+            {
+                timeminus = 0.25;
+            }
             result = result - 0.25;
+            if (result > 8)
+                result = 8;
             return result;
         }
 

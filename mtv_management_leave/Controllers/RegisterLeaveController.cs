@@ -34,8 +34,8 @@ namespace mtv_management_leave.Controllers
                 Uid = userId ?? User.Identity.GetUserId<int>(),
                 DateStart = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0),
                 DateStart_Time = new DateTime(now.Year, now.Month, now.Day, 8, 0, 0),
-                DateEnd = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0),
-                DateEnd_Time = new DateTime(now.Year, now.Month, now.Day, 17, 0, 0)
+                DateEnd = new DateTime(now.Year, now.Month, now.Day, 17, 30, 0),
+                DateEnd_Time = new DateTime(now.Year, now.Month, now.Day, 17, 30, 0)
                 
             });
         }
