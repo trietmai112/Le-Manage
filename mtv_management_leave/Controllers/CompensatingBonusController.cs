@@ -13,6 +13,7 @@ using mtv_management_leave.Lib;
 
 namespace mtv_management_leave.Controllers
 {
+    [Authorize]
     public class CompensatingBonusController : ControllerExtendsion
     {
         private AddLeaveBase _leaveBase;

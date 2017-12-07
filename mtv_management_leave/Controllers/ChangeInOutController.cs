@@ -12,7 +12,7 @@ using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
-
+  
     public class ChangeInOutController : ControllerExtendsion
     {
         private RequestChangeInoutBase _inout;
@@ -22,6 +22,7 @@ namespace mtv_management_leave.Controllers
             _inout = inout;
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             return View(new Models.LeaveBonus.SearchRequest());

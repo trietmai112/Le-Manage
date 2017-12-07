@@ -11,8 +11,7 @@ using mtv_management_leave.Models.Request;
 using mtv_management_leave.Models;
 
 namespace mtv_management_leave.Controllers
-{
-
+{    
     public class InOutController : ControllerExtendsion
     {
         private InOutBase _inOutBase;
@@ -23,6 +22,7 @@ namespace mtv_management_leave.Controllers
             _inOutBase = inOutBase;
             _leaveBase = leaveBase;
         }
+        [Authorize]
         public ActionResult Index()
         {
             return View();

@@ -8,7 +8,6 @@ using mtv_management_leave.Models.Response;
 
 namespace mtv_management_leave.Controllers
 {
-    
     public class AvailableBeginYearController : ControllerExtendsion
     {
         private DataBeginYearBase _dataBeginYearBase;
