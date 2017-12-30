@@ -73,7 +73,7 @@
             var option = {
                 url: '/inoutmanagement/tolist',
                 type: 'POST',
-                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val(), Uids: $("[name=Uids]").val() }
+                data: { DateStart: $("input[name=DateStart]").val(), DateEnd: $("input[name=DateEnd]").val(), Uids: $("[name=Uids]").val(), InValidData: $("[name=InValidData]").val() }
             };
             $.ajax(option).done(function (data) {
                 $("#inout-table").bootgrid("clear");
