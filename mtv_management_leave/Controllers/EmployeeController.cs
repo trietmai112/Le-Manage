@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNet.Identity;
 using mtv_management_leave.Lib;
+using mtv_management_leave.Lib.Interface;
 using mtv_management_leave.Lib.Repository;
 using mtv_management_leave.Models;
 using mtv_management_leave.Models.Account;
@@ -17,19 +18,23 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace mtv_management_leave.Controllers
-{    
+{
     public class EmployeeController : ControllerExtendsion
     {
         private LeaveManagementContext _context;
         private AccountBase _accountBase;
         private InOutBase _inoutBase;
+        private IDataBeginYear _dataBeginYear;
+
 
         public EmployeeController(AccountBase accountBase,
-            LeaveManagementContext context, InOutBase inoutBase)
+            LeaveManagementContext context, InOutBase inoutBase, DataBeginYearBase dataBeginYear)
         {
             _accountBase = accountBase;
             _context = context;
             _inoutBase = inoutBase;
+            _dataBeginYear = dataBeginYear;
+
         }
         private void AddErrors(IdentityResult result)
         {
@@ -42,7 +47,7 @@ namespace mtv_management_leave.Controllers
         public PartialViewResult ViewInfoBasic()
         {
             var model = _accountBase.GetById(HttpContext.User.Identity.GetUserId<int>());
-            return PartialView("_ViewInfoBasic",model);
+            return PartialView("_ViewInfoBasic", model);
         }
 
 
@@ -52,7 +57,7 @@ namespace mtv_management_leave.Controllers
             var now = DateTime.Now;
             var result = _inoutBase.MappingInoutLeave(
                 model.DateStart,
-                model.DateEnd,                
+                model.DateEnd,
                 new List<int> { HttpContext.User.Identity.GetUserId<int>() }).OrderByDescending(m => m.Date).ToList();
             return Json(new BootGridReponse<RepoMappingInOut>
             {
@@ -65,16 +70,18 @@ namespace mtv_management_leave.Controllers
 
         public PartialViewResult ViewInvidualInOut()
         {
-            var now = DateTime.Now;   
-            return PartialView("_ViewInvidualInOut", new SearchRequest {
-              DateStart =   new DateTime(now.Year, now.Month, 1),
-              DateEnd =  new DateTime(now.Year, now.Month + 1, 1).AddDays(-1),
+            var now = DateTime.Now;
+            return PartialView("_ViewInvidualInOut", new SearchRequest
+            {
+                DateStart = new DateTime(now.Year, now.Month, 1),
+                DateEnd = new DateTime(now.Year, now.Month + 1, 1).AddDays(-1),
             });
         }
         [AllowAnonymous]
         public ActionResult Profile()
         {
-            return View(new mtv_management_leave.Models.Account.RegisterViewModel {
+            return View(new mtv_management_leave.Models.Account.RegisterViewModel
+            {
                 DateBeginWork = DateTime.Now
             });
         }
@@ -88,8 +95,8 @@ namespace mtv_management_leave.Controllers
             common.AddHeader<Models.Response.ResponseUserManagement>();
             common.AddRecords(result.rows);
             common.Save(path);
-                 
-            
+
+
             Response.AppendHeader("content-disposition", "attachment;filename=FileEName.xlsx");
             Response.Charset = "";
             Response.Cache.SetCacheability(System.Web.HttpCacheability.NoCache);
@@ -103,7 +110,7 @@ namespace mtv_management_leave.Controllers
 
         [Authorize(Roles = "Super admin, Admin")]
         public ActionResult Index()
-        {            
+        {
             return View();
         }
 
@@ -137,14 +144,16 @@ namespace mtv_management_leave.Controllers
                 return View(model);
             }
             transaction.Commit();
+            _dataBeginYear.AutoSaveDataBeginYear(model.Id);
+
             return RedirectToAction("Index");
         }
-        
+
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult ChangePassword(ChangePasswordViewModel model)
         {
             var result = _accountBase.ChangePassword(model);
-            if(result.Succeeded)
+            if (result.Succeeded)
                 return Json(new { Result = result.Succeeded });
             return Json(new { Result = result.Succeeded, Message = result.Errors.FirstOrDefault() });
         }
@@ -160,7 +169,7 @@ namespace mtv_management_leave.Controllers
         {
             ///Transnsaction maybe not work
             if (!ModelState.IsValid) return View(model);
-           
+
             if (_context.Users.Count(m => m.Email.Equals(model.Email, StringComparison.CurrentCultureIgnoreCase)
                                  && m.Id != model.Id) > 0)
             {
@@ -177,13 +186,14 @@ namespace mtv_management_leave.Controllers
                 return View(model);
             }
             transaction.Commit();
+            _dataBeginYear.AutoSaveDataBeginYear(model.Email);
             return RedirectToAction("Register");
-        }     
-        
+        }
+
         [HttpPost]
         public JsonResult ToList(RequestUserManagement condition)
         {
             return Json(_accountBase.ToList(condition));
-        }   
+        }
     }
 }

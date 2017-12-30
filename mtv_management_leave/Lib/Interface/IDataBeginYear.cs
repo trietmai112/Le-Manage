@@ -21,7 +21,8 @@ namespace mtv_management_leave.Lib.Interface
         List<ResponseAvailableBeginYear> GetDataBeginYear(int year);
         List<ResponseAvailableBeginYear> GetDataBeginYear(int year, int uid);
         List<ResponseAvailableBeginYear> GetDataBeginYear(int year, List<int> lstUid);
-
+        void AutoSaveDataBeginYear(string emailUser);
+        void AutoSaveDataBeginYear(int uid);
         void deleteDataBeginYear(List<int> lstId);
     }
 }

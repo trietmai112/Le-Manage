@@ -97,6 +97,41 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
+        public void AutoSaveDataBeginYear(int Uid)
+        {
+            DateTime? DateBeginWork = null;
+            InitContext(out context);
+            var user = context.Users.Where(m => m.Id == Uid).FirstOrDefault();
+            if (user != null)
+            {
+                DateBeginWork = user.DateBeginWork;
+            }
+            DisposeContext(context);
+            if (DateBeginWork != null)
+            {
+                PrivateAutoSaveDataBeginYear(Uid, DateBeginWork.Value);
+            }
+        }
+
+        public void AutoSaveDataBeginYear(string emailUser)
+        {
+            int? Uid = null;
+            DateTime? DateBeginWork = null;
+            InitContext(out context);
+            var user = context.Users.Where(m => m.UserName == emailUser).FirstOrDefault();
+            if(user!= null)
+            {
+                Uid = user.Id;
+                DateBeginWork = user.DateBeginWork;
+            }
+            DisposeContext(context);
+            if (Uid != null && DateBeginWork != null)
+            {
+                PrivateAutoSaveDataBeginYear(Uid.Value, DateBeginWork.Value);
+            }
+        }
+
+
         #region private Method
         private List<ResponseAvailableBeginYear> privateGetDataBeginYear(int year, List<int> lstUid)
         {
@@ -135,7 +170,21 @@ namespace mtv_management_leave.Lib.Repository
             DisposeContext(context);
         }
 
-
+        public void PrivateAutoSaveDataBeginYear(int Uid, DateTime DateBeginWork)
+        {
+            InitContext(out context);
+            var ObjInDB = context.DataBeginYears.Where(m => m.Uid == Uid && m.DateBegin.Year == DateBeginWork.Year).FirstOrDefault();
+            if (ObjInDB == null)
+            {
+                DataBeginYear obj = new DataBeginYear();
+                obj.Uid = Uid;
+                obj.AnnualLeave = 12 - DateBeginWork.Month + 1;
+                obj.DateBegin = new DateTime(DateBeginWork.Year, DateBeginWork.Month, 1);
+                context.DataBeginYears.Add(obj);
+                context.SaveChanges();
+            }
+            DisposeContext(context);
+        }
 
 
         #endregion
