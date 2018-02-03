@@ -137,7 +137,7 @@ namespace mtv_management_leave.Lib.Repository
             string E_Approved = Common.StatusLeave.E_Approve.ToString();
             DateTime beginYear = new DateTime(monthTo.Year, 1, 1);
             DateTime endMonth = monthTo.AddMonths(1).AddHours(-1);
-            DateTime lastMonth = endMonth.AddMonths(-1);
+            DateTime lastMonth = new DateTime(endMonth.Year,endMonth.Month,1).AddHours(-1);
             var annualID = context.MasterLeaveTypes.Where(m => m.LeaveCode == Common.TypeLeave.E_AnnualLeave.ToString()).Select(m => m.Id).FirstOrDefault();
             var lstLeaveFromBeginYear_Query = context.RegisterLeaves.Where(m => m.LeaveTypeId == annualID && m.Status == Common.StatusLeave.E_Approve && m.DateStart >= beginYear && m.DateStart <= endMonth);
             var lstAvailableBeginYear_Query = context.DataBeginYears.Where(m => m.DateBegin.Year == beginYear.Year).Select(m => new RepoDataBeginYear { Uid = m.Uid, DateBegin = m.DateBegin, AnnualLeave = m.AnnualLeave });

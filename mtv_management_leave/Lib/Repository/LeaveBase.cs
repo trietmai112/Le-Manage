@@ -451,22 +451,22 @@ namespace mtv_management_leave.Lib.Repository
             if (inTime.Minute >= 0 && inTime.Minute < 15)
             {
                 registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(15);
-                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+                HourRegister = Math.Round((double)(registerLate.AddMinutes(-15) - beginShift).Minutes / 60, 2);
             }
             else if (inTime.Minute >= 15 && inTime.Minute < 30)
             {
                 registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(30);
-                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+                HourRegister = Math.Round((double)(registerLate.AddMinutes(-15) - beginShift).Minutes / 60, 2);
             }
             else if (inTime.Minute >= 30 && inTime.Minute < 45)
             {
                 registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(45);
-                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+                HourRegister = Math.Round((double)(registerLate.AddMinutes(-15) - beginShift).Minutes / 60, 2);
             }
             else
             {
                 registerLate = inTime.Date.AddHours(inTime.Hour).AddMinutes(60);
-                HourRegister = (registerLate.AddMinutes(-15) - beginShift).Hours;
+                HourRegister = Math.Round((double)(registerLate.AddMinutes(-15) - beginShift).Minutes / 60, 2);
             }
         }
 
