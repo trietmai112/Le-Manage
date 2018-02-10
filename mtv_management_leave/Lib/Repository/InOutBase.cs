@@ -170,10 +170,7 @@ namespace mtv_management_leave.Lib.Repository
 
             for (DateTime date = DateStart; date <= DateEnd; date = date.AddDays(1))
             {
-                if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || lstdayoff.Any(m => m.Date == date))
-                {
-                    continue;
-                }
+
 
                 DateTime beginShiftLate = date.AddHours(8).AddMinutes(Common.minuteLatePermit);
                 DateTime beginShift = date.AddHours(8);
@@ -183,6 +180,7 @@ namespace mtv_management_leave.Lib.Repository
 
                 foreach (var user in lstUser)
                 {
+                    bool isDayOff = false;
                     if (user.DateResign != null && user.DateResign < date)
                     {
                         continue;
@@ -197,6 +195,16 @@ namespace mtv_management_leave.Lib.Repository
                     mapping.IntimeByDateTime = inout?.Intime;
                     mapping.Outtime = inout != null ? (inout.OutTime != null ? inout.OutTime.Value.ToString("HH:mm") : string.Empty) : string.Empty;
                     mapping.OuttimeByDateTime = inout != null ? inout.OutTime : null;
+
+
+                    if (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday || lstdayoff.Any(m => m.Date == date))
+                    {
+                        if (string.IsNullOrEmpty(mapping.Intime) && string.IsNullOrEmpty(mapping.Outtime))
+                            continue;
+                        isDayOff = true;
+                    }
+
+
 
                     if (lstleaveInDay.Count == 0)
                     {
@@ -243,6 +251,10 @@ namespace mtv_management_leave.Lib.Repository
                     mapping.TimeWork = timeWork;
                     mapping.TimeLeave = timeLeave;
 
+                    if (isDayOff)
+                    {
+                        mapping.IsValid = true;
+                    }
 
 
 
@@ -391,7 +403,7 @@ namespace mtv_management_leave.Lib.Repository
                     }
                     InOut inOutObject = new InOut();
                     DateTime fistIntime = lstInDayByUser.FirstOrDefault().Time;
-                    fistIntime = new DateTime(fistIntime.Year, fistIntime.Month, fistIntime.Day, fistIntime.Hour, fistIntime.Minute,0);
+                    fistIntime = new DateTime(fistIntime.Year, fistIntime.Month, fistIntime.Day, fistIntime.Hour, fistIntime.Minute, 0);
                     inOutObject.Intime = fistIntime;
                     if (lstInDayByUser.Count() > 1)
                     {
